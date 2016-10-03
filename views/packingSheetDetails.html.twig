@@ -1,0 +1,80 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Packing Sheets{% endblock %}
+
+{% block content %}
+<div class="jumbotron vertical-center">
+  <div class="container-fluid">
+    <div class="container"><h2>Packing Sheets <br>
+      <small>Details</small></h2></div>
+      <br>
+    <div id="exTab2" class="container">
+      <div class="tab-content ">
+        <div class="container"><h2><small>Packing Sheet</small></h2></div>
+        <br>
+          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                  <th>Ref</th>
+                  <th>AWB Number</th>
+                  <th>Shipper</th>
+                  <th>Consigned</th>
+                  <th>From service</th>
+                  <th>Autority</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ packingSheet.ref }}</td>
+                    <td>{{ packingSheet.AWB }}</td>
+                    <td>{{ packingSheet.shipper_id.label}}</td>
+                    <td>{{ packingSheet.consignedCode_id.label}}</td>
+                    <td>{{ packingSheet.service_id.label }}</td>
+                    <td>{{ packingSheet.autority_id.label }}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="container"><h2><small>Packings</small></h2></div>
+      <div id="exTab2" class="container">
+        <ul class="nav nav-tabs">
+          {% for pack in packings %}
+          <li class="active"><a href="{{ pack.id }}" data-toggle="tab">Packing {{ pack.id }}</a></li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content ">
+          <div class="tab-pane active" id="1">
+            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                    <th>NetWeight</th>
+                    <th>Gross Weight</th>
+                    <th>M1</th>
+                    <th>M2</th>
+                    <th>M3</th>
+                    <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pack in packings %}
+                  <tr>
+                      <td>{{ pack.netWeight }}</td>
+                      <td>{{ pack.grossWeight }}</td>
+                      <td>{{ pack.M1}}</td>
+                      <td>{{ pack.M2 }}</td>
+                      <td>{{ pack.M3 }}</td>
+                      <td><a href="{{ path('sheetDetailsParts', { 'idSheet': packingSheet.id, 'idPack': pack.id }) }}">
+                        <button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in"></span></button></a></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

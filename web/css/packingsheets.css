@@ -1,0 +1,55 @@
+body {
+    padding-top: 50px;
+}
+
+.footer {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    text-align: center;
+}
+
+li .configSelec {
+    direction: rtl;
+    line-height: 50px;
+}
+
+
+.container-fluid {
+    border-radius: 20px;
+    text-align: center;
+}
+
+.navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+.navbar-nav li a {
+ line-height: 50px;
+}
+
+.navbar-brand {
+  line-height: 50px;
+}
+
+.carousel {
+  border: 2px outset lightgrey;
+}
+
+.jumbotron {
+  border: 1px solid lightgrey;
+}
+ .tab-content {
+   border-top: 1px solid #ccc;
+   padding-top: 10px;
+   text-align: center;
+ }
+
+ .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+    width: 100%;
+}

@@ -1,0 +1,29 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron vertical-center">
+  <div class="container-fluid">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img class="first-slide" src="img/sabena.jpg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>PackingSheets</h1>
+              <p>A web solution for packing sheets management by Sabena Aerospace Engineering.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.carousel -->
+</div>
+<br></br>
+<div class="panel panel-default">
+  <div class="panel-heading">Welcome to PackingSheets !</div>
+  <div class="panel-body">Please use the menu bar to access the different software features.</div>
+</div>
+</div>
+{% endblock %}
