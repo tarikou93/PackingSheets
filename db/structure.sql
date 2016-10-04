@@ -16,6 +16,7 @@ drop table if exists t_incotermsType;
 drop table if exists t_incotermsLocation;
 drop table if exists t_currency;
 drop table if exists t_imput;
+drop table if exists t_memo;
 
 create table t_code (
   code_id integer not null primary key auto_increment,
@@ -81,6 +82,11 @@ create table t_incotermsLocation (
   incLoc_label varchar(100) not null
 ) engine=innodb character set utf8 collate utf8_unicode_ci;
 
+create table t_memo (
+  memo_id integer not null primary key auto_increment,
+  memo_label varchar(200) not null
+) engine=innodb character set utf8 collate utf8_unicode_ci;
+
 create table t_packingsheet (
 
   ps_id integer not null primary key auto_increment,
@@ -110,6 +116,7 @@ create table t_packingsheet (
   ps_yrOrder varchar(50) not null,
   ps_AWB varchar(50) not null,
   ps_dateIssue date not null,
+  ps_collect boolean,
 
   autority_id integer not null,
   constraint fk_ps_autority foreign key(autority_id) references t_autority(aut_id),

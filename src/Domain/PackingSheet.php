@@ -89,6 +89,13 @@ class PackingSheet
     private $dateIssue;
 
     /**
+     * PackingSheet collect.
+     *
+     * @var booelan
+     */
+    private $collect;
+
+    /**
      * PackingSheet autority_id.
      *
      * @var integer
@@ -363,5 +370,13 @@ class PackingSheet
 
     public function setMemo($memo) {
         $this->memo = $memo;
+    }
+
+    public function getCollect() {
+        return $this->collect;
+    }
+
+    public function setCollect($collect) {
+        $this->collect = $collect;
     }
 }

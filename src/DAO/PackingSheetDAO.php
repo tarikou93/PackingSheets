@@ -181,6 +181,8 @@ class PackingSheetDAO extends DAO
         $packingSheet->setSigned($row['ps_signed']);
         $packingSheet->setPrinted($row['ps_printed']);
         $packingSheet->setMemo($row['ps_memo']);
+        $packingSheet->setCollect($row['ps_collect']);
+        
 
         if (array_key_exists('group_id', $row)) {
             // Find and set the associated group
@@ -200,7 +202,7 @@ class PackingSheetDAO extends DAO
             // Find and set the associated deliveryCode
             $deliveryCodeId = $row['deliveryCode_id'];
             $deliveryCode = $this->deliveryCodeDAO->find($deliveryCodeId);
-            $packingSheet->setDeliveryCode_id($group);
+            $packingSheet->setDeliveryCode_id($deliveryCode);
         }
 
         if (array_key_exists('service_id', $row)) {

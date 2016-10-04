@@ -21,10 +21,10 @@ $app->get('/parts', function () use ($app) {
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);
     $packings = $app['dao.packing']->findAllByPackingSheet($id);
-    return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings));
+    return $app['twig']->render('psDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings));
 })->bind('sheetDetails');
 
-// Packing details with parts
+// PackingSheet details with Packings and detailed parts
 $app->get('/sheets/{idSheet}/{idPack}', function ($idSheet, $idPack) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($idSheet);
     $packings = $app['dao.packing']->findAllByPackingSheet($idSheet);

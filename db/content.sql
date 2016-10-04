@@ -16,6 +16,9 @@ insert into t_shipper values
 insert into t_group values
 (1, 'testLabelGroup');
 
+insert into t_memo values
+(1, 'testLabelMemoTable');
+
 insert into t_autority values
 (1, 'testLabelAutority', '+32422521');
 
@@ -35,7 +38,7 @@ insert into t_imput values
 (1, 'testLabelImput', 'This is a test text for imput table');
 
 insert into t_packingsheet values
-(1, '20160927/701', 1, 1, 1, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 'Test memo');
+(1, '20160927/701', 1, 1, 1, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 'Test memo');
 
 insert into t_part values
 (1, '784-48172', '84584258457', 'This is a part', 152.56, 'HS4218465513');

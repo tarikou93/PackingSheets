@@ -18,9 +18,27 @@
                   <th>Ref</th>
                   <th>AWB Number</th>
                   <th>Shipper</th>
-                  <th>Consigned</th>
+                  <th>Consigned Code</th>
+                  <th>Consigned Text</th>
+                  <th>Delivery Code</th>
+                  <th>Delivery Text</th>
                   <th>From service</th>
                   <th>Autority</th>
+                  <th>Content</th>
+                  <th>Priority</th>
+                  <th>yrOrder</th>
+                  <th>Date Issue</th>
+                  <th>Custom Status</th>
+                  <th>Incoterms Type</th>
+                  <th>Incoterms Location</th>
+                  <th>Currency</th>
+                  <th>Input</th>
+                  <th>Number of pieces</th>
+                  <th>Weight</th>
+                  <th>Total Price</th>
+                  <th>Signed</th>
+                  <th>Printed</th>
+                  <th>Memo</th>
               </tr>
             </thead>
             <tbody>
@@ -29,8 +47,26 @@
                     <td>{{ packingSheet.AWB }}</td>
                     <td>{{ packingSheet.shipper_id.label}}</td>
                     <td>{{ packingSheet.consignedCode_id.label}}</td>
+                    <td>{{ packingSheet.consignedCode_id.text}}</td>
+                    <td>{{ packingSheet.deliveryCode_id.label}}</td>
+                    <td>{{ packingSheet.deliveryCode_id.text}}</td>
                     <td>{{ packingSheet.service_id.label }}</td>
                     <td>{{ packingSheet.autority_id.label }}</td>
+                    <td>{{ packingSheet.content_id.label }}</td>
+                    <td>{{ packingSheet.priority_id.label }}</td>
+                    <td>{{ packingSheet.yrorder }}</td>
+                    <td>{{ packingSheet.dateIssue }}</td>
+                    <td>{{ packingSheet.customStatus_id.label }}</td>
+                    <td>{{ packingSheet.incType_id.label }}</td>
+                    <td>{{ packingSheet.incLoc_id.label }}</td>
+                    <td>{{ packingSheet.currency_id.label }}</td>
+                    <td>{{ packingSheet.imput_id.label }}</td>
+                    <td>{{ packingSheet.nbrPieces }}</td>
+                    <td>{{ packingSheet.weight }}</td>
+                    <td>{{ packingSheet.totalPrice }}</td>
+                    <td>{{ packingSheet.signed }}</td>
+                    <td>{{ packingSheet.printed }}</td>
+                    <td>{{ packingSheet.memo }}</td>
                 </tr>
             </tbody>
           </table>
@@ -81,6 +117,7 @@
                       <tr>
                           <th>PN</th>
                           <th>SN</th>
+                          <th>Description</th>
                           <th>Price</th>
                           <th>HSCode</th>
                       </tr>
@@ -90,6 +127,7 @@
                         <tr>
                             <td>{{ part.pn }}</td>
                             <td>{{ part.serial }}</td>
+                            <td>{{ part.desc }}</td>
                             <td>{{ part.price}}</td>
                             <td>{{ part.hscode }}</td>
                         </tr>
