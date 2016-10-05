@@ -21,7 +21,7 @@ $app->get('/parts', function () use ($app) {
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);
     $packings = $app['dao.packing']->findAllByPackingSheet($id);
-    return $app['twig']->render('psDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings));
+    return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings));
 })->bind('sheetDetails');
 
 // PackingSheet details with Packings and detailed parts
@@ -30,5 +30,6 @@ $app->get('/sheets/{idSheet}/{idPack}', function ($idSheet, $idPack) use ($app) 
     $packings = $app['dao.packing']->findAllByPackingSheet($idSheet);
     $packingParts = $app['dao.packingPart']->findAllByPacking($idPack);
     $parts = $app['dao.part']->findAll();
-    return $app['twig']->render('packingSheetDetailsParts.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts'=> $packingParts, 'parts'=>$parts));
+    $idPacking = $idPack;
+    return $app['twig']->render('packingSheetDetailsParts.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts'=> $packingParts, 'parts'=>$parts, 'idPacking'=>$idPacking));
 })->bind('sheetDetailsParts');

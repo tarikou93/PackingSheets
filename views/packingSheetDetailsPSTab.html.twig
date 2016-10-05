@@ -321,11 +321,7 @@
               {% set cpt = 1 %}
               <ul class="nav nav-tabs">
                 {% for pack in packings %}
-                  {% if cpt == 1 %}
-                    <li class="active"><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
-                  {% else %}
-                    <li><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
-                    {% endif %}
+                  <li><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
                   {% set cpt = cpt + 1 %}
                 {% endfor %}
               </ul>

@@ -117,7 +117,7 @@ class Packing
     }
 
     public function getPackTypeid() {
-        return $this->packType_Id;
+        return $this->packType_id;
     }
 
     public function setPackTypeid($packType_id) {
