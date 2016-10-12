@@ -28,14 +28,16 @@
               <li><a href="{{ path('parts') }}">Parts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="#p">Tables</a></li>
+              {% if app.session.get('user') != null %}
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Tables</a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                  <li><a href="#">Code</a></li>
-                  <li><a href="#">Service</a></li>
-                </ul>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-user"></span> Logged as {{ app.session.get('user')['username'] }} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="{{ path('logout') }}">Log out</a></li>
+                  </ul>
               </li>
-              <li><a href="{{ path('login2') }}">Login</a></li>
+              {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

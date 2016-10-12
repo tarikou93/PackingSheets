@@ -27,7 +27,9 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
     return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts'=> $packingParts, 'parts'=>$parts));
 })->bind('sheetDetails');
 
-// Login form
-$app->get('/auth/login',function () use ($app) {
-    return $app['twig']->render('auth/login.html.twig');
-})->bind('login2');
+
+// Logout
+$app->get('/auth/logout',function () use ($app) {
+    //return $app['twig']->render('auth/login.html.twig');
+    return;
+})->bind('logout');
