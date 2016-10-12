@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ app.request.basepath }}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ app.request.basepath }}/css/packingsheets.css" rel="stylesheet">
+    <link href="http://localhost/PackingSheets/web/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/PackingSheets/web/css/packingsheets.css" rel="stylesheet">
     <title>PackingSheets - {% block title %}{% endblock %}</title>
   </head>
   <body>
@@ -24,8 +24,7 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="{{ path('sheets') }}">Sheets</a></li>
-              <li><a href="#p">Packings</a></li>
-              <li><a href="#p">Customers</a></li>
+              <li><a href="#p">Contacts</a></li>
               <li><a href="{{ path('parts') }}">Parts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -36,7 +35,7 @@
                   <li><a href="#">Service</a></li>
                 </ul>
               </li>
-              <li><a href="#">Login</a></li>
+              <li><a href="{{ path('login2') }}">Login</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -46,9 +45,9 @@
         <a href="#"> PackingSheets </a> is in progress. Sabena Aerospace Engineering, 2016.
       </footer>
       <!-- jQuery -->
-      <script src="{{ app.request.basepath }}/lib/jquery/jquery.min.js"></script>
+      <script src="http://localhost/PackingSheets/web/lib/jquery/jquery.min.js"></script>
         <!-- JavaScript Boostrap plugin -->
-        <script src="{{ app.request.basepath }}/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="http://localhost/PackingSheets/web/lib/bootstrap/js/bootstrap.min.js"></script>
       </div>
     </body>
 </html>

@@ -7,6 +7,10 @@
   <div class="container-fluid">
     <div class="container"><h2>Packing Sheets<br>
       <small>Details - PS {{ packingSheet.ref}} </small></h2>
+      <div class="col-md-3 col-md-offset-9">
+        <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+      </div>
     </div>
     <br>
     <div class="container">
@@ -171,10 +175,6 @@
                           {% endif %}
                           id="imputText" readonly="readonly">
                         </textarea>
-                      </div>
-                      <div class="form-group">
-                        <label for="currency">Currency:</label>
-                        <input type="text" class="form-control" placeholder="{{ packingSheet.currency_id.label}}" id="currency" readonly="readonly"></input>
                       </div>
                     </div>
                     <div class="col-md-4">
