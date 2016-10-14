@@ -18,12 +18,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app['auth.ldap.options'] =
           array(
             'host'                  => '172.30.40.190',
-            //'port'                  => 389,
             'bindRequiresDn'        => false,
             'baseDn'                => 'OU=Users,OU=BRU,DC=company,DC=corp',
-            //'accountFilterFormat'   => 'OU=Users',
-            //'username'              => 'a12306',
-            //'password'              => 'Sabena123',
             'accountDomainName'     => 'company.corp',
           );
 

@@ -37,8 +37,10 @@ class ComposerStaticInitf6ddbd3edebc0730f02976efd1eec4e9
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
             'Symfony\\Component\\Form\\' => 23,
+            'Symfony\\Component\\Filesystem\\' => 29,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\Config\\' => 25,
             'Symfony\\Component\\Asset\\' => 24,
             'Symfony\\Bridge\\Twig\\' => 20,
             'Silex\\' => 6,
@@ -128,6 +130,10 @@ class ComposerStaticInitf6ddbd3edebc0730f02976efd1eec4e9
         array (
             0 => __DIR__ . '/..' . '/symfony/form',
         ),
+        'Symfony\\Component\\Filesystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/filesystem',
+        ),
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
@@ -135,6 +141,10 @@ class ComposerStaticInitf6ddbd3edebc0730f02976efd1eec4e9
         'Symfony\\Component\\Debug\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/debug',
+        ),
+        'Symfony\\Component\\Config\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/config',
         ),
         'Symfony\\Component\\Asset\\' => 
         array (

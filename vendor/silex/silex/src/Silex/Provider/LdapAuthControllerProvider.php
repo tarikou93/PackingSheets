@@ -42,9 +42,16 @@ class LdapAuthControllerProvider implements ControllerProviderInterface
                     try {
                         //throws exception
                         //return var_dump($app['auth.ldap']);
-
-                        $app['auth.ldap']->bind($request->get('user'), $request->get('password'));
+                        $ldap = $app['auth.ldap'];
+                        $ldap->bind($request->get('user'), $request->get('password'));
                         $app['session']->set('user', array('username' => $request->get('user')));
+
+                        $acctname = $ldap->getCanonicalAccountName($request->get('user'),\Zend\Ldap\Ldap::ACCTNAME_FORM_DN);
+                        $hm = $ldap->getEntry($acctname);
+                        $groups = $hm['memberof'];
+                        $isAdmin = in_array('CN=BRUAPPCTXDevis,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups);
+
+                        $app['session']->set('isAdmin', array('admin' => $isAdmin));
 
                         if ($user_target = $app['session']->get('user_target')) {
                             return $app->redirect($user_target);
