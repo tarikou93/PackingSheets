@@ -96,5 +96,12 @@ hr {
 }
 
 .panel-height {
-  height: 100px; / change according to your requirement/
+  height: 100px;
+}
+
+.alert {
+  padding-top: 8px;
+  vertical-align: center;
+  text-align: center;
+  height: 50px;
 }

@@ -1,0 +1,47 @@
+{
+    "minimum-stability": "stable",
+    "name": "radebatz/ldap-auth-service-provider",
+    "description": "Silex Ldap authentication service provider.",
+    "license": [
+        "MIT"
+    ],
+    "homepage": "http://radebatz.net/mano/",
+    "authors": [
+        {
+            "name": "Martin Rademacher",
+            "email": "mano@radebatz.org"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/DerManoMann/ldap-auth-service-provider/issues",
+        "source": "https://github.com/DerManoMann/ldap-auth-service-provider.git"
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "psr/log": "^1.0",
+        "silex/silex": "^1.3|~2.0",
+        "symfony/security": "~2.8|^3.0",
+        "zendframework/zend-ldap": "~2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4",
+        "satooshi/php-coveralls": "dev-master",
+        "symfony/browser-kit": "~2.8|^3.0",
+        "monolog/monolog": "^1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Radebatz\\Silex\\LdapAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Radebatz\\Silex\\LdapAuth\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.3.x-dev"
+        }
+    }
+}

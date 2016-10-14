@@ -39,6 +39,7 @@ class ComposerStaticInitf6ddbd3edebc0730f02976efd1eec4e9
             'Symfony\\Component\\Form\\' => 23,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\Asset\\' => 24,
             'Symfony\\Bridge\\Twig\\' => 20,
             'Silex\\' => 6,
         ),
@@ -134,6 +135,10 @@ class ComposerStaticInitf6ddbd3edebc0730f02976efd1eec4e9
         'Symfony\\Component\\Debug\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/debug',
+        ),
+        'Symfony\\Component\\Asset\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/asset',
         ),
         'Symfony\\Bridge\\Twig\\' => 
         array (

@@ -5,7 +5,11 @@
 {% block content %}
 <h2 class="text-center">{{ block('title') }}
 <br/><small>Please log in to access PackingSheets</small></h2>
-
+{% for alert in app.session.flashbag.get('login_error') %}
+<div class="alert alert-danger">
+  <div class="alert"><strong>{{ alert }}</strong></div>
+</div>
+{% endfor %}
 <div class="well">
     <form class="form-signin form-horizontal" role="form" action="/auth/login" method="post">
         <div class="form-group">

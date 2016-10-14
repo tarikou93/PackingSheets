@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://localhost/PackingSheets/web/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://localhost/PackingSheets/web/css/packingsheets.css" rel="stylesheet">
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/packingsheets.css" rel="stylesheet">
     <title>PackingSheets - {% block title %}{% endblock %}</title>
   </head>
   <body>
@@ -32,7 +32,7 @@
               {% if app.session.get('user') != null %}
               <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-user"></span> Logged as {{ app.session.get('user')['username'] }} <b class="caret"></b></a>
+                  <span class="glyphicon glyphicon-user"></span>{{ app.session.get('user')['username'] }} <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                       <li><a href="{{ path('logout') }}">Log out</a></li>
                   </ul>
@@ -47,9 +47,9 @@
         <a href="#"> PackingSheets </a> is in progress. Sabena Aerospace Engineering, 2016.
       </footer>
       <!-- jQuery -->
-      <script src="http://localhost/PackingSheets/web/lib/jquery/jquery.min.js"></script>
+      <script src="/lib/jquery/jquery.min.js"></script>
         <!-- JavaScript Boostrap plugin -->
-        <script src="http://localhost/PackingSheets/web/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
       </div>
     </body>
 </html>

@@ -52,7 +52,9 @@ class LdapAuthControllerProvider implements ControllerProviderInterface
                             return $app->redirect('/');
                         }
                     } catch (LdapException $e) {
-                        $view_params['error'] = 'Login Failed with error code '.$e->getcode();
+                        //$view_params['error'] = 'Login Failed with error code '.$e->getcode();
+                        $strError = substr($e->getMessage(), 0, strpos($e->getMessage(), ';'));
+                        $app['session']->getFlashBag()->add('login_error', 'Login Failed (error code '.$e->getcode().') - '.$strError.')');
                     }
                 }
                 return $app['twig']->render($app['auth.template.login'], $view_params);
