@@ -61,11 +61,17 @@ class LdapAuthControllerProvider implements ControllerProviderInterface
                         else{
                             if(in_array('CN=BRUAPPPackingSheet_User_G1,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
                                 $packingSheetsSeries = 1;
+                                $acredLevel = 1;
                             }
                             elseif(in_array('CN=BRUAPPPackingSheet_User_G2,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
                                 $packingSheetsSeries = 2;
+                                $acredLevel = 1;
                             }
-                            $acredLevel = 1;
+                            else {
+                                $app['session']->set('user', null);
+                                $app['session']->getFlashBag()->add('login_error', 'Unaccredited user - Contact IT Support to access PackingSheets');
+                                return $app->redirect('/');
+                            }
                         }
                         
                         //$isAdmin = in_array('CN=BRUAPPCTXDevis,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups);
