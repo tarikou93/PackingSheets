@@ -24,7 +24,8 @@
 <div class="panel panel-default">
   <div class="panel-heading">Welcome to PackingSheets !</div>
   <div class="panel-body">Please use the menu bar to access the different software features.
-    {{ dump ( app.session.get('isAdmin')) }}
+    {{ dump ( app.session.get('auth')['acredLevel']) }}
+    {{ dump ( app.session.get('auth')['packingSheetsSeries']) }}
   </div>
 </div>
 </div>
