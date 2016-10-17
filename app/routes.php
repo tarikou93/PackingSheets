@@ -33,3 +33,9 @@ $app->get('/auth/logout',function () use ($app) {
     //return $app['twig']->render('auth/login.html.twig');
     return;
 })->bind('logout');
+
+//PackingSheet Search
+$app->post('/search_packingsheets', function () use ($app) {
+  $packingSheets = $app['dao.packingSheet']->findBySearch();
+  return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets));
+})->bind('searchSheets');

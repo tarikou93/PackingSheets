@@ -147,6 +147,42 @@ class PackingSheetDAO extends DAO
     }
 
     /**
+     * Return a list of filtered PackingSheets, results of search.
+     *
+     * @return array A list of result PackingSheets.
+     */
+    public function findBySearch() {
+        $by_ref = $_POST['ref'];
+        $by_awb = $_POST['awb'];
+
+        //Do real escaping here
+
+        $query = "SELECT * FROM t_packingsheet";
+        $conditions = array();
+
+        if ($by_ref != "") {
+            $conditions[] = "ps_ref='$by_ref'";
+        }
+        if ($by_awb != "") {
+            $conditions[] = "ps_AWB='$by_awb'";
+        }
+        $sql = $query;
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        }
+
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $packingSheets = array();
+        foreach ($result as $row) {
+            $packingSheetId = $row['ps_id'];
+            $packingSheets[$packingSheetId] = $this->buildDomainObject($row);
+        }
+        return $packingSheets;
+    }
+
+    /**
     * Returns an PackingSheet matching the supplied id.
     *
     * @param integer $id

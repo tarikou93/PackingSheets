@@ -17,7 +17,7 @@ class LdapAuthControllerProvider implements ControllerProviderInterface
         $app['auth.ldap'] = function() use ($app) {
             return new \Zend\Ldap\Ldap($app['auth.ldap.options']);
         };
-        //redirect to login page if not logged inwar
+        //redirect to login page if not logged in
         $app->before(
             function (Request $request) use ($app) {
                 //user is not logged in go to login
