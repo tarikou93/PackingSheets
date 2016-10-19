@@ -59,6 +59,13 @@ class Packing
      * @var integer
      */
     private $packType_id;
+    
+    /**
+     * Associated Packing image.
+     *
+     * @var integer
+     */
+    private $img;
 
     public function getId() {
         return $this->id;
@@ -122,5 +129,13 @@ class Packing
 
     public function setPackTypeid($packType_id) {
         $this->packType_id = $packType_id;
+    }
+    
+    public function getImg() {
+        return $this->img;
+    }
+
+    public function setImg($img) {
+        $this->img = $img;
     }
 }

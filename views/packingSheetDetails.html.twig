@@ -6,7 +6,7 @@
     <div class="jumbotron vertical-center">
         <div class="container-fluid">
             <div class="container"><h2>Packing Sheets<br>
-                    <small>Details - PS {{ packingSheet.ref}} </small></h2>
+                    <small>PS {{ packingSheet.ref}} </small></h2>
                 <div class="col-md-3 col-md-offset-9">
                     <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
                     <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
@@ -22,408 +22,423 @@
                     <div class="tab-pane active" id="1">
                         <div class="container-fluid">
                             <div class="panel panel-info">
-                                <div class="panel-heading panel-height"><h3>Packing Sheet<br><small>Consultation</small><h3></div>
+                                <div class="panel-heading panel-height"><h4>Consultation</h4></div>
+                            </div>
+                            <hr></hr>
+                            <div class="container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#1a" data-toggle="tab">Informations</a></li>
+                                    <li><a href="#1b" data-toggle="tab">Service</a></li>
+                                    <li><a href="#1c" data-toggle="tab">Specifications</a></li>
+                                    <li><a href="#1d" data-toggle="tab">Content</a></li>
+                                    <li><a href="#1e" data-toggle="tab">Memo</a></li>
+                                </ul>
+                                <div class="tab-content ">
+                                    <div class="tab-pane active" id="1a">
+                                        <div class="container">
+                                            <div class="row Infos">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2><small>Informations</small></h2></div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="ref">Ref:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.ref}}" id="ref" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="awb">AWB:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.AWB}}" id="awb" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="form-group">
+                                                        <label for="printed">Printed:</label>
+                                                        <input type="checkbox" class="form-control"
+                                                               {% if packingSheet.printed == 1 %}
+                                                                   checked = "checked"
+                                                               {% endif %}
+                                                               id="ref" disabled>
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="form-group">
+                                                        <label for="signed">Signed:</label>
+                                                        <input type="checkbox" class="form-control"
+                                                               {% if packingSheet.signed == 1 %}
+                                                                   checked = "checked"
+                                                               {% endif %}
+                                                               id="ref" disabled>
+                                                        </input>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <hr></hr>
-                                            <div class="container">
-                                                <ul class="nav nav-tabs">
-                                                    <li class="active"><a href="#1a" data-toggle="tab">Informations</a></li>
-                                                    <li><a href="#1b" data-toggle="tab">Service</a></li>
-                                                    <li><a href="#1c" data-toggle="tab">Specifications</a></li>
-                                                    <li><a href="#1d" data-toggle="tab">Content</a></li>
-                                                    <li><a href="#1e" data-toggle="tab">Memo</a></li>
-                                                </ul>
-                                                <div class="tab-content ">
-                                                    <div class="tab-pane active" id="1a">
+                                            <div class="row Codes">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2>
+                                                            <small>Codes</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-sm-4 col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="consignedAddressCode">Consigned Company:</label>
+                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.consignedAddress_id.code_id.label}}" id="consignedAddressCode" readonly="readonly"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="consignedAddress">Consigned Address:</label>
+                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.consignedAddress_id.label}}" id="consignedAddress" readonly="readonly"></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="consignedContact">Consigned Contact:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.consignedContact_id.name}}" id="consignedContact" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="deliveryAddressCode">Delivery Company:</label>
+                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.deliveryAddress_id.code_id.label}}" id="deliveryAddressCode" readonly="readonly"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="deliveryAddress">Delivery Address:</label>
+                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.deliveryAddress_id.label}}" id="deliveryAddress" readonly="readonly"></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="deliveryContact">Delivery Contact:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.deliveryContact_id.name}}" id="deliveryContact" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="1b">
+                                        <div class="container">
+                                            <div class="row Service">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2><small>Service Info</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="service">From service:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.service_id.label}}" id="service" readonly="readonly"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="test2">Date:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.dateIssue}}" id="date" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="test2">Autority:</label>
+                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.autority_id.label}} Tel : {{ packingSheet.autority_id.text}} " id="autority" readonly="readonly"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr></hr>
+                                            <div class="row Finance">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2>
+                                                            <small>Accounting Info</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label for="signed">Collect:</label>
+                                                        <input type="checkbox" class="form-control"
+                                                               {% if packingSheet.collect == 1 %}
+                                                                   checked = "checked"
+                                                               {% endif %}
+                                                               id="collect" disabled>
+                                                        </input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="currency">Currency:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.currency_id.label}}" id="currency" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="imput">Input:</label>
+                                                        <input type="text" class="form-control"
+                                                               {% if packingSheet.collect == 0 %}
+                                                                   placeholder= "{{ packingSheet.imput_id.label}}"
+                                                               {% endif %}
+                                                               id="imput" readonly="readonly">
+                                                        </input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea type="text" class="form-control" rows="5"
+                                                                  {% if packingSheet.collect == 0 %}
+                                                                      placeholder= "{{ packingSheet.imput_id.text}}"
+                                                                  {% endif %}
+                                                                  id="imputText" readonly="readonly">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="incoterms">Incoterms:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.incType_id.label}}" id="incType" readonly="readonly"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.incLoc_id.label}}" id="incLoc" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="1c">
+                                        <div class="container">
+                                            <div class="row Service">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2><small>Order Info</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="content">Content:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.content_id.label}}" id="content" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="priority">Priority:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.priority_id.label}}" id="priority" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="yrOrder">yrOrder:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.yrOrder}}" id="yrOrder" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr></hr>
+                                            <div class="row Finance">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2>
+                                                            <small>Expedition Info</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="customStatusLabel">Custom Status:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.customStatus_id.label}}" id="customStatusLabel" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.customStatus_id.text}}" id="customStatusText" readonly="readonly"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="shipper">Shipper:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.shipper_id.label}}" id="incType" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="1d">
+                                        <div class="container">
+                                            <div class="row Service">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
                                                         <div class="container">
-                                                            <div class="row Infos">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2><small>Informations</small></h2></div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label for="ref">Ref:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.ref}}" id="ref" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label for="awb">AWB:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.AWB}}" id="awb" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <div class="form-group">
-                                                                        <label for="printed">Printed:</label>
-                                                                        <input type="checkbox" class="form-control"
-                                                                               {% if packingSheet.printed == 1 %}
-                                                                                   checked = "checked"
-                                                                               {% endif %}
-                                                                               id="ref" disabled>
-                                                                        </input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <div class="form-group">
-                                                                        <label for="signed">Signed:</label>
-                                                                        <input type="checkbox" class="form-control"
-                                                                               {% if packingSheet.signed == 1 %}
-                                                                                   checked = "checked"
-                                                                               {% endif %}
-                                                                               id="ref" disabled>
-                                                                        </input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr></hr>
-                                                            <div class="row Codes">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Codes</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-sm-4 col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="consignedAddressCode">Consigned Company:</label>
-                                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.consignedAddress_id.code_id.label}}" id="consignedAddressCode" readonly="readonly"></input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="consignedAddress">Consigned Address:</label>
-                                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.consignedAddress_id.label}}" id="consignedAddress" readonly="readonly"></textarea>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="consignedContact">Consigned Contact:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.consignedContact_id.name}}" id="consignedContact" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-4 col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="deliveryAddressCode">Delivery Company:</label>
-                                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.deliveryAddress_id.code_id.label}}" id="deliveryAddressCode" readonly="readonly"></input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="deliveryAddress">Delivery Address:</label>
-                                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.deliveryAddress_id.label}}" id="deliveryAddress" readonly="readonly"></textarea>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="deliveryContact">Delivery Contact:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.deliveryContact_id.name}}" id="deliveryContact" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <div class="container-text-left"><h2><small>Composition</small></h2></div>
+                                                            <br>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="1b">
+                                                    <div class="panel-body">
                                                         <div class="container">
-                                                            <div class="row Service">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Service Info</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="service">From service:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.service_id.label}}" id="service" readonly="readonly"></input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="test2">Date:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.dateIssue}}" id="date" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="test2">Autority:</label>
-                                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.autority_id.label}} Tel : {{ packingSheet.autority_id.text}} " id="autority" readonly="readonly"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr></hr>
-                                                            <div class="row Finance">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Accounting Info</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <div class="form-group">
-                                                                        <label for="signed">Collect:</label>
-                                                                        <input type="checkbox" class="form-control"
-                                                                               {% if packingSheet.collect == 1 %}
-                                                                                   checked = "checked"
-                                                                               {% endif %}
-                                                                               id="collect" disabled>
-                                                                        </input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="currency">Currency:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.currency_id.label}}" id="currency" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="imput">Input:</label>
-                                                                        <input type="text" class="form-control"
-                                                                               {% if packingSheet.collect == 0 %}
-                                                                                   placeholder= "{{ packingSheet.imput_id.label}}"
-                                                                               {% endif %}
-                                                                               id="imput" readonly="readonly">
-                                                                        </input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <textarea type="text" class="form-control" rows="5"
-                                                                                  {% if packingSheet.collect == 0 %}
-                                                                                      placeholder= "{{ packingSheet.imput_id.text}}"
-                                                                                  {% endif %}
-                                                                                  id="imputText" readonly="readonly">
-                                                                        </textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="incoterms">Incoterms:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.incType_id.label}}" id="incType" readonly="readonly"></input>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.incLoc_id.label}}" id="incLoc" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="1c">
-                                                        <div class="container">
-                                                            <div class="row Service">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Order Info</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="content">Content:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.content_id.label}}" id="content" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="priority">Priority:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.priority_id.label}}" id="priority" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="yrOrder">yrOrder:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.yrOrder}}" id="yrOrder" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr></hr>
-                                                            <div class="row Finance">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Expedition Info</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="customStatusLabel">Custom Status:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.customStatus_id.label}}" id="customStatusLabel" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-5">
-                                                                    <div class="form-group">
-                                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.customStatus_id.text}}" id="customStatusText" readonly="readonly"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label for="shipper">Shipper:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.shipper_id.label}}" id="incType" readonly="readonly"></input>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="1d">
-                                                        <div class="container">
-                                                            <div class="row Service">
-                                                                <div class="panel panel-default">
-                                                                    <div class="panel-heading">
-                                                                        <div class="container">
-                                                                            <div class="container-text-left"><h2><small>Composition</small></h2></div>
-                                                                            <br>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="panel-body">
-                                                                        <div class="container">
-                                                                            {% set weight = 0.0 %}
-                                                                            {% set price = 0.0 %}
-                                                                            {% set nbrPieces = 0 %}
+                                                            {% set weight = 0.0 %}
+                                                            {% set price = 0.0 %}
+                                                            {% set nbrPieces = 0 %}
 
-                                                                            {% for pack in packings %}
-                                                                                {% set weight = weight + pack.grossWeight %}
-                                                                                {% set nbrPieces = nbrPieces + 1 %}
-                                                                                {% for packPart in packingParts %}
-                                                                                    {% if (packPart.packId.id == pack.id) %}
-                                                                                        {% set price = price + (packPart.partId.price * packPart.quantity) %}
-                                                                                    {% endif %}
-                                                                                {% endfor %}
-                                                                            {% endfor %}
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="nbrPieces">Number of pieces:</label>
-                                                                                    <input type="text" class="form-control" placeholder="{{ nbrPieces }}" id="nbrPieces" readonly="readonly"></input>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="weight">Total Weight:</label>
-                                                                                    <input type="text" class="form-control" placeholder="{{ weight }}" id="weight" readonly="readonly">
-                                                                                    </input>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="price">Total Price:</label>
-                                                                                    <input type="text" class="form-control" placeholder="{{ price }}" id="price" readonly="readonly"></input>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                            {% for pack in packings %}
+                                                                {% set weight = weight + pack.grossWeight %}
+                                                                {% set nbrPieces = nbrPieces + 1 %}
+                                                                {% for packPart in packingParts %}
+                                                                    {% if (packPart.packId.id == pack.id) %}
+                                                                        {% set price = price + (packPart.partId.price * packPart.quantity) %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="nbrPieces">Number of pieces:</label>
+                                                                    <input type="text" class="form-control" placeholder="{{ nbrPieces }}" id="nbrPieces" readonly="readonly"></input>
                                                                 </div>
                                                             </div>
-                                                            <hr></hr>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="1e">
-                                                        <div class="container">
-                                                            <div class="row Service">
-                                                                <div class="container">
-                                                                    <div class="container-text-left"><h2>
-                                                                            <small>Memo</small></h2>
-                                                                    </div>
-                                                                    <br>
-                                                                </div>
-                                                                <div class="col-md-8">
-                                                                    <div class="form-group">
-                                                                        <label for="memoText">Memo:</label>
-                                                                        <textarea type="text" class="form-control" rows="6" placeholder="{{ packingSheet.memo}}" id="memoText" readonly="readonly"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group">
-                                                                        <label for="registeredMemos">Registered memos:</label>
-                                                                        <input type="text" class="form-control" placeholder="Registered Memos" id="registeredMemos" readonly="readonly"></input>
-                                                                    </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="weight">Total Weight:</label>
+                                                                    <input type="text" class="form-control" placeholder="{{ weight }}" id="weight" readonly="readonly">
+                                                                    </input>
                                                                 </div>
                                                             </div>
-                                                            <hr></hr>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="price">Total Price:</label>
+                                                                    <input type="text" class="form-control" placeholder="{{ price }}" id="price" readonly="readonly"></input>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <hr></hr>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="1e">
+                                        <div class="container">
+                                            <div class="row Service">
+                                                <div class="container">
+                                                    <div class="container-text-left"><h2>
+                                                            <small>Memo</small></h2>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label for="memoText">Memo:</label>
+                                                        <textarea type="text" class="form-control" rows="6" placeholder="{{ packingSheet.memo}}" id="memoText" readonly="readonly"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="registeredMemos">Registered memos:</label>
+                                                        <input type="text" class="form-control" placeholder="Registered Memos" id="registeredMemos" readonly="readonly"></input>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <hr></hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="2">
+                        <div class="container-fluid">
+                            <div class="panel panel-info">
+                                <div class="panel-heading panel-height"><h4>Consultation</h4></div>
+                            </div>          
+                            <hr></hr>
+                            <div class="container">
+                                {% set cpt = 1 %}
+                                <ul class="nav nav-tabs">
+                                    {% for pack in packings %}
+                                        {% if cpt == 1 %}
+                                            <li class="active"><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
+                                            {% else %}
+                                            <li><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
+                                            {% endif %}
+                                            {% set cpt = cpt + 1 %}
+                                        {% endfor %}
+                                </ul>
+                                <div class="tab-content">
+                                    {% set cpt = 1 %}
+                                    {% for pack in packings %}
+                                        <div
+                                            {% if cpt == 1 %}
+                                                class="tab-pane active"
+                                            {% else %}
+                                                class="tab-pane"
+                                            {% endif %}
+                                            id="2{{ cpt }}">
+                                            <div class="container">
+                                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Packing Type</th>
+                                                            <th>NetWeight</th>
+                                                            <th>Gross Weight</th>
+                                                            <th>M1</th>
+                                                            <th>M2</th>
+                                                            <th>M3</th>
+                                                            <th>Image</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{ pack.packTypeId.label}}</td>
+                                                            <td>{{ pack.netWeight }}</td>
+                                                            <td>{{ pack.grossWeight }}</td>
+                                                            <td>{{ pack.M1}}</td>
+                                                            <td>{{ pack.M2 }}</td>
+                                                            <td>{{ pack.M3 }}</td>
+                                                            <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#imgModal{{ cpt }}">
+                                                                <span class="glyphicon glyphicon-picture"></span></button></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <hr></hr>
+                                                <h2><small>Parts</small></h2>
+                                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Quantity</th>
+                                                            <th>Origin</th>
+                                                            <th>PN</th>
+                                                            <th>SN</th>
+                                                            <th>Description</th>
+                                                            <th>Price</th>
+                                                            <th>HSCode</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for packPart in packingParts %}
+                                                            {% if (packPart.packId.id == pack.id) %}
+                                                                <tr>
+                                                                    <td>{{ packPart.quantity }}</td>
+                                                                    <td>{{ packPart.origin }}</td>
+                                                                    <td>{{ packPart.partId.pn }}</td>
+                                                                    <td>{{ packPart.partId.serial }}</td>
+                                                                    <td>{{ packPart.partId.desc }}</td>
+                                                                    <td>{{ packPart.partId.price}}</td>
+                                                                    <td>{{ packPart.partId.hscode }}</td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <div class="tab-pane" id="2">
-                                                <div class="container-fluid">
-                                                    <div class="panel panel-info">
-                                                        <div class="panel-heading panel-height"><h3>Packing Sheet<br><small>Consultation</small><h3></div>
-                                                                    </div>
-                                                                    <hr></hr>
-                                                                    <div class="container">
-                                                                        {% set cpt = 1 %}
-                                                                        <ul class="nav nav-tabs">
-                                                                            {% for pack in packings %}
-                                                                                {% if cpt == 1 %}
-                                                                                    <li class="active"><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
-                                                                                    {% else %}
-                                                                                    <li><a href="#2{{ cpt }}" data-toggle="tab">Packing {{ cpt }}</a></li>
-                                                                                    {% endif %}
-                                                                                    {% set cpt = cpt + 1 %}
-                                                                                {% endfor %}
-                                                                        </ul>
-                                                                        <div class="tab-content">
-                                                                            {% set cpt = 1 %}
-                                                                            {% for pack in packings %}
-                                                                                <div
-                                                                                    {% if cpt == 1 %}
-                                                                                        class="tab-pane active"
-                                                                                    {% else %}
-                                                                                        class="tab-pane"
-                                                                                    {% endif %}
-                                                                                    id="2{{ cpt }}">
-                                                                                    <div class="container">
-                                                                                        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th>Packing Type</th>
-                                                                                                    <th>NetWeight</th>
-                                                                                                    <th>Gross Weight</th>
-                                                                                                    <th>M1</th>
-                                                                                                    <th>M2</th>
-                                                                                                    <th>M3</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td>{{ pack.packTypeId.label}}</td>
-                                                                                                    <td>{{ pack.netWeight }}</td>
-                                                                                                    <td>{{ pack.grossWeight }}</td>
-                                                                                                    <td>{{ pack.M1}}</td>
-                                                                                                    <td>{{ pack.M2 }}</td>
-                                                                                                    <td>{{ pack.M3 }}</td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                        <hr></hr>
-                                                                                        <h2><small>Parts</small></h2>
-                                                                                        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th>Quantity</th>
-                                                                                                    <th>Origin</th>
-                                                                                                    <th>PN</th>
-                                                                                                    <th>SN</th>
-                                                                                                    <th>Description</th>
-                                                                                                    <th>Price</th>
-                                                                                                    <th>HSCode</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                {% for packPart in packingParts %}
-                                                                                                    {% if (packPart.packId.id == pack.id) %}
-                                                                                                        <tr>
-                                                                                                            <td>{{ packPart.quantity }}</td>
-                                                                                                            <td>{{ packPart.origin }}</td>
-                                                                                                            <td>{{ packPart.partId.pn }}</td>
-                                                                                                            <td>{{ packPart.partId.serial }}</td>
-                                                                                                            <td>{{ packPart.partId.desc }}</td>
-                                                                                                            <td>{{ packPart.partId.price}}</td>
-                                                                                                            <td>{{ packPart.partId.hscode }}</td>
-                                                                                                        </tr>
-                                                                                                    {% endif %}
-                                                                                                {% endfor %}
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                                {% set cpt = cpt + 1 %}
-                                                                            {% endfor %}
-                                                                        </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                    </div>
-                                                                {% endblock %}
+                                            <div class="modal fade" id="imgModal{{ cpt }}" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                          <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="/img/{{pack.img}}" style="width:304px;height:228px;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% set cpt = cpt + 1 %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

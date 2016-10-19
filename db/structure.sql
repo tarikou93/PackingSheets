@@ -363,6 +363,7 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packing` (
   `pack_M2` FLOAT NOT NULL,
   `pack_M3` FLOAT NOT NULL,
   `packType_id` INT(11) NOT NULL,
+  `pack_img` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
   PRIMARY KEY (`pack_id`),
   INDEX `fk_pack_ps` (`ps_id` ASC),
   INDEX `fk_pack_packType` (`packType_id` ASC),

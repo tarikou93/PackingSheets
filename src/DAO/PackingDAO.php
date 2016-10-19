@@ -73,7 +73,7 @@ class PackingDAO extends DAO
 
         // ps_id is not selected by the SQL query
         // The packingSheet won't be retrieved during domain objet construction
-        $sql = "select pack_id, pack_netWeight, pack_grossWeight, pack_M1, pack_M2, pack_M3, packType_id from t_packing where ps_id=? order by pack_id";
+        $sql = "select pack_id, pack_netWeight, pack_grossWeight, pack_M1, pack_M2, pack_M3, packType_id, pack_img from t_packing where ps_id=? order by pack_id";
         $result = $this->getDb()->fetchAll($sql, array($packingSheetId));
 
         // Convert query result to an array of domain objects
@@ -102,6 +102,7 @@ class PackingDAO extends DAO
         $packing->setM1($row['pack_M1']);
         $packing->setM2($row['pack_M2']);
         $packing->setM3($row['pack_M3']);
+        $packing->setImg($row['pack_img']);
 
         if (array_key_exists('ps_id', $row)) {
             // Find and set the associated packingSheet

@@ -107,13 +107,13 @@ insert into t_packType values
 (2, 'testlabelPackType2');
 
 insert into t_packing values
-(1, 1, 45.52, 56.98, 21.0, 35.2, 56.48, 1);
+(1, 1, 45.52, 56.98, 21.0, 35.2, 56.48, 1, 'packing1.jpg');
 
 insert into t_packing values
-(2, 2, 53.46, 23.88, 18.00, 33.22, 87.52, 2);
+(2, 2, 53.46, 23.88, 18.00, 33.22, 87.52, 2, 'packing2.jpg');
 
 insert into t_packing values
-(3, 1, 65.23, 33.25, 83.20, 77.18, 45.25, 2);
+(3, 1, 65.23, 33.25, 83.20, 77.18, 45.25, 2, 'packing3.jpg');
 
 insert into t_packing_part values
 (1, 1, 1, 23, 'USA');

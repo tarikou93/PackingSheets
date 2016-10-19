@@ -96,7 +96,8 @@ hr {
 }
 
 .panel-height {
-  height: 100px;
+  height: 60px;
+  line-height: 30px;
 }
 
 .alert {
@@ -104,4 +105,8 @@ hr {
   vertical-align: center;
   text-align: center;
   height: 50px;
+}
+
+h2 {
+    font-size: 25px;
 }
