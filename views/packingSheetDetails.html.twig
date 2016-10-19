@@ -84,26 +84,32 @@
                                                                     </div>
                                                                     <br>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-sm-4 col-md-4">
                                                                     <div class="form-group">
-                                                                        <label for="consignedCode">Consigned:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.consignedCode_id.label}}" id="consignedCode_id" readonly="readonly"></input>
+                                                                        <label for="consignedAddressCode">Consigned Company:</label>
+                                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.consignedAddress_id.code_id.label}}" id="consignedAddressCode" readonly="readonly"></input>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="consignedAddress">Consigned Address:</label>
+                                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.consignedAddress_id.label}}" id="consignedAddress" readonly="readonly"></textarea>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="consignedContact">Consigned Contact:</label>
+                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.consignedContact_id.name}}" id="consignedContact" readonly="readonly"></input>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-4 col-md-4">
                                                                     <div class="form-group">
-                                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.consignedCode_id.text}}" id="consignedCodeText" readonly="readonly"></textarea>
+                                                                        <label for="deliveryAddressCode">Delivery Company:</label>
+                                                                        <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.deliveryAddress_id.code_id.label}}" id="deliveryAddressCode" readonly="readonly"></input>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-md-2">
                                                                     <div class="form-group">
-                                                                        <label for="deliveryCode">Delivery:</label>
-                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.deliveryCode_id.label}}" id="deliveryCode_id" readonly="readonly"></input>
+                                                                        <label for="deliveryAddress">Delivery Address:</label>
+                                                                        <textarea type="text" class="form-control" placeholder="{{ packingSheet.deliveryAddress_id.label}}" id="deliveryAddress" readonly="readonly"></textarea>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-sm-4 col-md-4">
                                                                     <div class="form-group">
-                                                                        <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.deliveryCode_id.text}}" id="deliveryCodeText" readonly="readonly"></textarea>
+                                                                        <label for="deliveryContact">Delivery Contact:</label>
+                                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.deliveryContact_id.name}}" id="deliveryContact" readonly="readonly"></input>
                                                                     </div>
                                                                 </div>
                                                             </div>

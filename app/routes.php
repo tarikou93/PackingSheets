@@ -18,6 +18,14 @@ $app->get('/parts', function () use ($app) {
     return $app['twig']->render('parts.html.twig', array('parts' => $parts));
 })->bind('parts');
 
+// Contacts list page
+$app->get('/contacts', function () use ($app) {
+    $contacts = $app['dao.contact']->findAll();
+    $addresses = $app['dao.address']->findAll();
+    $codes = $app['dao.code']->findAll();
+    return $app['twig']->render('contacts.html.twig', array('contacts' => $contacts, 'addresses' => $addresses, 'codes' => $codes));
+})->bind('contacts');
+
 // PackingSheet details with Packings and detailed parts
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);

@@ -26,18 +26,32 @@ class PackingSheet
     private $group_id;
 
     /**
-     * PackingSheet consignedCode_id.
+     * PackingSheet consignedAddress_id.
      *
      * @var integer
      */
-    private $consignedCode_id;
+    private $consignedAddress_id;
 
     /**
-     * PackingSheet deliveryCode_id.
+     * PackingSheet deliveryAddress_id.
      *
      * @var integer
      */
-    private $deliveryCode_id;
+    private $deliveryAddress_id;
+    
+    /**
+     * PackingSheet consignedContact_id.
+     *
+     * @var integer
+     */
+    private $consignedContact_id;
+
+    /**
+     * PackingSheet deliveryContact_id.
+     *
+     * @var integer
+     */
+    private $deliveryContact_id;
 
     /**
      * PackingSheet service_id.
@@ -96,7 +110,7 @@ class PackingSheet
     private $collect;
 
     /**
-     * PackingSheet autority_id.
+     * PackingSheet authority_id.
      *
      * @var integer
      */
@@ -131,7 +145,7 @@ class PackingSheet
     private $currency_id;
 
     /**
-     * PackingSheet imput_id.
+     * PackingSheet input_id.
      *
      * @var integer
      */
@@ -178,7 +192,7 @@ class PackingSheet
      * @var string
      */
     private $memo;
-
+    
 
     public function getId() {
         return $this->id;
@@ -204,20 +218,36 @@ class PackingSheet
         $this->group_id = $group_id;
     }
 
-    public function getConsignedCode_id() {
-        return $this->consignedCode_id;
+    public function getConsignedAddress_id() {
+        return $this->consignedAddress_id;
     }
 
-    public function setConsignedCode_id($consignedCode_id) {
-        $this->consignedCode_id = $consignedCode_id;
+    public function setConsignedAddress_id($consignedAddress_id) {
+        $this->consignedAddress_id = $consignedAddress_id;
     }
 
-    public function getDeliveryCode_id() {
-        return $this->deliveryCode_id;
+    public function getDeliveryAddress_id() {
+        return $this->deliveryAddress_id;
     }
 
-    public function setDeliveryCode_id($deliveryCode_id) {
-        $this->deliveryCode_id = $deliveryCode_id;
+    public function setDeliveryAddress_id($deliveryAddress_id) {
+        $this->deliveryAddress_id = $deliveryAddress_id;
+    }
+    
+    public function getConsignedContact_id() {
+        return $this->consignedContact_id;
+    }
+
+    public function setConsignedContact_id($consignedContact_id) {
+        $this->consignedContact_id = $consignedContact_id;
+    }
+
+    public function getDeliveryContact_id() {
+        return $this->deliveryContact_id;
+    }
+
+    public function setDeliveryContact_id($deliveryContact_id) {
+        $this->deliveryContact_id = $deliveryContact_id;
     }
 
     public function getService_id() {

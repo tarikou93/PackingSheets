@@ -52,7 +52,6 @@ class CodeDAO extends DAO
         $code = new Code();
         $code->setId($row['code_id']);
         $code->setLabel($row['code_label']);
-        $code->setText($row['code_text']);
         return $code;
     }
 }

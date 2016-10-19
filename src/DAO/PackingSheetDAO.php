@@ -8,30 +8,39 @@ class PackingSheetDAO extends DAO
 {
 
     /**
-     * @var \PackingSheets\DAO\GroupDAO
+     * @var \PackingSheets\DAO\AdressDAO
      */
-    private $groupDAO;
+    private $consignedAddressDAO;
 
-    public function setGroupDAO(GroupDAO $groupDAO) {
-        $this->groupDAO = $groupDAO;
+    public function setConsignedAddressDAO(AddressDAO $addressDAO) {
+        $this->consignedAddressDAO = $addressDAO;
     }
 
     /**
-     * @var \PackingSheets\DAO\CodeDAO
+     * @var \PackingSheets\DAO\AdressDAO
      */
-    private $consignedCodeDAO;
+    private $deliveryAddressDAO;
 
-    public function setConsignedCodeDAO(CodeDAO $codeDAO) {
-        $this->consignedCodeDAO = $codeDAO;
+    public function setDeliveryAddressDAO(AddressDAO $addressDAO) {
+        $this->deliveryAddressDAO = $addressDAO;
+    }
+    
+    /**
+     * @var \PackingSheets\DAO\ContactDAO
+     */
+    private $consignedContactDAO;
+
+    public function setConsignedContactDAO(ContactDAO $contactDAO) {
+        $this->consignedContactDAO = $contactDAO;
     }
 
     /**
-     * @var \PackingSheets\DAO\CodeDAO
+     * @var \PackingSheets\DAO\ContactDAO
      */
-    private $deliveryCodeDAO;
+    private $deliveryContactDAO;
 
-    public function setDeliveryCodeDAO(CodeDAO $codeDAO) {
-        $this->deliveryCodeDAO = $codeDAO;
+    public function setDeliveryContactDAO(ContactDAO $contactDAO) {
+        $this->deliveryContactDAO = $contactDAO;
     }
 
     /**
@@ -149,22 +158,38 @@ class PackingSheetDAO extends DAO
     /**
      * Return a list of filtered PackingSheets, results of search.
      *
-     * @return array A list of result PackingSheets.
+     * @return array A list of resulting PackingSheets.
      */
     public function findBySearch() {
         $by_ref = $_POST['ref'];
         $by_awb = $_POST['awb'];
+        $by_date = $_POST['date'];
+        $by_pn = $_POST['pn'];
 
         //Do real escaping here
 
-        $query = "SELECT * FROM t_packingsheet";
+        $query = "SELECT ps.*
+                FROM t_packingsheet ps
+                INNER JOIN t_packing pack
+                    ON ps.ps_id = pack.ps_id
+                INNER JOIN t_packing_part packpart
+                    ON packpart.pack_id = pack.pack_id
+                INNER JOIN t_part part
+                    ON packpart.part_id = part.part_id";
+        
         $conditions = array();
 
         if ($by_ref != "") {
-            $conditions[] = "ps_ref='$by_ref'";
+            $conditions[] = "ps_ref LIKE '%$by_ref%'";
         }
         if ($by_awb != "") {
-            $conditions[] = "ps_AWB='$by_awb'";
+            $conditions[] = "ps_AWB LIKE '%$by_awb%'";
+        }
+        if ($by_date != "") {
+            $conditions[] = "ps_dateIssue LIKE '%$by_date%'";
+        }
+        if ($by_pn != "") {
+            $conditions[] = "part_pn LIKE '%$by_pn%'";
         }
         $sql = $query;
         if (count($conditions) > 0) {
@@ -209,6 +234,7 @@ class PackingSheetDAO extends DAO
         $packingSheet = new PackingSheet();
         $packingSheet->setId($row['ps_id']);
         $packingSheet->setRef($row['ps_ref']);
+        $packingSheet->setGroup_id($row['group_id']);
         $packingSheet->setYROrder($row['ps_yrOrder']);
         $packingSheet->setAWB($row['ps_AWB']);
         $packingSheet->setDateIssue($row['ps_dateIssue']);
@@ -220,25 +246,32 @@ class PackingSheetDAO extends DAO
         $packingSheet->setCollect($row['ps_collect']);
         
 
-        if (array_key_exists('group_id', $row)) {
-            // Find and set the associated group
-            $groupId = $row['group_id'];
-            $group = $this->groupDAO->find($groupId);
-            $packingSheet->setGroup_id($group);
+        if (array_key_exists('consignedAddress_id', $row)) {
+            // Find and set the associated consignedAddress
+            $consignedAddressId = $row['consignedAddress_id'];
+            $consignedAddress = $this->consignedAddressDAO->find($consignedAddressId);
+            $packingSheet->setConsignedAddress_id($consignedAddress);
         }
 
-        if (array_key_exists('consignedCode_id', $row)) {
-            // Find and set the associated consignedCode
-            $consignedCodeId = $row['consignedCode_id'];
-            $consignedCode = $this->consignedCodeDAO->find($consignedCodeId);
-            $packingSheet->setConsignedCode_id($consignedCode);
+        if (array_key_exists('deliveryAddress_id', $row)) {
+            // Find and set the associated deliveryAddress
+            $deliveryAddressId = $row['deliveryAddress_id'];
+            $deliveryAddress = $this->deliveryAddressDAO->find($deliveryAddressId);
+            $packingSheet->setDeliveryAddress_id($deliveryAddress);
+        }
+        
+        if (array_key_exists('consignedContact_id', $row)) {
+            // Find and set the associated consignedContact
+            $consignedContactId = $row['consignedContact_id'];
+            $consignedContact = $this->consignedContactDAO->find($consignedContactId);
+            $packingSheet->setConsignedContact_id($consignedContact);
         }
 
-        if (array_key_exists('deliveryCode_id', $row)) {
-            // Find and set the associated deliveryCode
-            $deliveryCodeId = $row['deliveryCode_id'];
-            $deliveryCode = $this->deliveryCodeDAO->find($deliveryCodeId);
-            $packingSheet->setDeliveryCode_id($deliveryCode);
+        if (array_key_exists('deliveryContact_id', $row)) {
+            // Find and set the associated deliveryContact
+            $deliveryContactId = $row['deliveryContact_id'];
+            $deliveryContact = $this->deliveryContactDAO->find($deliveryContactId);
+            $packingSheet->setDeliveryContact_id($deliveryContact);
         }
 
         if (array_key_exists('service_id', $row)) {

@@ -29,9 +29,10 @@ $app->mount('/auth', new Silex\Provider\LdapAuthControllerProvider());
 
 $app['dao.packingSheet'] = function($app) {
   $packingSheetDAO = new PackingSheets\DAO\PackingSheetDAO($app['db']);
-  $packingSheetDAO->setGroupDAO($app['dao.group']);
-  $packingSheetDAO->setConsignedCodeDAO($app['dao.code']);
-  $packingSheetDAO->setDeliveryCodeDAO($app['dao.code']);
+  $packingSheetDAO->setConsignedAddressDAO($app['dao.address']);
+  $packingSheetDAO->setDeliveryAddressDAO($app['dao.address']);
+  $packingSheetDAO->setConsignedContactDAO($app['dao.contact']);
+  $packingSheetDAO->setDeliveryContactDAO($app['dao.contact']);
   $packingSheetDAO->setServiceDAO($app['dao.service']);
   $packingSheetDAO->setContentDAO($app['dao.content']);
   $packingSheetDAO->setPriorityDAO($app['dao.priority']);
@@ -75,6 +76,18 @@ $app['dao.code'] = function ($app) {
     return new PackingSheets\DAO\CodeDAO($app['db']);
 };
 
+$app['dao.address'] = function($app) {
+  $addressDAO = new PackingSheets\DAO\AddressDAO($app['db']);
+  $addressDAO->setAddressCodeDAO($app['dao.code']);
+  return $addressDAO;
+};
+
+$app['dao.contact'] = function($app) {
+  $contactDAO = new PackingSheets\DAO\ContactDAO($app['db']);
+  $contactDAO->setAddressDAO($app['dao.address']);
+  return $contactDAO;
+};
+
 $app['dao.autority'] = function ($app) {
     return new PackingSheets\DAO\AutorityDAO($app['db']);
 };
@@ -101,10 +114,6 @@ $app['dao.currency'] = function ($app) {
 
 $app['dao.imput'] = function ($app) {
     return new PackingSheets\DAO\ImputDAO($app['db']);
-};
-
-$app['dao.group'] = function ($app) {
-    return new PackingSheets\DAO\GroupDAO($app['db']);
 };
 
 $app['dao.incotermsType'] = function ($app) {

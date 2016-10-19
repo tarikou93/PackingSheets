@@ -2,17 +2,24 @@
 
 namespace PackingSheets\Domain;
 
-class Code
+class Address
 {
     /**
-     * Code id.
+     * Address id.
      *
      * @var integer
      */
     private $id;
 
     /**
-     * Code label.
+     * Address code id.
+     *
+     * @var integer
+     */
+    private $code_id;
+
+    /**
+     * Address label.
      *
      * @var string
      */
@@ -25,6 +32,14 @@ class Code
     public function setId($id) {
         $this->id = $id;
     }
+    
+    public function getCode_id() {
+        return $this->code_id;
+    }
+
+    public function setCode_id($code_id) {
+        $this->code_id = $code_id;
+    }
 
     public function getLabel() {
         return $this->label;
@@ -33,5 +48,6 @@ class Code
     public function setLabel($label) {
         $this->label = $label;
     }
-
 }
+
+

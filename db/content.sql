@@ -1,8 +1,23 @@
 insert into t_code values
-(1, 'testLabelCode', 'This is a test text for code table');
+(1, 'testLabelCode');
 
 insert into t_code values
-(2, 'testLabelCode2', 'This is test 2 text for code table');
+(2, 'testLabelCode2');
+
+insert into t_address values
+(1, 1,'testLabelAddress');
+
+insert into t_address values
+(2, 2, 'testLabelAddress2');
+
+insert into t_contact values
+(1, 1, 'Michael Jackson', 'mj@test.com', '+33645897456', '+3345884756');
+
+insert into t_contact values
+(2, 2, 'Chuck Norris', 'cn@test.com', '+33642179433', '+33694785222');
+
+insert into t_contact values
+(3, 2, 'Jean Jacques Goldman', 'jjg@test.com', '+33679998563', '+3367444512');
 
 insert into t_service values
 (1, 'testLabelService');
@@ -27,12 +42,6 @@ insert into t_shipper values
 
 insert into t_shipper values
 (2, 'testLabelShipper2');
-
-insert into t_group values
-(1, 'testLabelGroup');
-
-insert into t_group values
-(2, 'testLabelGroup2');
 
 insert into t_memo values
 (1, 'testLabelMemoTable');
@@ -77,10 +86,10 @@ insert into t_imput values
 (2, 'testLabelImput2', 'This is test 2 text for imput table');
 
 insert into t_packingsheet values
-(1, '20160927/701', 1, 1, 1, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 'Test memo');
+(1, '20160927/701', 1, 1, 2, 3, 2, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 'Test memo');
 
 insert into t_packingsheet values
-(2, '20161005/701', 2, 1, 2, 1, 2, 1, 2, '2016', '4517847854', '2016-10-05', 1, 2, 1, 2, 1, 2, 2, 0, 0, 0, 1, 1, 'Test memo 2');
+(2, '20161005/701', 2, 1, 1, 2, 3, 1, 1, 2, 1, '2016', '4517847854', '2016-10-05', 1, 2, 1, 2, 1, 2, 2, 0, 0, 0, 1, 1, 'Test memo 2');
 
 insert into t_part values
 (1, '784-48172', '84584258457', 'This is a part', 152.56, 'HS4218465513');
