@@ -7,6 +7,7 @@
         <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/packingsheets.css" rel="stylesheet">
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="/scripts/select_filters.js" type="text/javascript"></script>
         <title>PackingSheets - {% block title %}{% endblock %}</title>
     </head>
     <body>
@@ -29,36 +30,80 @@
             <!-- JavaScript Boostrap plugin -->
             <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
         </div>
-            <script>
-            function getdata(){
-                var codeVar = $( "#code" ).val();
+        <script>
+            function getFilteredAddresses() {
                 
+                if( !$('#code').val() ) {
+                    $('#address').empty();
+                    $('#contact').empty();       
+                }
+                
+                var codeVar = $("#code").val();
+
                 //var route = "{{ path('sheets', { 'id': "PLACEHOLDER" }) }}";
                 //window.location = route.replace("PLACEHOLDER", codeVar);
                 //alert(route);
-                
-                $.get("{{ path('sheets_ajax') }}", { code: codeVar }, function(data) {
-                    
-                    var addresses = data.addresses[0].address_label;
+
+                $.get("{{ path('sheets_ajax_address') }}", {code: codeVar}, function (data) {
+
+                    //var addresses = data.addresses[0].address_label;
                     //alert(addresses);
-                    
+
                     select = document.getElementById('address');
-                    
+
                     var cpt = 0;
-                    for (address in data.addresses){
+                    for (address in data.addresses) {
                         cpt++;
                     }
-                    
+
+
                     $('#address')
-                        .empty()
-                    ;
-                    
+                            .empty()
+                            ;
+
                     //alert(cpt);
                     var i;
-                    for (i = 0; i<=(cpt-1); i++){
+                    for (i = 0; i <= (cpt - 1); i++) {
                         var opt = document.createElement('option');
                         opt.value = data.addresses[i].address_id;
                         opt.innerHTML = data.addresses[i].address_label;
+                        select.appendChild(opt);
+                    }
+
+                    if (cpt === 1) {
+                        getFilteredContacts();
+                    }
+                });
+            }
+            function getFilteredContacts() {
+                var addressVar = $("#address").val();
+
+                //var route = "{{ path('sheets', { 'id': "PLACEHOLDER" }) }}";
+                //window.location = route.replace("PLACEHOLDER", codeVar);
+                //alert(route);
+
+                $.get("{{ path('sheets_ajax_contact') }}", {address: addressVar}, function (data) {
+
+                    //var addresses = data.addresses[0].address_label;
+                    //alert(addresses);
+
+                    select = document.getElementById('contact');
+
+                    var cpt = 0;
+                    for (contact in data.contacts) {
+                        cpt++;
+                    }
+
+                    $('#contact')
+                            .empty()
+                            ;
+
+                    //alert(cpt);
+                    var i;
+                    for (i = 0; i <= (cpt - 1); i++) {
+                        var opt = document.createElement('option');
+                        opt.value = data.contacts[i].contact_id;
+                        opt.innerHTML = data.contacts[i].contact_name;
                         select.appendChild(opt);
                     }
                 });

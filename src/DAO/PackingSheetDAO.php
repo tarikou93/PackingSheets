@@ -165,7 +165,14 @@ class PackingSheetDAO extends DAO
         $by_awb = $_POST['awb'];
         $by_date = $_POST['date'];
         $by_pn = $_POST['pn'];
-
+        $by_sn = $_POST['sn'];
+        $by_desc = $_POST['desc'];
+        $by_hscode = $_POST['hscode'];
+        $by_input = $_POST['input'];
+        $by_address = isset($_POST['address']) ? $_POST['address'] : "";
+        $by_contact = isset($_POST['contact']) ? $_POST['contact'] : "";
+        $cd = isset($_POST['cd']) ? $_POST['cd'] : "";
+      
         //Do real escaping here
 
         $query = "SELECT ps.*
@@ -191,6 +198,35 @@ class PackingSheetDAO extends DAO
         if ($by_pn != "") {
             $conditions[] = "part_pn LIKE '%$by_pn%'";
         }
+        if ($by_sn != "") {
+            $conditions[] = "part_sn LIKE '%$by_sn%'";
+        }
+        if ($by_desc != "") {
+            $conditions[] = "part_desc LIKE '%$by_desc%'";
+        }
+        if ($by_hscode != "") {
+            $conditions[] = "part_HSCode LIKE '%$by_hscode%'";
+        }
+        if ($by_input != "") {
+            $conditions[] = "imput_id LIKE '%$by_input%'";
+        }
+        if($cd === 1){
+            if ($by_address != "") {
+                $conditions[] = "consignedAddress_id LIKE '%$by_address%'";
+            }
+            if ($by_contact != "") {
+                $conditions[] = "consignedContact_id LIKE '%$by_contact%'";
+            }
+        }
+        if($cd === 2){
+            if ($by_address != "") {
+                $conditions[] = "deliveryAddress_id LIKE '%$by_address%'";
+            }
+            if ($by_contact != "") {
+                $conditions[] = "deliveryContact_id LIKE '%$by_contact%'";
+            }
+        }
+        
         $sql = $query;
         if (count($conditions) > 0) {
             $sql .= " WHERE " . implode(' AND ', $conditions);
