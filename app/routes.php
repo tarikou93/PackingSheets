@@ -9,7 +9,8 @@ $app->get('/', function () use ($app) {
 // PackingSheets list page
 $app->get('/sheets', function () use ($app) {
   $packingSheets = $app['dao.packingSheet']->findAll();
-  return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets));
+  $codes = $app['dao.code']->findAll();
+  return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes));
 })->bind('sheets');
 
 // Parts list page
@@ -45,5 +46,27 @@ $app->get('/auth/logout',function () use ($app) {
 //PackingSheet Search
 $app->post('/search_packingsheets', function () use ($app) {
   $packingSheets = $app['dao.packingSheet']->findBySearch();
-  return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets));
+  $codes = $app['dao.code']->findAll();
+  return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes));
 })->bind('searchSheets');
+
+
+//PackingSheet filter addresses by code with Ajax
+$app->get('/sheets_ajax', function () use ($app) {
+    
+    if(isset($_GET["code"])){
+        $code = $_GET['code'];
+    }
+    else {
+        $code = 1;
+    }
+    
+    $sql = "SELECT * FROM t_address WHERE address_codeId =".$code;
+    $addresses = $app['db']->fetchAll($sql);
+    
+    //return $app['twig']->render('test.html.twig', array('addresses' => $addresses));
+    
+    //return $app->json($addresses);
+    return $app->json(array('addresses' => $addresses));
+    
+})->bind('sheets_ajax'); 

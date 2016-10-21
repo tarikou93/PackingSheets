@@ -50,6 +50,24 @@ class AddressDAO extends DAO
        else
            throw new \Exception("No PackingSheet matching id " . $id);
    }
+   
+   /**
+    * Returns an Address matching the supplied code.
+    *
+    * @param integer $code
+    *
+    * @return \PackingSheet\Domain\Address|throws an exception if no matching Address is found
+    */
+   public function findByCode($code) {
+       
+       $sql = "select * from t_address where address_codeId=?";
+       $row = $this->getDb()->fetchAssoc($sql, array($code));
+
+       if ($row)
+           return $this->buildDomainObject($row);
+       else
+           throw new \Exception("No PackingSheet matching id " . $id);
+   }
 
     /**
      * Creates a Address object based on a DB row.

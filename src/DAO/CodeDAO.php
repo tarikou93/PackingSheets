@@ -41,6 +41,7 @@ class CodeDAO extends DAO
        else
            throw new \Exception("No Code matching id " . $id);
    }
+   
 
     /**
      * Creates a Code object based on a DB row.
