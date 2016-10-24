@@ -172,6 +172,8 @@ class PackingSheetDAO extends DAO
         $by_address = isset($_POST['address']) ? $_POST['address'] : "";
         $by_contact = isset($_POST['contact']) ? $_POST['contact'] : "";
         $cd = $_POST['cd'];
+        $signed = isset($_POST['signed']);
+        $printed = isset($_POST['printed']);
       
         //Do real escaping here
 
@@ -209,6 +211,12 @@ class PackingSheetDAO extends DAO
         }
         if ($by_input != "") {
             $conditions[] = "imput_id LIKE '%$by_input%'";
+        }
+        if ($signed) {
+            $conditions[] = "ps_signed = 1";
+        }
+        if ($printed) {
+            $conditions[] = "ps_printed = 1";
         }
         if($cd == "1"){
 

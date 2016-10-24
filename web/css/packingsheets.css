@@ -100,6 +100,11 @@ hr {
   line-height: 30px;
 }
 
+.panel-height-sub {
+  height: 60px;
+  line-height: 10px;
+}
+
 .alert {
   padding-top: 8px;
   vertical-align: center;

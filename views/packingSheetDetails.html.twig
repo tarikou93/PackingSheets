@@ -84,7 +84,7 @@
                                                     </div>
                                                     <br>
                                                 </div>
-                                                <div class="col-sm-4 col-md-4">
+                                                <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
                                                         <label for="consignedAddressCode">Consigned Company:</label>
                                                         <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.consignedAddress_id.code_id.label}}" id="consignedAddressCode" readonly="readonly"></input>
@@ -98,7 +98,7 @@
                                                         <input type="text" class="form-control" placeholder="{{ packingSheet.consignedContact_id.name}}" id="consignedContact" readonly="readonly"></input>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4 col-md-4">
+                                                <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
                                                         <label for="deliveryAddressCode">Delivery Company:</label>
                                                         <input type="text" class="form-control" rows="5" placeholder="{{ packingSheet.deliveryAddress_id.code_id.label}}" id="deliveryAddressCode" readonly="readonly"></input>
@@ -207,8 +207,6 @@
                                                         <label for="content">Content:</label>
                                                         <input type="text" class="form-control" placeholder="{{ packingSheet.content_id.label}}" id="content" readonly="readonly"></input>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="priority">Priority:</label>
                                                         <input type="text" class="form-control" placeholder="{{ packingSheet.priority_id.label}}" id="priority" readonly="readonly"></input>
@@ -218,6 +216,10 @@
                                                     <div class="form-group">
                                                         <label for="yrOrder">yrOrder:</label>
                                                         <input type="text" class="form-control" placeholder="{{ packingSheet.yrOrder}}" id="yrOrder" readonly="readonly"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="shipper">Shipper:</label>
+                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.shipper_id.label}}" id="incType" readonly="readonly"></input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,21 +231,13 @@
                                                     </div>
                                                     <br>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customStatusLabel">Custom Status:</label>
                                                         <input type="text" class="form-control" placeholder="{{ packingSheet.customStatus_id.label}}" id="customStatusLabel" readonly="readonly"></input>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-5">
                                                     <div class="form-group">
                                                         <textarea type="text" class="form-control" rows="5" placeholder="{{ packingSheet.customStatus_id.text}}" id="customStatusText" readonly="readonly"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="shipper">Shipper:</label>
-                                                        <input type="text" class="form-control" placeholder="{{ packingSheet.shipper_id.label}}" id="incType" readonly="readonly"></input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +247,7 @@
                                         <div class="container">
                                             <div class="row Service">
                                                 <div class="panel panel-default">
-                                                    <div class="panel-heading">
+                                                    <div class="panel-heading panel-height-sub">
                                                         <div class="container">
                                                             <div class="container-text-left"><h2><small>Composition</small></h2></div>
                                                             <br>
