@@ -171,7 +171,7 @@ class PackingSheetDAO extends DAO
         $by_input = $_POST['input'];
         $by_address = isset($_POST['address']) ? $_POST['address'] : "";
         $by_contact = isset($_POST['contact']) ? $_POST['contact'] : "";
-        $cd = isset($_POST['cd']) ? $_POST['cd'] : "";
+        $cd = $_POST['cd'];
       
         //Do real escaping here
 
@@ -199,7 +199,7 @@ class PackingSheetDAO extends DAO
             $conditions[] = "part_pn LIKE '%$by_pn%'";
         }
         if ($by_sn != "") {
-            $conditions[] = "part_sn LIKE '%$by_sn%'";
+            $conditions[] = "part_serial LIKE '%$by_sn%'";
         }
         if ($by_desc != "") {
             $conditions[] = "part_desc LIKE '%$by_desc%'";
@@ -210,7 +210,11 @@ class PackingSheetDAO extends DAO
         if ($by_input != "") {
             $conditions[] = "imput_id LIKE '%$by_input%'";
         }
-        if($cd === 1){
+        if($cd == "1"){
+
+            $addJoin = " JOIN t_address ad ON ps.consignedAddress_id = ad.address_id"
+                    . " JOIN t_contact c ON ps.consignedContact_id = c.contact_id";
+                    
             if ($by_address != "") {
                 $conditions[] = "consignedAddress_id LIKE '%$by_address%'";
             }
@@ -218,7 +222,10 @@ class PackingSheetDAO extends DAO
                 $conditions[] = "consignedContact_id LIKE '%$by_contact%'";
             }
         }
-        if($cd === 2){
+        if($cd === "2"){
+            $addJoin = " JOIN t_address ad ON ps.deliveryAddress_id = ad.address_id"
+                    . " JOIN t_contact c ON ps.deliveryContact_id = c.contact_id";
+            
             if ($by_address != "") {
                 $conditions[] = "deliveryAddress_id LIKE '%$by_address%'";
             }
@@ -226,12 +233,15 @@ class PackingSheetDAO extends DAO
                 $conditions[] = "deliveryContact_id LIKE '%$by_contact%'";
             }
         }
+        else{
+            $addJoin = "";
+        }
         
-        $sql = $query;
+        $sql = $query.$addJoin;
         if (count($conditions) > 0) {
             $sql .= " WHERE " . implode(' AND ', $conditions);
         }
-
+             
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

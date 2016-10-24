@@ -51,6 +51,62 @@ class ContactDAO extends DAO
            throw new \Exception("No Content matching id " . $id);
    }
 
+   /**
+     * Return a list of filtered Contacts, results of search.
+     *
+     * @return array A list of resulting Contacts.
+     */
+    public function findBySearch() {
+        $by_name = $_POST['name'];
+        $by_mail = $_POST['mail'];
+        $by_phone = $_POST['phone'];
+        $by_fax = $_POST['fax'];
+        $by_address = isset($_POST['address']) ? $_POST['address'] : "";
+
+      
+        //Do real escaping here
+
+        $query = "SELECT c.*
+                FROM t_contact c
+                INNER JOIN t_address ad
+                    ON c.contact_addressId = ad.address_id";
+        
+        $conditions = array();
+
+        if ($by_name != "") {
+            $conditions[] = "contact_name LIKE '%$by_name%'";
+        }
+        if ($by_mail != "") {
+            $conditions[] = "contact_mail LIKE '%$by_mail%'";
+        }
+        if ($by_phone != "") {
+            $conditions[] = "contact_phoneNr LIKE '%$by_phone%'";
+        }
+        if ($by_fax != "") {
+            $conditions[] = "contact_fax LIKE '%$by_fax%'";
+        }
+        if ($by_address != ""){
+            $conditions[] = "contact_addressId LIKE '%$by_address%'";
+        }
+        
+                
+        $sql = $query;
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        }
+
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $contacts = array();
+        foreach ($result as $row) {
+            $contactId = $row['contact_id'];
+            $contacts[$contactId] = $this->buildDomainObject($row);
+        }
+        return $contacts;
+    }
+    
+    
     /**
      * Creates a Contact object based on a DB row.
      *

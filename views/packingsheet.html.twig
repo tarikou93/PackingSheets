@@ -88,7 +88,7 @@
                                                 <div class="form-group">
                                                     <label for="input">Inputation</label>
                                                     <select class="form-control" name="input" id="input">
-                                                        <option label=" "></option>
+                                                        <option label=""></option>
                                                         {% for input in inputs %}
                                                             <option value="{{ input.id }}">{{ input.label }}</option>
                                                         {% endfor%}
@@ -121,45 +121,42 @@
                                             </div>
                                             <hr>
                                             <div class="form-group">
-                                                <label for="code">Code</label>
-                                                <select onchange="getFilteredAddresses();" class="form-control" name="code" id="code">
-                                                  <option label=" "></option>
-                                                  {% for code in codes %}
-                                                      <option value="{{ code.id }}">{{ code.label }}</option>
-                                                  {% endfor%}
-                                                </select>
+                                                <div class="col-lg-9">
+                                                    <label for="code">Company</label>
+                                                    <select onchange="getFilteredAddresses();" class="form-control" name="code" id="code">
+                                                      <option label=" "></option>
+                                                      {% for code in codes %}
+                                                          <option value="{{ code.id }}">{{ code.label }}</option>
+                                                      {% endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="cd">Consigned/delivery</label>
+                                                    <select class="form-control" id="cd" name="cd">
+                                                        <option label=""></option>
+                                                        <option value="1">Consigned</option>
+                                                        <option value="2">Delivery</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="address">Address</label>
                                                 <select onchange="getFilteredContacts();" class="form-control" name="address" id="address">
+                                                    <option label=""></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="contact">Contact</label>
                                                 <select class="form-control" name="contact" id="contact">
+                                                    <option label=""></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                                                     <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Search </button>
                                                 </div>
-                                                <div class="radio-inline">
-                                                    <label><input id="1" type="radio" name="cd">Consigned</label>
-                                                </div>
-                                                <div class="radio-inline">
-                                                    <label><input id="2" type="radio" name="cd">Delivery</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <!-- <label for="cd">Consigned/Delivery</label>
-                                                        <select class="form-control" id="cd">
-                                                            <option value="1">Consigned</option>
-                                                            <option value="2">Delivery</option>
-                                                        </select> -->
-                                                    </div>
-                                                </div>
+                                                <label class="checkbox-inline"><input type="checkbox" value="" nam="signed">Signed</label>
+                                                <label class="checkbox-inline"><input type="checkbox" value="" name="printed">Printed</label> 
                                             </div>
                                         </form> 
                                     </div>

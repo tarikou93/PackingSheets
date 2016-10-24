@@ -52,6 +52,20 @@ $app->post('/search_packingsheets', function () use ($app) {
   return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes, 'inputs' => $inputs));
 })->bind('searchSheets');
 
+//Part Search
+$app->post('/search_parts', function () use ($app) {
+  $parts = $app['dao.part']->findBySearch();
+  return $app['twig']->render('parts.html.twig', array('parts' => $parts));
+})->bind('searchParts');
+
+//Contact Search
+$app->post('/search_contacts', function () use ($app) {
+  $contacts = $app['dao.contact']->findBySearch();
+  $addresses = $app['dao.address']->findAll();
+  $codes = $app['dao.code']->findAll();
+  return $app['twig']->render('contacts.html.twig', array('contacts' => $contacts, 'addresses' => $addresses, 'codes' => $codes));
+})->bind('searchContacts');
+
 
 //PackingSheet filter addresses by code with Ajax
 $app->get('/sheets_ajax_address', function () use ($app) {
