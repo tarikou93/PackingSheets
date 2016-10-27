@@ -3,12 +3,22 @@
 {% block title %}Parts{% endblock %}
 
 {% block content %}
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
     <div class="jumbotron vertical-center">
         <div class="container-fluid">
             <div class="container"><h2>Parts <br>
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
-                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new part</button>
+                    <a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new part</button></a>
                 </div>
             </div>
             <div id="exTab2" class="container">
@@ -44,8 +54,10 @@
                                             <td>{{ part.desc }}</td>
                                             <td>{{ part.price }}</td>
                                             <td>{{ part.hscode }}</td>
-                                            <td><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                            <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                                            <td><a href="{{ path('part_edit', { 'id': part.id }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
+                                                        </span></button></a></td>
+                                            <td><a href="{{ path('part_delete', { 'id': part.id }) }}"><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove">
+                                                        </span></button></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

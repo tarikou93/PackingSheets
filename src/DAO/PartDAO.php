@@ -106,6 +106,42 @@ class PartDAO extends DAO
         }
         return $parts;
     }
+    
+    /**
+     * Saves a part into the database.
+     *
+     * @param \PackingSheets\Domain\Part $part The part to save
+     */
+    public function save(Part $part) {
+        $partData = array(
+            'part_pn' => $part->getPN(),
+            'part_serial' => $part->getSerial(),
+            'part_desc' => $part->getDesc(),
+            'part_price' => $part->getPrice(),
+            'part_HSCode' => $part->getHSCode(),
+            );
+
+        if ($part->getId()) {
+            // The part has already been saved : update it
+            $this->getDb()->update('t_part', $partData, array('part_id' => $part->getId()));
+        } else {
+            // The article has never been saved : insert it
+            $this->getDb()->insert('t_part', $partData);
+            // Get the id of the newly created part and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $part->setId($id);
+        }
+    }
+            
+     /**
+     * Removes a part from the database.
+     *
+     * @param integer $id The part id.
+     */
+    public function delete($id) {
+        //Delete the part
+        $this->getDb()->delete('t_part', array('part_id' => $id));
+    }
 
     /**
      * Creates a Part object based on a DB row.

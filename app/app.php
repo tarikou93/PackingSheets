@@ -2,18 +2,35 @@
 
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
-use Silex\Provider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+
+
+//use Silex\Provider;
 
 // Register global error and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
 
 // Register service providers.
+
 $app->register(new Silex\Provider\RoutingServiceProvider());
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+
+$app->register(new FormServiceProvider());
+$app->extend('twig', function($twig) {
+    $twig->addExtension(new Twig_Extensions_Extension_Text());
+    return $twig;
+});
+$app->register(new ValidatorServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+      'locale' => 'en',
+      'translation.class_path' =>  __DIR__ . '/../vendor/symfony/src',
+      'translator.messages' => array()
+)) ;
 
 $app['auth.ldap.options'] =
           array(
