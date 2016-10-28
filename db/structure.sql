@@ -386,7 +386,7 @@ DROP TABLE IF EXISTS `packingsheets`.`t_part` ;
 CREATE TABLE IF NOT EXISTS `packingsheets`.`t_part` (
   `part_id` INT(11) NOT NULL AUTO_INCREMENT,
   `part_pn` VARCHAR(100) CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  `part_serial` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
+  `part_serial` VARCHAR(100) CHARACTER SET 'utf8',
   `part_desc` VARCHAR(200) CHARACTER SET 'utf8' NULL DEFAULT NULL,
   `part_price` FLOAT NOT NULL,
   `part_HSCode` VARCHAR(50) CHARACTER SET 'utf8' NULL DEFAULT NULL,
