@@ -8,7 +8,7 @@
             <div class="container"><h2>Contacts <br>
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
-                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new contact</button>
+                    <a href="{{ path('contact_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new contact</button></a>
                 </div>
             </div>
             <div id="exTab2" class="container">
@@ -45,7 +45,7 @@
                                             <td>{{ contact.phoneNr }}</td>
                                             <td>{{ contact.faxNr }}</td>
                                             {% for address in addresses %}
-                                                {% if address.id == contact.address_id.id %}
+                                                {% if address.id == contact.addressId.id %}
                                                     <td>{{ address.label }}</td>
                                                     {% for code in codes %}
                                                         {% if code.id == address.code_id.id%}

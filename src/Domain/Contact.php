@@ -16,7 +16,7 @@ class Contact
      *
      * @var integer
      */
-    private $address_id;
+    private $addressId;
 
     /**
      * Contact name.
@@ -54,12 +54,12 @@ class Contact
         $this->id = $id;
     }
     
-    public function getAddress_id() {
-        return $this->address_id;
+    public function getAddressId() {
+        return $this->addressId;
     }
 
-    public function setAddress_id($address_id) {
-        $this->address_id = $address_id;
+    public function setAddressId($address_id) {
+        $this->addressId = $address_id;
     }
 
     public function getName() {

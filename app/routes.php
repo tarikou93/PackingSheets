@@ -2,7 +2,9 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\Part;
+use PackingSheets\Domain\Contact;
 use PackingSheets\Form\Type\PartType;
+use PackingSheets\Form\Type\ContactType;
 
 //use Symfony\Component\Form\Extension\Core\Type\FormType;
 // Home page
@@ -139,7 +141,7 @@ $app->match('/part/{id}/edit', function($id, Request $request) use ($app) {
 
 
 
-// Remove an article
+// Remove a part
 $app->get('/part/{id}/delete', function($id, Request $request) use ($app) {
     try{
         // Delete the article
@@ -156,3 +158,19 @@ $app->get('/part/{id}/delete', function($id, Request $request) use ($app) {
     }
     
 })->bind('part_delete');
+
+// Add a new contact
+$app->match('/contact/add', function(Request $request) use ($app) {
+    $contact = new Contact();
+    $codes = $app['dao.code']->findAll();
+    $contactForm = $app['form.factory']->create(ContactType::class, $contact, array('codes' => $codes));
+    $contactForm->handleRequest($request);
+    if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+        $app['dao.contact']->save($contact);
+        $app['session']->getFlashBag()->add('success', 'The contact was successfully created.');
+        return $app->redirect($app['url_generator']->generate('contacts'));
+    }
+    return $app['twig']->render('/forms/contact_form.html.twig', array(
+                'title' => 'New Contact',
+                'contactForm' => $contactForm->createView()));
+})->bind('contact_add');

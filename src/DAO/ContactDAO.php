@@ -106,6 +106,41 @@ class ContactDAO extends DAO
         return $contacts;
     }
     
+    /**
+     * Saves a part into the database.
+     *
+     * @param \PackingSheets\Domain\Contact $contact The contact to save
+     */
+    public function save(Contact $contact) {
+        $contactData = array(
+            'contact_addressId' => $contact->getAddressId(),
+            'contact_name' => $contact->getName(),
+            'contact_mail' => $contact->getMail(),
+            'contact_phoneNr' => $contact->getPhoneNr(),
+            'contact_fax' => $contact->getFaxNr(),
+            );
+
+        if ($contact->getId()) {
+            // The contact has already been saved : update it
+            $this->getDb()->update('t_contact', $contactData, array('contact_id' => $contact->getId()));
+        } else {
+            // The contact has never been saved : insert it
+            $this->getDb()->insert('t_contact', $contactData);
+            // Get the id of the newly created part and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $contact->setId($id);
+        }
+    }
+            
+     /**
+     * Removes a contact from the database.
+     *
+     * @param integer $id The contact id.
+     */
+    public function delete($id) {
+        //Delete the contact
+        $this->getDb()->delete('t_contact', array('contact_id' => $id));
+    }
     
     /**
      * Creates a Contact object based on a DB row.
@@ -125,7 +160,7 @@ class ContactDAO extends DAO
             // Find and set the associated address
             $addressId = $row['contact_addressId'];
             $address = $this->addressDAO->find($addressId);
-            $contact->setAddress_id($address);
+            $contact->setAddressId($address);
         }
         
         return $contact;
