@@ -3,87 +3,125 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h2 class="text-center">{{ block('title') }}</h2>
-{% for flashMessage in app.session.flashbag.get('success') %}
-<div class="alert alert-success">
-    {{ flashMessage }}
-</div>
-{% endfor %}
+    {% if block('title') == 'Edit Contact'%}
+        <div class="panel panel-warning">
+            <div class="panel-heading panel-height"><h4>Contacts - Edition</h4></div>
+        </div>
+    {% elseif block('title') == 'New Contact' %}
+        <div class="panel panel-success">
+            <div class="panel-heading panel-height"><h4>Contacts - Creation</h4></div>
+        </div>
+    {% endif %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
 
-<div class="well">
-{{ form_start(contactForm, { 'attr': {'class': 'form-horizontal'} }) }}
-    <div class="form-group">
-        {{ form_label(contactForm.code_id, null, { 'label_attr':  {
+    <div class="well">
+        {{ form_start(contactForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="form-group">
+            {{ form_label(contactForm.code, null, { 'label_attr':  {
             'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.code_id) }}
-            {{ form_widget(contactForm.code_id, { 'id': 'code','attr':  {
-                'class': 'form-control',
-                onchange:"getFilteredAddressesAdd();"
             }}) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(contactForm.address_id, null, { 'label_attr':  {
-            'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.address_id) }}
-            {{ form_widget(contactForm.address_id, { 'id': 'address', 'attr':  {
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.code) }}
+                {{ form_widget(contactForm.code, { 'id': 'code','attr':  {
                 'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(contactForm.addressId, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
             }}) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(contactForm.name, null, { 'label_attr':  {
-            'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.name) }}
-            {{ form_widget(contactForm.name, { 'attr':  {
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.addressId) }}
+                {{ form_widget(contactForm.addressId, { 'id': 'addressId', 'attr':  {
                 'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(contactForm.name, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
             }}) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(contactForm.mail, null, { 'label_attr':  {
-            'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.mail) }}
-            {{ form_widget(contactForm.mail, { 'attr':  {
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.name) }}
+                {{ form_widget(contactForm.name, { 'attr':  {
                 'class': 'form-control'
-             }}) }}
+                }}) }}
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(contactForm.phoneNr, null, { 'label_attr':  {
+        <div class="form-group">
+            {{ form_label(contactForm.mail, null, { 'label_attr':  {
             'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.phoneNr) }}
-            {{ form_widget(contactForm.phoneNr, { 'attr':  {
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.mail) }}
+                {{ form_widget(contactForm.mail, { 'attr':  {
                 'class': 'form-control'
-             }}) }}
+                }}) }}
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        {{ form_label(contactForm.faxNr, null, { 'label_attr':  {
+        <div class="form-group">
+            {{ form_label(contactForm.phoneNr, null, { 'label_attr':  {
             'class': 'col-sm-4 control-label'
-        }}) }}
-        <div class="col-sm-6">
-            {{ form_errors(contactForm.faxNr) }}
-            {{ form_widget(contactForm.faxNr, { 'attr':  {
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.phoneNr) }}
+                {{ form_widget(contactForm.phoneNr, { 'attr':  {
                 'class': 'form-control'
-             }}) }}
+                }}) }}
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-3">
-            <input type="submit" class="btn btn-primary" value="Save" />
+        <div class="form-group">
+            {{ form_label(contactForm.faxNr, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(contactForm.faxNr) }}
+                {{ form_widget(contactForm.faxNr, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
         </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-3">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+        </div>
+        {{ form_end(contactForm) }}
+        
+        <script>
+        	var $code = $('#code');
+        	$code.change (function() {
+        		var $form = $(this).closest('form');
+        		var $data = {};
+        		$data[$code.attr('id')] = $code.val();
+        		//alert($data[$code.attr('id')]);
+        		$.ajax ({
+        			url: $(location).attr('href'),
+        			type: $form.attr('method'),
+        			data: $data,
+        			success: function(data) {
+        				select = document.getElementById('addressId');
+        				
+        				datastring = JSON.stringify(data.addresses);
+        				//alert(datastring);
+
+        				$('#addressId').empty();
+						$.each(data.addresses, function(index, element){
+							//alert(element.id);
+							var opt = document.createElement('option');
+                            opt.value = element.id;
+                            opt.innerHTML = element.label;
+                            select.appendChild(opt);
+						});
+            			
+        			}
+        	});
+        });
+       	</script>
     </div>
-{{ form_end(contactForm) }}
-</div>
 {% endblock %}

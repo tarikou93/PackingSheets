@@ -60,13 +60,16 @@ class AddressDAO extends DAO
     */
    public function findByCode($code) {
        
-       $sql = "select * from t_address where address_codeId=?";
-       $row = $this->getDb()->fetchAssoc($sql, array($code));
+        $sql = "select * from t_address where address_codeId=".$code;
+        $result = $this->getDb()->fetchAll($sql);
 
-       if ($row)
-           return $this->buildDomainObject($row);
-       else
-           throw new \Exception("No PackingSheet matching id " . $id);
+        // Convert query result to an array of domain objects
+        $addresses = array();
+        foreach ($result as $row) {
+            $addressId = $row['address_id'];
+            $addresses[$addressId] = $this->buildDomainObject($row);
+        }
+        return $addresses;
    }
 
     /**
@@ -84,7 +87,7 @@ class AddressDAO extends DAO
             // Find and set the associated code
             $addressCodeId = $row['address_codeId'];
             $addressCode = $this->addressCodeDAO->find($addressCodeId);
-            $address->setCode_id($addressCode);
+            $address->setCodeId($addressCode);
         }
 
         return $address;

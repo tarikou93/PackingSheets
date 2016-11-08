@@ -58,8 +58,8 @@ class Contact
         return $this->addressId;
     }
 
-    public function setAddressId($address_id) {
-        $this->addressId = $address_id;
+    public function setAddressId($addressId) {
+        $this->addressId = $addressId;
     }
 
     public function getName() {

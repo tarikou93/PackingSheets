@@ -115,3 +115,6 @@ hr {
 h2 {
     font-size: 25px;
 }
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}

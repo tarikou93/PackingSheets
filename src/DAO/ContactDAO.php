@@ -113,7 +113,7 @@ class ContactDAO extends DAO
      */
     public function save(Contact $contact) {
         $contactData = array(
-            'contact_addressId' => $contact->getAddressId(),
+            'contact_addressId' => $contact->getAddressId()->getId(),
             'contact_name' => $contact->getName(),
             'contact_mail' => $contact->getMail(),
             'contact_phoneNr' => $contact->getPhoneNr(),

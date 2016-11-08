@@ -2,7 +2,9 @@
 
 namespace PackingSheets\Domain;
 
-class Address
+use JsonSerializable;
+
+class Address implements JsonSerializable
 {
     /**
      * Address id.
@@ -16,7 +18,7 @@ class Address
      *
      * @var integer
      */
-    private $code_id;
+    private $codeId;
 
     /**
      * Address label.
@@ -33,12 +35,12 @@ class Address
         $this->id = $id;
     }
     
-    public function getCode_id() {
-        return $this->code_id;
+    public function getCodeId() {
+        return $this->codeId;
     }
 
-    public function setCode_id($code_id) {
-        $this->code_id = $code_id;
+    public function setCodeId($code_id) {
+        $this->codeId = $code_id;
     }
 
     public function getLabel() {
@@ -47,6 +49,15 @@ class Address
 
     public function setLabel($label) {
         $this->label = $label;
+    }
+    
+    public function jsonSerialize()
+    {
+    	return array(
+    			'id' => $this->id,
+    			'codeId'=> $this->codeId->getId(),
+    			'label' => $this->label,
+    	);
     }
 }
 
