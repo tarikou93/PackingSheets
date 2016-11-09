@@ -77,6 +77,13 @@ $app['dao.packingPart'] = function($app) {
   return $packingPartDAO;
 };
 
+$app['dao.packingSheetPart'] = function($app) {
+	$packingSheetPartDAO = new PackingSheets\DAO\PackingSheetPartDAO($app['db']);
+	$packingSheetPartDAO->setPackingSheetDAO($app['dao.packingSheet']);
+	$packingSheetPartDAO->setPartDAO($app['dao.part']);
+	return $packingSheetPartDAO;
+};
+
 $app['dao.packType'] = function($app) {
   return new PackingSheets\DAO\PackTypeDAO($app['db']);
 };

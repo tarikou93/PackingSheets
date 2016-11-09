@@ -5,11 +5,14 @@
 {% block content %}
     <div class="jumbotron vertical-center">
         <div class="container-fluid">
-            <div class="container"><h2>Packing Sheets<br>
+            <div class="container"><h2>Packing Sheet<br>
                     <small>PS {{ packingSheet.ref}} </small></h2>
-                <div class="col-md-3 col-md-offset-9">
+                <div class="col-md-4 col-md-offset-8 text-right">
+                	<a href="{{ path('sheetList', { 'id': Psid }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
                     <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
                     <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                    <hr></hr>
+                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print Packing Sheet </button></a>
                 </div>
             </div>
             <br>
@@ -431,8 +434,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            	</div>
+       	 	</div>
+    	</div>
 {% endblock %}

@@ -40,11 +40,28 @@ $app->get('/contacts', function () use ($app) {
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);
     $packings = $app['dao.packing']->findAllByPackingSheet($id);
-    $packingParts = $app['dao.packingPart']->findAll();
-    $parts = $app['dao.part']->findAll();
-    return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts' => $packingParts, 'parts' => $parts));
+    
+    $packingParts = array();
+    foreach($packings as $pack){
+    	$packingParts += $app['dao.packingPart']->findAllByPacking($pack->getId());
+    }
+    
+    $Psid = $id;
+    return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts' => $packingParts, 
+    		'Psid' => $Psid));
 })->bind('sheetDetails');
 
+// Packing List 
+$app->get('/sheetslist/{id}', function ($id) use ($app) {
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$packings = $app['dao.packing']->findAllByPackingSheet($id);
+	$parts = $app['dao.part']->findAll();
+		
+	$packingSheetParts = $app['dao.packingSheetPart']->findAllByPackingSheet($id);
+	$Psid = $id;
+	return $app['twig']->render('packingList.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings,'packingSheetParts' => $packingSheetParts, 
+			'Psid' => $Psid, 'parts' => $parts));
+})->bind('sheetList');
 
 // Logout
 $app->get('/auth/logout', function () use ($app) {
@@ -59,6 +76,31 @@ $app->post('/search_packingsheets', function () use ($app) {
     $inputs = $app['dao.imput']->findAll();
     return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes, 'inputs' => $inputs));
 })->bind('searchSheets');
+
+//Packing List Part Search
+$app->post('/sheetslist/{id}/search', function ($id) use ($app) {
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$packings = $app['dao.packing']->findAllByPackingSheet($id);
+	$Psid = $id;
+	
+	try {
+		$packingSheetPartsUnfiltered = $app['dao.packingSheetPart']->findAllByPackingSheet($id);
+		$parts = $app['dao.part']->findBySearch();
+		$packingSheetParts = array();
+		foreach($parts as $part){
+			foreach($packingSheetPartsUnfiltered as $psPart)
+				if($part->getId() == $psPart->getPartid()->getId()){
+					$packingSheetParts += $psPart;
+			}
+		}
+		return $app['twig']->render('packingList.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings,'packingSheetParts' => $packingSheetParts, 'Psid' => $Psid));
+		
+	} catch (Exception $e){
+		$packingSheetParts = array();
+		return $app['twig']->render('packingList.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings,'packingSheetParts' => $packingSheetParts, 'Psid' => $Psid));
+	}
+	
+})->bind('searchList');
 
 //Part Search
 $app->post('/search_parts', function () use ($app) {
@@ -241,4 +283,3 @@ $app->get('/contact/{id}/delete', function($id, Request $request) use ($app) {
         return $app->redirect($app['url_generator']->generate('contacts'));
     }
 })->bind('contact_delete');
-

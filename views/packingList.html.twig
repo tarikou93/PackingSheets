@@ -1,0 +1,203 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Packing List{% endblock %}
+
+{% block content %}
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="jumbotron vertical-center">
+        <div class="container-fluid">
+            <div class="container"><h2>Packing List <br>
+                    <small>PS {{ packingSheet.ref}} </small></h2>
+                <div class="col-md-4 col-md-offset-8 text-right">
+                	<div class="dropdown">
+                		<a href="{{ path('sheetDetails', { 'id': Psid }) }}"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-zoom-in"></span> Details </button></a>
+                      	<button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-plus"></span> Add a part
+                      	<span class="caret"></span></button>
+                      	<ul class="dropdown-menu">
+                        	<li><a href="{{ path('part_add') }}">Create new part</a></li>
+                        	<li>
+                        		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#selectExistingPart">Select existing part</button>
+                            </li>
+                      	</ul>
+                    </div>
+                    <hr></hr>
+                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print List </button></a>
+                </div>
+                <div class="modal fade" id="selectExistingPart" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="panel panel-success">
+                                    <div class="panel-heading panel-height"><h4>Add an existing part</h4></div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                        		<h4>Packing</h4>
+                        		<div class="form-group">
+                                  	<select class="form-control col-md-6" id="pack_selection">
+                                  		{% set cpt = 1 %}
+                                        {% for pack in packings %}
+                                			<option value="{{ pack.id }}">{{ cpt }}</option>
+                                			{% set cpt = cpt + 1 %}
+                                        {% endfor %}
+                        			</select>
+                            	</div>
+                        		<h4>Part</h4>
+                        		<div class="form-group">
+                                  	<select class="form-control col-md-6" id="part_selection">
+                                        {% for part in parts %}
+                                			<option value="{{ part.id }}">{{ part.id }}</option>
+                                        {% endfor %}
+                        			</select>
+                        		</div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <a href="#"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#selectExistingPart">
+                                        Add part </button></a>
+                			</div>
+            			</div>
+        			</div>
+    			</div>
+            </div>
+            <div id="exTab2" class="container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#1" data-toggle="tab">Parts</a></li>
+                    <li><a href="#2" data-toggle="tab">Search</a></li>
+                </ul>
+                <div class="tab-content ">
+                    <div class="tab-pane active" id="1">
+                        {% if (packingSheetParts is empty) %}
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Empty List</div>
+                                <div class="panel-body">No matching entry found - Every part of this list is assigned to a packing or Edit Search Filters</div>
+                            </div>
+                        {% else %}
+                            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Part Number</th>
+                                        <th>Serial Number</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>HSCode</th>
+                                        <th>Edit</th>
+                                        <th>Remove</th>
+                                        <th>Edit Packing</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for psPart in packingSheetParts %}
+                                    <tr>
+                                        <td>{{ psPart.partId.pn }}</td>
+                                        <td>
+                                            {% if psPart.partId.serial == "" %}
+                                                N/A
+                                            {% else %}
+                                                {{ psPart.partId.serial }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ psPart.partId.desc }}</td>
+                                        <td>{{ psPart.partId.price }}</td>
+                                        <td>
+                                            {% if psPart.partId.hscode == "" %}
+                                                N/A
+                                            {% else %}
+                                                {{ psPart.partId.hscode }}
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{{ path('part_edit', { 'id': part.id }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
+                                                    </span></button></a>
+                                        </td>
+                                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ part.id }}">
+                                                <span class="glyphicon glyphicon-remove"></span></button>
+                                        </td>
+                                        <td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ part.id }}">
+                                                <span class="glyphicon glyphicon-inbox"></span></button>
+                                        </td>
+                                    </tr>
+                                    <div class="modal fade" id="deleteConfirm{{ part.id }}" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <div class="panel panel-danger">
+                                                        <div class="panel-heading panel-height"><h4>Part Removing : <small>{{ part.pn }}</small></h4></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to remove this part from the list ? <br/>
+                                                    The part will be conserved in the database.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <a href="{{ path('part_delete', { 'id': part.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ part.id }}">
+                                                            Delete </button></a>
+                                    			</div>
+                                			</div>
+                            			</div>
+                        			</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                    	</table>
+                    </div>
+                    <div class="tab-pane" id="2">
+                        <div class="container-fluid">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3>Search</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <section class="container">
+                                            <div class="container-page">
+                                                <form class="form-signin form-horizontal" role="form" action="{{ path('searchList', { 'id': Psid }) }}" method="post">
+                                                    <div class="form-group">
+                                                        <div class="col-lg-6">
+                                                            <label>Part Number</label>
+                                                            <input type="text" name="pn" class="form-control" id="pn" value="">
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label>Serial Number</label>
+                                                            <input type="text" name="sn" class="form-control" id="sn" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-12">
+                                                            <label>HSCode</label>
+                                                            <input type="text" name="hscode" class="form-control" id="hscode" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-12">
+                                                            <label>Description</label>
+                                                            <textarea type="text" name="desc" class="form-control" id="desc" value=""></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

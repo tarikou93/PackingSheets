@@ -26,7 +26,7 @@ class PartDAO extends DAO
     }
 
     /**
-    * Returns an Part matching the supplied id.
+    * Returns a Part matching the supplied id.
     *
     * @param integer $id
     *
@@ -43,20 +43,20 @@ class PartDAO extends DAO
    }
 
    /**
-    * Returns an article matching the supplied id.
+    * Returns a Part matching the supplied id.
     *
     * @param integer $id
     *
     * @return \PackingSheets\Domain\Part|throws an exception if no matching Part is found
     */
-   public function findByPn($id) {
+   public function findByPn($pn) {
        $sql = "select * from t_part where part_pn=?";
-       $row = $this->getDb()->fetchAssoc($sql, array($id));
+       $row = $this->getDb()->fetchAssoc($sql, array($pn));
 
        if ($row)
            return $this->buildDomainObject($row);
        else
-           throw new \Exception("No Part matching pn " . $id);
+           throw new \Exception("No Part matching pn " . $pn);
    }
    
    /**

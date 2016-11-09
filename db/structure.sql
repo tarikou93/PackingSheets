@@ -409,10 +409,32 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packing_part` (
   `pkp_origin` VARCHAR(50) CHARACTER SET 'utf8' NULL DEFAULT NULL,
   PRIMARY KEY (`pkp_id`),
   INDEX `fk_pkp_pack` (`pack_id` ASC),
-  INDEX `fk_psp_part` (`part_id` ASC),
+  INDEX `fk_pkp_part` (`part_id` ASC),
   CONSTRAINT `fk_pkp_pack`
     FOREIGN KEY (`pack_id`)
     REFERENCES `packingsheets`.`t_packing` (`pack_id`),
+  CONSTRAINT `fk_pkp_part`
+    FOREIGN KEY (`part_id`)
+    REFERENCES `packingsheets`.`t_part` (`part_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table `packingsheets`.`t_packingsheet_part`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets`.`t_packingsheet_part` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet_part` (
+  `psp_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `ps_id` INT(11) NOT NULL,
+  `part_id` INT(11) NOT NULL,
+  PRIMARY KEY (`psp_id`),
+  INDEX `fk_psp_ps` (`ps_id` ASC),
+  INDEX `fk_psp_part` (`part_id` ASC),
+  CONSTRAINT `fk_psp_ps`
+    FOREIGN KEY (`ps_id`)
+    REFERENCES `packingsheets`.`t_packingsheet` (`ps_id`),
   CONSTRAINT `fk_psp_part`
     FOREIGN KEY (`part_id`)
     REFERENCES `packingsheets`.`t_part` (`part_id`))
