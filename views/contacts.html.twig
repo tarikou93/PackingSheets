@@ -19,6 +19,10 @@
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
                     <a href="{{ path('contact_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new contact</button></a>
+                    {% if searchTag == 1 %}
+                		<hr></hr>
+                		<a href="{{ path('contacts') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to contacts list </button></a>
+                    {% endif %}
                 </div>
             </div>
             <div id="exTab2" class="container">
@@ -54,16 +58,8 @@
                                             <td>{{ contact.mail }}</td>
                                             <td>{{ contact.phoneNr }}</td>
                                             <td>{{ contact.faxNr }}</td>
-                                            {% for address in addresses %}
-                                                {% if address.id == contact.addressId.id %}
-                                                    <td>{{ address.label }}</td>
-                                                    {% for code in codes %}
-                                                        {% if code.id == address.codeId.id%}
-                                                            <td>{{ address.codeId.label }}</td>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% endif %}
-                                            {% endfor %}
+                                            <td>{{ contact.addressId.label }}</td>
+                                            <td>{{ contact.addressId.codeId.label }}</td>
                                             <td><a href="{{ path('contact_edit', { 'id': contact.id }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span>
                                                     </button></a></td>
                                             <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ contact.id }}">

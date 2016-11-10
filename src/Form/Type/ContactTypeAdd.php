@@ -58,7 +58,7 @@ class ContactTypeAdd extends AbstractType
 		$builder->addEventListener(
 				FormEvents::PRE_SET_DATA,
 				function (FormEvent $event) use ($formModifier, $options) {
-					$data = $event->getData();
+					//$data = $event->getData();
 	
 					$formModifier($event->getForm(), /*$data->getAddressId()->getCodeId()*/$options['code'], $options['address']);
 						

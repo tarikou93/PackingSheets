@@ -19,52 +19,66 @@
                     <small>PS {{ packingSheet.ref}} </small></h2>
                 <div class="col-md-4 col-md-offset-8 text-right">
                 	<div class="dropdown">
-                		<a href="{{ path('sheetDetails', { 'id': Psid }) }}"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-zoom-in"></span> Details </button></a>
+                		<a href="{{ path('sheetDetails', { 'id': Psid }) }}"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-zoom-in"></span> Sheet </button></a>
                       	<button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-plus"></span> Add a part
                       	<span class="caret"></span></button>
                       	<ul class="dropdown-menu">
                         	<li><a href="{{ path('part_add') }}">Create new part</a></li>
                         	<li>
-                        		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#selectExistingPart">Select existing part</button>
+                        		<a data-toggle="modal" data-target="#selectExistingPart">Select existing part</a>
                             </li>
                       	</ul>
                     </div>
                     <hr></hr>
+                    {% if searchTag == 1 %}
+                    	<a href="{{ path('sheetList', { 'id': Psid }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to list </button></a>
+                    {% endif %}
                     <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print List </button></a>
                 </div>
                 <div class="modal fade" id="selectExistingPart" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
+                    		<div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <div class="panel panel-success">
                                     <div class="panel-heading panel-height"><h4>Add an existing part</h4></div>
                                 </div>
                             </div>
-                            <div class="modal-body">
-                        		<h4>Packing</h4>
-                        		<div class="form-group">
-                                  	<select class="form-control col-md-6" id="pack_selection">
-                                  		{% set cpt = 1 %}
-                                        {% for pack in packings %}
-                                			<option value="{{ pack.id }}">{{ cpt }}</option>
-                                			{% set cpt = cpt + 1 %}
-                                        {% endfor %}
-                        			</select>
+                            <div class="modal-body" style="overflow: visible;">
+                        		<div class="well">
+                                    {{ form_start(addPartToListForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                                    <div class="form-group">
+                                        {{ form_label(addPartToListForm.part, null, { 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(addPartToListForm.part) }}
+                                            {{ form_widget(addPartToListForm.part, { 'id': 'part','attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(addPartToListForm.quantity, null, { 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(addPartToListForm.quantity) }}
+                                            {{ form_widget(addPartToListForm.quantity, { 'id': 'quantity', 'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-4 col-sm-3">
+                                            <input type="submit" class="btn btn-success" value="Save" />
+                                        </div>
+                                    </div>
+                                    {{ form_end(addPartToListForm) }}
                             	</div>
-                        		<h4>Part</h4>
-                        		<div class="form-group">
-                                  	<select class="form-control col-md-6" id="part_selection">
-                                        {% for part in parts %}
-                                			<option value="{{ part.id }}">{{ part.id }}</option>
-                                        {% endfor %}
-                        			</select>
-                        		</div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <a href="#"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#selectExistingPart">
-                                        Add part </button></a>
                 			</div>
             			</div>
         			</div>
@@ -78,10 +92,21 @@
                 <div class="tab-content ">
                     <div class="tab-pane active" id="1">
                         {% if (packingSheetParts is empty) %}
-                            <div class="panel panel-success">
-                                <div class="panel-heading">Empty List</div>
-                                <div class="panel-body">No matching entry found - Every part of this list is assigned to a packing or Edit Search Filters</div>
+                        	{% if searchTag == 1 %}
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">Search results</div>
+                                <div class="panel-body">
+                                	No matching entry found - Edit Search Filters
+                                </div>
                             </div>
+                            {% else %}
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Empty Packing List</div>
+                                <div class="panel-body">      	
+                                	 Every part of this list has been assigned to a packing
+                                </div>
+                            </div>
+                            {% endif %}
                         {% else %}
                             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                 <thead>
@@ -91,9 +116,10 @@
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>HSCode</th>
+                                        <th>Quantity</th>
                                         <th>Edit</th>
                                         <th>Remove</th>
-                                        <th>Edit Packing</th>
+                                        <th>Assign Packing</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,6 +142,7 @@
                                                 {{ psPart.partId.hscode }}
                                             {% endif %}
                                         </td>
+                                        <td>{{ psPart.quantity }}</td>
                                         <td><a href="{{ path('part_edit', { 'id': part.id }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
                                                     </span></button></a>
                                         </td>
@@ -160,7 +187,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="container-fluid">
-                                        <section class="container">
+                                        <div class="container">
                                             <div class="container-page">
                                                 <form class="form-signin form-horizontal" role="form" action="{{ path('searchList', { 'id': Psid }) }}" method="post">
                                                     <div class="form-group">
@@ -190,7 +217,7 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </section>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

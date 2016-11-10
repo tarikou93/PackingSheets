@@ -24,6 +24,13 @@ class PackingSheetPart
 	 * @var integer
 	 */
 	private $part_id;
+	
+	/**
+	 * PackingSheetPart quantity.
+	 *
+	 * @var integer
+	 */
+	private $quantity;
 
 	public function getId() {
 		return $this->id;
@@ -47,6 +54,14 @@ class PackingSheetPart
 
 	public function setPartid($partid) {
 		$this->part_id = $partid;
+	}
+	
+	public function getQuantity() {
+		return $this->quantity;
+	}
+	
+	public function setQuantity($quantity) {
+		$this->quantity = $quantity;
 	}
 
 }

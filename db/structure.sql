@@ -429,6 +429,7 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet_part` (
   `psp_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ps_id` INT(11) NOT NULL,
   `part_id` INT(11) NOT NULL,
+  `psp_quantity` INT(11) NOT NULL,
   PRIMARY KEY (`psp_id`),
   INDEX `fk_psp_ps` (`ps_id` ASC),
   INDEX `fk_psp_part` (`part_id` ASC),

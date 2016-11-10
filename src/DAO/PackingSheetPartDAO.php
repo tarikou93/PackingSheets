@@ -59,6 +59,42 @@ class PackingSheetPartDAO extends DAO
 			else
 				throw new \Exception("No PackingSheetPart matching id " . $id);
 	}
+	
+	/**
+	 * Add a PackingSheetPart into the database.
+	 *
+	 * @param \PackingSheets\Domain\PackingSheetPart $psPart The PackingSheetPart to save
+	 */
+	public function save(PackingSheetPart $psPart, $Psid) {
+			
+		$psPartData = array(
+				'psp_id' => $psPart->getId(),
+				'ps_id' => $Psid,
+				'part_id' => $psPart->getPartid(),
+				'psp_quantity' => $psPart->getQuantity(),
+		);
+	
+		if ($psPart->getId()) {
+			// The PackingSheetPart has already been saved : update it
+			$this->getDb()->update('t_packingsheet_part', $psPartData, array('psp_id' => $psPart->getId()));
+		} else {
+			// The contact has never been saved : insert it
+			$this->getDb()->insert('t_packingsheet_part', $psPartData);
+			// Get the id of the newly created part and set it on the entity.
+			$id = $this->getDb()->lastInsertId();
+			$psPart->setId($id);
+		}
+	}
+	
+	/**
+	 * Removes a PackingSheetPart from the database.
+	 *
+	 * @param integer $id The PackinhSheetPart id.
+	 */
+	public function delete($id) {
+		//Delete the contact
+		$this->getDb()->delete('t_packingsheet_part', array('psp_id' => $id));
+	}
 
 	/**
 	 * Return a list of all packingsheetparts for a packingsheet.
@@ -125,6 +161,7 @@ class PackingSheetPartDAO extends DAO
 	protected function buildDomainObject($row) {
 		$packingSheetPart = new PackingSheetPart();
 		$packingSheetPart->setId($row['psp_id']);
+		$packingSheetPart->setQuantity($row['psp_quantity']);
 
 		if (array_key_exists('ps_id', $row)) {
 			// Find and set the associated packingSheet

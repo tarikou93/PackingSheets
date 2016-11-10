@@ -19,6 +19,10 @@
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
                     <a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new part</button></a>
+                    {% if searchTag == 1 %}
+                		<hr></hr>
+                		<a href="{{ path('parts') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to parts list </button></a>
+                    {% endif %}
                 </div>
             </div>
             <div id="exTab2" class="container">
