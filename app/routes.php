@@ -8,7 +8,7 @@ use PackingSheets\Form\Type\ContactTypeAdd;
 use PackingSheets\Form\Type\ContactTypeEdit;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use PackingSheets\Domain\PackingSheetPart;
-use PackingSheets\Form\Type\PackingSheetListAddType;
+use PackingSheets\Form\Type\PackingListType;
 
 //use Symfony\Component\Form\Extension\Core\Type\FormType;
 // Home page
@@ -45,53 +45,28 @@ $app->get('/contacts', function () use ($app) {
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);
     $packings = $app['dao.packing']->findAllByPackingSheet($id);
-    
-    $packingParts = array();
-    foreach($packings as $pack){
-    	$packingParts += $app['dao.packingPart']->findAllByPacking($pack->getId());
-    }
+    $packingParts = $app['dao.packingPart']->findAll();
     
     $Psid = $id;
     return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts' => $packingParts, 
     		'Psid' => $Psid));
 })->bind('sheetDetails');
 
-//Packing list
-$app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {
-	$packingSheet = $app['dao.packingSheet']->find($id);
-	$packings = $app['dao.packing']->findAllByPackingSheet($id);
-	$searchTag = 0;
-	$parts = $app['dao.part']->findAll();
-	
-	$packingSheetParts = $app['dao.packingSheetPart']->findAllByPackingSheet($id);
-	$Psid = $id;
-	
-	$packingSheetPart = new PackingSheetPart();
-	$addPartToListForm = $app['form.factory']->create(PackingSheetListAddType::class, $packingSheetPart, array('parts' => $parts));
-	
-	$addPartToListForm->handleRequest($request);
-	if ($addPartToListForm->isSubmitted() && $addPartToListForm->isValid()) {
-		$app['dao.packingSheetPart']->save($packingSheetPart, $Psid);
-		$app['session']->getFlashBag()->add('success', 'The part was successfully added to the list.');
-		return $app->redirect($app['url_generator']->generate('sheetList'));
-	}
-	return $app['twig']->render('packingList.html.twig', array(
-			'title' => 'Packing List',
-			'addPartToListForm' => $addPartToListForm->createView(),
-			'packings' => $packings,
-			'packingSheetParts' => $packingSheetParts,
-			'Psid' => $Psid,
-			'parts' => $parts,
-			'searchTag' => $searchTag,
-			'packingSheet' => $packingSheet
-	));
-})->bind('sheetList');
+
+ //Packing list
+ $app->get('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
+	 $packingList = $app['dao.packingList']->findByPackingSheet($id);
+
+	 return $app['twig']->render('test.html.twig', array('packingList' => $packingList));
+ })->bind('sheetList');
+ 
 
 // Logout
 $app->get('/auth/logout', function () use ($app) {
     //return $app['twig']->render('auth/login.html.twig');
     return;
 })->bind('logout');
+
 
 //PackingSheet Search
 $app->post('/search_packingsheets', function () use ($app) {
@@ -102,35 +77,6 @@ $app->post('/search_packingsheets', function () use ($app) {
     return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes, 'inputs' => $inputs, 'searchTag' => $searchTag));
 })->bind('searchSheets');
 
-//Packing List Part Search
-$app->post('/sheetslist/{id}/search', function ($id) use ($app) {
-	$packingSheet = $app['dao.packingSheet']->find($id);
-	$packings = $app['dao.packing']->findAllByPackingSheet($id);
-	$parts = $app['dao.part']->findAll();
-	$searchTag = 1;
-	$Psid = $id;
-	
-	try {
-		$packingSheetPartsUnfiltered = $app['dao.packingSheetPart']->findAllByPackingSheet($id);
-		$partsSearch = $app['dao.part']->findBySearch();
-		$part = $app['dao.part']->findAll();
-		$packingSheetParts = array();
-		foreach($partsSearch as $part){
-			foreach($packingSheetPartsUnfiltered as $psPart)
-				if($part->getId() == $psPart->getPartid()->getId()){
-					$packingSheetParts += $psPart;
-			}
-		}
-		return $app['twig']->render('packingList.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings,'packingSheetParts' => $packingSheetParts, 'Psid' => $Psid, 
-			'parts' => $parts, 'searchTag' => $searchTag));
-		
-	} catch (Exception $e){
-		$packingSheetParts = array();
-		return $app['twig']->render('packingList.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings,'packingSheetParts' => $packingSheetParts, 'Psid' => $Psid,				
-			'parts' => $parts, 'searchTag' => $searchTag));
-	}
-	
-})->bind('searchList');
 
 //Part Search
 $app->post('/search_parts', function () use ($app) {

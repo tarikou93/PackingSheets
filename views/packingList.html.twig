@@ -48,12 +48,12 @@
                         		<div class="well">
                                     {{ form_start(addPartToListForm, { 'attr': {'class': 'form-horizontal'} }) }}
                                     <div class="form-group">
-                                        {{ form_label(addPartToListForm.part, null, { 'label_attr':  {
+                                        {{ form_label(addPartToListForm.part_id, null, { 'label_attr':  {
                                         'class': 'col-sm-4 control-label'
                                         }}) }}
                                         <div class="col-sm-6">
-                                            {{ form_errors(addPartToListForm.part) }}
-                                            {{ form_widget(addPartToListForm.part, { 'id': 'part','attr':  {
+                                            {{ form_errors(addPartToListForm.part_id) }}
+                                            {{ form_widget(addPartToListForm.part_id, { 'id': 'part','attr':  {
                                             'class': 'form-control'
                                             }}) }}
                                         </div>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-4 col-sm-3">
-                                            <input type="submit" class="btn btn-success" value="Save" />
+                                            <input type="submit" class="btn btn-success" value="Add Part to List" />
                                         </div>
                                     </div>
                                     {{ form_end(addPartToListForm) }}
@@ -117,7 +117,7 @@
                                         <th>Price</th>
                                         <th>HSCode</th>
                                         <th>Quantity</th>
-                                        <th>Edit</th>
+                                        <th>Edit Quantity</th>
                                         <th>Remove</th>
                                         <th>Assign Packing</th>
                                     </tr>
@@ -143,23 +143,23 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ psPart.quantity }}</td>
-                                        <td><a href="{{ path('part_edit', { 'id': part.id }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
-                                                    </span></button></a>
+                                        <td><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPart{{ psPart.id }}">
+                                                <span class="glyphicon glyphicon-list"></span></button>
                                         </td>
-                                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ part.id }}">
+                                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#removeConfirm{{ psPart.id }}">
                                                 <span class="glyphicon glyphicon-remove"></span></button>
                                         </td>
-                                        <td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ part.id }}">
+                                        <td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteConfirm">
                                                 <span class="glyphicon glyphicon-inbox"></span></button>
                                         </td>
                                     </tr>
-                                    <div class="modal fade" id="deleteConfirm{{ part.id }}" role="dialog">
+                                    <div class="modal fade" id="removeConfirm{{ psPart.id }}" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     <div class="panel panel-danger">
-                                                        <div class="panel-heading panel-height"><h4>Part Removing : <small>{{ part.pn }}</small></h4></div>
+                                                        <div class="panel-heading panel-height"><h4>Part Removing : {{ psPart.partId.pn }}<small></small></h4></div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-body">
@@ -168,8 +168,8 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                    <a href="{{ path('part_delete', { 'id': part.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ part.id }}">
-                                                            Delete </button></a>
+                                                    <a href="{{ path('sheetList_part_delete', { 'partid': psPart.id, 'id': Psid }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#removeConfirm{{ psPart.id }}">
+                                                           Remove Part </button></a>
                                     			</div>
                                 			</div>
                             			</div>

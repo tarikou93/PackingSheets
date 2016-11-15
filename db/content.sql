@@ -123,3 +123,18 @@ insert into t_packing_part values
 
 insert into t_packing_part values
 (3, 2, 3, 5, 'Belgium');
+
+insert into t_packinglist values
+(1, 1);
+
+insert into t_packinglist values
+(2, 2);
+
+insert into t_packinglist_part values
+(1, 1, 2, 3);
+
+insert into t_packinglist_part values
+(2, 2, 1, 5);
+
+insert into t_packinglist_part values
+(3, 1, 3, 1);

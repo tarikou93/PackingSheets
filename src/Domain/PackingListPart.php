@@ -2,21 +2,21 @@
 
 namespace PackingSheets\Domain;
 
-class PackingSheetPart
+class PackingListPart
 {
 	/**
-	 * PackingSheetPart id.
+	 * PackingListPart id.
 	 *
 	 * @var integer
 	 */
 	private $id;
 
 	/**
-	 * Associated PackingSheet id.
+	 * Associated PackingList id.
 	 *
 	 * @var integer
 	 */
-	private $ps_id;
+	private $pl_id;
 
 	/**
 	 * Associated Part id.
@@ -26,7 +26,7 @@ class PackingSheetPart
 	private $part_id;
 	
 	/**
-	 * PackingSheetPart quantity.
+	 * PackingListPart quantity.
 	 *
 	 * @var integer
 	 */
@@ -40,12 +40,12 @@ class PackingSheetPart
 		$this->id = $id;
 	}
 
-	public function getPsid() {
-		return $this->ps_id;
+	public function getPlid() {
+		return $this->pl_id;
 	}
 
-	public function setPsid($psid) {
-		$this->ps_id = $psid;
+	public function setPlid($plid) {
+		$this->pl_id = $plid;
 	}
 
 	public function getPartid() {

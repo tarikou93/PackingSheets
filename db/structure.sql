@@ -421,22 +421,39 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 -- -----------------------------------------------------
--- Table `packingsheets`.`t_packingsheet_part`
+-- Table `packingsheets`.`t_packinglist`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `packingsheets`.`t_packingsheet_part` ;
+DROP TABLE IF EXISTS `packingsheets`.`t_packinglist` ;
 
-CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet_part` (
-  `psp_id` INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packinglist` (
+  `pl_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ps_id` INT(11) NOT NULL,
-  `part_id` INT(11) NOT NULL,
-  `psp_quantity` INT(11) NOT NULL,
-  PRIMARY KEY (`psp_id`),
-  INDEX `fk_psp_ps` (`ps_id` ASC),
-  INDEX `fk_psp_part` (`part_id` ASC),
-  CONSTRAINT `fk_psp_ps`
+  PRIMARY KEY (`pl_id`),
+  INDEX `fk_plp_ps` (`ps_id` ASC),
+  CONSTRAINT `fk_plp_ps`
     FOREIGN KEY (`ps_id`)
-    REFERENCES `packingsheets`.`t_packingsheet` (`ps_id`),
-  CONSTRAINT `fk_psp_part`
+    REFERENCES `packingsheets`.`t_packingsheet` (`ps_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table `packingsheets`.`t_packinglist_part`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets`.`t_packinglist_part` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packinglist_part` (
+  `plp_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `pl_id` INT(11) NOT NULL,
+  `part_id` INT(11) NOT NULL,
+  `plp_quantity` INT(11) NOT NULL,
+  PRIMARY KEY (`plp_id`),
+  INDEX `fk_plp_pl` (`pl_id` ASC),
+  INDEX `fk_plp_part` (`part_id` ASC),
+  CONSTRAINT `fk_plp_pl`
+    FOREIGN KEY (`pl_id`)
+    REFERENCES `packingsheets`.`t_packinglist` (`pl_id`),
+  CONSTRAINT `fk_plp_part`
     FOREIGN KEY (`part_id`)
     REFERENCES `packingsheets`.`t_part` (`part_id`))
 ENGINE = InnoDB
