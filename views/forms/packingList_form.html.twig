@@ -1,0 +1,104 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+    <div class="well">
+        {{ form_start(packingListForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        	<ul class="parts" data-prototype="{{ form_widget(packingListForm.parts.vars.prototype)|e('html_attr') }}">
+            	{% for psPart in packingListForm.parts %}
+                    <li>{{ form_row(psPart.part_id) }} {{ form_row(psPart.quantity) }}</li>
+                {% endfor %}
+            </ul>
+        {{ form_end(packingListForm) }}
+    </div>
+    
+    <script>
+    
+    var $collectionHolder;
+
+ 	// setup an "add a part" link
+     var $addPartLink = $('<a href="#" class="add_part_link">Add a Part</a>');
+     var $newLinkLi = $('<li></li>').append($addPartLink);
+    
+     jQuery(document).ready(function() {
+
+         // Get the ul that holds the collection of parts
+         $collectionHolder = $('ul.parts');
+        
+         // add a delete link to all of the existing part form li elements
+         $collectionHolder.find('li').each(function() {
+            addPartFormDeleteLink($(this));
+         });
+    	    
+         // Get the ul that holds the collection of parts
+         //$collectionHolder = $('ul.parts');
+    
+         // add the "add a Part" anchor and li to the parts ul
+         $collectionHolder.append($newLinkLi);
+    
+         // count the current form inputs we have (e.g. 2), use that as the new
+         // index when inserting a new item (e.g. 2)
+         $collectionHolder.data('index', $collectionHolder.find(':input').length);
+    
+         $addPartLink.on('click', function(e) {
+             // prevent the link from creating a "#" on the URL
+             e.preventDefault();
+    
+             // add a new part form (see next code block)
+             addPartForm($collectionHolder, $newLinkLi);
+         });
+     });
+
+     function addPartForm($collectionHolder, $newLinkLi) {
+    	    // Get the data-prototype explained earlier
+    	    var prototype = $collectionHolder.data('prototype');
+
+    	    // get the new index
+    	    var index = $collectionHolder.data('index');
+
+    	    // Replace '__name__' in the prototype's HTML to
+    	    // instead be a number based on how many items we have
+    	    var newForm = prototype.replace(/__name__/g, index);
+
+    	    // increase the index with one for the next item
+    	    $collectionHolder.data('index', index + 1);
+
+    	    // Display the form in the page in an li, before the "Add a Part" link li
+    	    var $newFormLi = $('<li></li>').append(newForm);
+    	    $newLinkLi.before($newFormLi);
+
+    	 	// add a delete link to the new form
+    	    addPartFormDeleteLink($newFormLi);
+    	}
+
+	function addPartFormDeleteLink($partFormLi) {
+	    var $removeFormA = $('<a href="#">Delete this part</a>');
+	    $partFormLi.append($removeFormA);
+
+	    $removeFormA.on('click', function(e) {
+	        // prevent the link from creating a "#" on the URL
+	        e.preventDefault();
+
+	        // remove the li for the part form
+	        $partFormLi.remove();
+	    });
+	}
+ 	
+    </script>
+{% endblock %}
+
+
+
+

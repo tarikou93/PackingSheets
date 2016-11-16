@@ -54,10 +54,27 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
 
 
  //Packing list
- $app->get('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
+ $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
 	 $packingList = $app['dao.packingList']->findByPackingSheet($id);
-
-	 return $app['twig']->render('test.html.twig', array('packingList' => $packingList));
+	 $parts = $app['dao.part']->findAll();
+	 $packingListForm = $app['form.factory']->create(PackingListType::class, $packingList, array('parts' => $parts));
+	 $packingListForm->handleRequest($request);
+	 
+	 
+	 if ($packingListForm->isSubmitted() && $packingListForm->isValid()) {
+	 	//$selectedParts = $packingListForm->get('parts')->getData();
+	 	$app['dao.packingList']->save($packingList);
+ 		
+	 	$app['session']->getFlashBag()->add('success', 'PackingList succesfully updated.');
+	 	var_dump($packingList);
+	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id)));
+	 }
+	 return $app['twig']->render('/forms/packingList_form.html.twig', array(
+	 		'title' => 'Edit Part',
+	 		'packingList' => $packingList,
+	 		'parts' => $parts,
+	 		'packingListForm' => $packingListForm->createView()));
+		
  })->bind('sheetList');
  
 

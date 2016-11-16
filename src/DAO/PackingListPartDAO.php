@@ -80,11 +80,15 @@ class PackingListPartDAO extends DAO
 	/**
 	 * Removes a PackingListPart from the database.
 	 *
-	 * @param integer $id The PackinhSheetPart id.
+	 * @param integer $id The PackingSheetPart id.
 	 */
 	public function delete($id) {
-		//Delete the contact
+		//Delete the PackingSheetPart
 		$this->getDb()->delete('t_packinglist_part', array('plp_id' => $id));
+	}
+	
+	public function deleteAll($plId){
+		$this->getDb()->delete('t_packinglist_part', array('pl_id' => $plId));
 	}
 
 	/**

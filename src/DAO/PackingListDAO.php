@@ -57,10 +57,17 @@ class PackingListDAO extends DAO
 	 * @param \PackingSheets\Domain\PackingSheetPart $psPart The PackingSheetPart to save
 	 */
 	public function save(PackingList $packList) {
-			
+		
+		$parts = $packList->getParts();
+		$this->packingListPartDAO->deleteAll($packList->getId());
+		
+		foreach($parts as $part){
+			$part->setId(null);
+			$this->packingListPartDAO->save($part, $packList->getId());
+		}
+
 		$packListData = array(
-				'ps_id' => $packList->getPsId()->getId(),
-				'parts' => $packList->getParts(),
+				'ps_id' => $packList->getPsId(),
 		);
 
 		if ($packList->getId()) {

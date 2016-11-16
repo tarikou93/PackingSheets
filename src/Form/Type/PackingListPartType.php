@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormBuilderInterface;
 
 
-class PackingSheetPartType extends AbstractType
+class PackingListPartType extends AbstractType
 {
 
 	public function buildform(FormBuilderInterface $builder, array $options)
@@ -19,7 +19,7 @@ class PackingSheetPartType extends AbstractType
 		->add('part_id', ChoiceType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'pn',
-				'choices' => $options['parts'],
+				'choices' => $options['parts_list'],
 				'choice_value' => 'id',
 				'multiple' => false))
 										
@@ -32,11 +32,11 @@ class PackingSheetPartType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheetPart', 'parts' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingListPart', 'parts_list' => null))
 		;
 	}
 
 	public function getName() {
-		return 'packingSheetPart';
+		return 'packingListPart';
 	}
 }

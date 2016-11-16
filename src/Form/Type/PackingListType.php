@@ -15,20 +15,22 @@ class PackingListType extends AbstractType
 
 		$builder
 		
-		->add('psParts', CollectionType::class, array(
-				'entry_type' => PackingSheetPartType::class,
+		->add('parts', CollectionType::class, array(
+				'entry_type' => PackingListPartType::class,
+				'entry_options'  => array(
+        			'parts_list'  => $options['parts']
+    			),
 				'allow_add' => true,
-				'allow_delete' => true
+				'allow_delete' => true,
+				'by_reference' => false,
 		))
 		
 		->add('save', SubmitType::class);
-
-
 	}
 	
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => array('PackingSheets\Domain\PackingSheetPart'), 'parts' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingList', 'parts' => null))
 		;
 	}
 	

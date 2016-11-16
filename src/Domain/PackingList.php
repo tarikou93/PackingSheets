@@ -49,6 +49,20 @@ class PackingList
 	public function setParts($parts) {
 		$this->parts = $parts;
 	}
+	
+	public function addPart(PackingListPart $psPart)
+	{
+		if (array_search($psPart, $this->parts) == false) {
+			array_push($this->parts, $psPart);
+		}	
+	}
+	
+	public function removePart(PackingListPart $psPart)
+	{
+		if (($key = array_search($psPart, $this->parts)) !== false) {
+			unset($this->parts[$key]);
+		}
+	}
 
 }
 
