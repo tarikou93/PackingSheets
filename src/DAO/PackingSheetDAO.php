@@ -136,6 +136,15 @@ class PackingSheetDAO extends DAO
     public function setImputDAO(ImputDAO $imputDAO) {
         $this->imputDAO = $imputDAO;
     }
+    
+    /**
+     * @var \PackingSheets\DAO\PackingDAO
+     */
+    private $packingDAO;
+    
+    public function setPackingDAO(PackingDAO $packingDAO) {
+    	$this->packingDAO = $packingDAO;
+    }
 
     /**
      * Return a list of all PackingSheets, sorted by date (most recent first).
@@ -277,6 +286,73 @@ class PackingSheetDAO extends DAO
        else
            throw new \Exception("No PackingSheet matching id " . $id);
    }
+   
+   /**
+    * Add a Packing into the database.
+    *
+    * @param \PackingSheets\Domain\Packing $pack The Packing to save
+    */
+   public function save(PackingSheet $packingSheet) {
+   
+   	$packings = $packingSheet->getPackings();
+   	$this->packingDAO->deleteAll($packingSheet->getId());
+   
+   	foreach($packings as $pack){
+   		$pack->setId(null);
+   		$this->packingDAO->save($pack, $packingSheet->getId());
+   	}
+   
+   	$packingSheetData = array(
+   			'ps_id' => $packingSheet->getPsId(),
+   			'ps_ref' => $packingSheet->getRef(),
+   			'group_id' => $packingSheet->getGroup_id()->getId(),
+   			'consignedAddress_id' => $packingSheet->getConsignedAddress_id()->getId(),
+   			'deliveryAddress_id' => $packingSheet->getDeliveryAddress_id()->getId(),
+   			'consignedContact_id' => $packingSheet->getConsignedContact_id()->getId(),
+   			'deliveryContact_id' => $packingSheet->getDeliveryContact_id()->getId(),
+   			'service_id' => $packingSheet->getService_id()->getId(),
+   			'content_id' => $packingSheet->getContent_id()->getId(),
+   			'priority_id' => $packingSheet->getPriority_id()->getId(),
+   			'shipper_id' => $packingSheet->getShipper_id()->getId(),
+   			'ps_yrOrder' => $packingSheet->getYROrder(),
+   			'ps_AWB' => $packingSheet->getAWB(),
+   			'ps_dateIssue' => $packingSheet->getDateIssue(),
+   			'ps_collect' => $packingSheet->getCollect(),
+   			'autority_id' => $packingSheet->getAutority_id()->getId(),
+   			'customStatus' => $packingSheet->getCustomStatus_id()->getId(),
+   			'incType_id' => $packingSheet->getIncType_id()->getId(),
+   			'incLoc_id' => $packingSheet->getIncLoc_id()->getId(),
+   			'currency_id' => $packingSheet->getCurrency_id()->getId(),
+   			'imput_id' => $packingSheet->getImput_id()->getId(),
+   			'ps_nbrPieces' => $packingSheet->getNbrPieces(),
+   			'ps_Weight' => $packingSheet->getWeight(),
+   			'ps_totalPrice' => $packingSheet->getTotalPrice(),
+   			'ps_signed' => $packingSheet->getSigned(),
+   			'ps_printed' => $packingSheet->getPrinted(),
+   			'ps_memo' => $packingSheet->getMemo(),
+   	);
+   
+   	if ($packingSheet->getId()) {
+   		// The PackingSheet has already been saved : update it
+   		$this->getDb()->update('t_packingsheet', $packingSheetData, array('pack_id' => $packingSheet->getId()));
+   	} else {
+   		// The PackingSheetPart has never been saved : insert it
+   		$this->getDb()->insert('t_packingsheet', $packingSheetData);
+   		// Get the id of the newly created PackingSheetPart and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$packingSheet->setId($id);
+   	}
+   }
+   
+   /**
+    * Removes a Packing from the database.
+    *
+    * @param integer $id The Packing id.
+    */
+   public function delete($id) {
+   	//Delete the packing
+   	$this->getDb()->delete('t_packing', array('pack_id' => $id));
+   }
 
     /**
      * Creates a PackingSheet object based on a DB row.
@@ -397,6 +473,9 @@ class PackingSheetDAO extends DAO
             $imput = $this->imputDAO->find($imputId);
             $packingSheet->setImput_id($imput);
         }
+        
+        //Parts
+        $packingSheet->setPackings($this->packingDAO->findAllByPackingSheet($row['ps_id']));
 
         return $packingSheet;
     }

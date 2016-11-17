@@ -66,6 +66,13 @@ class Packing
      * @var integer
      */
     private $img;
+    
+    /**
+     * Associated PackingParts array.
+     *
+     * @var integer
+     */
+    private $parts;
 
     public function getId() {
         return $this->id;
@@ -137,5 +144,27 @@ class Packing
 
     public function setImg($img) {
         $this->img = $img;
+    }
+    
+    public function getParts() {
+    	return $this->parts;
+    }
+    
+    public function setParts($parts) {
+    	$this->parts = $parts;
+    }
+    
+    public function addPart(PackingPart $pkPart)
+    {
+    	if (array_search($pkPart, $this->parts) == false) {
+    		array_push($this->parts, $pkPart);
+    	}
+    }
+    
+    public function removePart(PackingPart $pkPart)
+    {
+    	if (($key = array_search($pkPart, $this->parts)) !== false) {
+    		unset($this->parts[$key]);
+    	}
     }
 }

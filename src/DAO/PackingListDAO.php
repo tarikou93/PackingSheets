@@ -8,7 +8,7 @@ class PackingListDAO extends DAO
 {
 
 	/**
-	 * @var \PackingPartSheets\DAO\PackingListPartDAO
+	 * @var \PackingSheets\DAO\PackingListPartDAO
 	 */
 	private $packingListPartDAO;
 

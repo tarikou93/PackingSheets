@@ -55,7 +55,7 @@ class PackingListPartDAO extends DAO
 	/**
 	 * Add a PackingSheetPart into the database.
 	 *
-	 * @param \PackingSheets\Domain\PackingSheetPart $psPart The PackingSheetPart to save
+	 * @param \PackingSheets\Domain\PackingListPart $plPart The PackingListPart to save
 	 */
 	public function save(PackingListPart $plPart, $Plid) {
 			
@@ -80,10 +80,10 @@ class PackingListPartDAO extends DAO
 	/**
 	 * Removes a PackingListPart from the database.
 	 *
-	 * @param integer $id The PackingSheetPart id.
+	 * @param integer $id The PackingListPart id.
 	 */
 	public function delete($id) {
-		//Delete the PackingSheetPart
+		//Delete the PackingListPart
 		$this->getDb()->delete('t_packinglist_part', array('plp_id' => $id));
 	}
 	

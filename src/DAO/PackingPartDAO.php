@@ -8,15 +8,6 @@ class PackingPartDAO extends DAO
 {
 
     /**
-     * @var \PackingPartSheets\DAO\PackingDAO
-     */
-    private $packingDAO;
-
-    public function setPackingDAO(PackingDAO $packingDAO) {
-        $this->packingDAO = $packingDAO;
-    }
-
-    /**
      * @var \PackingPartSheets\DAO\PartDAO
      */
     private $partDAO;
@@ -68,12 +59,8 @@ class PackingPartDAO extends DAO
      * @return array A list of all packingParts for the packing.
      */
     public function findAllByPacking($packingId) {
-        // The associated packing is retrieved only once
-        $packing = $this->packingDAO->find($packingId);
 
-        // pack_id is not selected by the SQL query
-        // The packing won't be retrieved during domain objet construction
-        $sql = "select pkp_id, part_id, pkp_quantity, pkp_origin from t_packing_part where pack_id=? order by pkp_id";
+        $sql = "select * from t_packing_part where pack_id=? order by pkp_id";
         $result = $this->getDb()->fetchAll($sql, array($packingId));
 
         // Convert query result to an array of domain objects
@@ -81,8 +68,6 @@ class PackingPartDAO extends DAO
         foreach ($result as $row) {
             $packingPartId = $row['pkp_id'];
             $packingPart = $this->buildDomainObject($row);
-            // The associated packing is defined for the constructed packing
-            $packingPart->setPackid($packing);
             $packingParts[$packingPartId] = $packingPart;
         }
         return $packingParts;
@@ -115,6 +100,46 @@ class PackingPartDAO extends DAO
          }
          return $packingParts;
      }
+     
+     /**
+      * Add a PackingPart into the database.
+      *
+      * @param \PackingSheets\Domain\PackingPart $pkPart The PackingPart to save
+      */
+     public function save(PackingPart $pkPart, $Pkid) {
+     		
+     	$pkPartData = array(
+     			'pack_id' => $Pkid,
+     			'part_id' => $pkPart->getPartid()->getId(),
+     			'pkp_quantity' => $pkPart->getQuantity(),
+     			'pkp_origin' => $pkPart->getOrigin(),
+     	);
+     
+     	if ($pkPart->getId()) {
+     		// The PackingListPart has already been saved : update it
+     		$this->getDb()->update('t_packing_part', $pkPartData, array('pkp_id' => $pkPart->getId()));
+     	} else {
+     		// The PackingListPart has never been saved : insert it
+     		$this->getDb()->insert('t_packing_part', $pkPartData);
+     		// Get the id of the newly created PackingListPart and set it on the entity.
+     		$id = $this->getDb()->lastInsertId();
+     		$pkPart->setId($id);
+     	}
+     }
+     
+     /**
+      * Removes a PackingPart from the database.
+      *
+      * @param integer $id The PackingPart id.
+      */
+     public function delete($id) {
+     	//Delete the PackingPart
+     	$this->getDb()->delete('t_packing_part', array('pkp_id' => $id));
+     }
+     
+     public function deleteAll($pkId){
+     	$this->getDb()->delete('t_packing_part', array('pack_id' => $pkId));
+     }
 
     /**
      * Creates a PackingPart object based on a DB row.
@@ -127,13 +152,7 @@ class PackingPartDAO extends DAO
         $packingPart->setId($row['pkp_id']);
         $packingPart->setQuantity($row['pkp_quantity']);
         $packingPart->setOrigin($row['pkp_origin']);
-
-        if (array_key_exists('pack_id', $row)) {
-            // Find and set the associated packingSheet
-            $packingId = $row['pack_id'];
-            $packing = $this->packingDAO->find($packingId);
-            $packingPart->setPackid($packing);
-        }
+        $packingPart->setPackid($row['pack_id']);
 
         if (array_key_exists('part_id', $row)) {
             // Find and set the associated packingSheet

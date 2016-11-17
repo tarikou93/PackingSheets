@@ -193,6 +193,13 @@ class PackingSheet
      */
     private $memo;
     
+    /**
+     * PackingSheet packings array.
+     *
+     * @var Packing array
+     */
+    private $packings;
+    
 
     public function getId() {
         return $this->id;
@@ -409,4 +416,27 @@ class PackingSheet
     public function setCollect($collect) {
         $this->collect = $collect;
     }
+    
+    public function getPackings() {
+    	return $this->packings;
+    }
+    
+    public function setPackings($packings) {
+    	$this->packings = $packings;
+    }
+    
+    public function addPacking(Packing $packing)
+    {
+    	if (array_search($packing, $this->packings) == false) {
+    		array_push($this->packings, $packing);
+    	}
+    }
+    
+    public function removePacking(Packing $packing)
+    {
+    	if (($key = array_search($packing, $this->packings)) !== false) {
+    		unset($this->packings[$key]);
+    	}
+    }
+    
 }

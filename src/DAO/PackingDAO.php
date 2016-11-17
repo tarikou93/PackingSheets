@@ -6,24 +6,23 @@ use PackingSheets\Domain\Packing;
 
 class PackingDAO extends DAO
 {
-
-    /**
-     * @var \PackingSheets\DAO\PackingSheetDAO
-     */
-    private $packingSheetDAO;
-
-    public function setPackingSheetDAO(PackingSheetDAO $packingSheetDAO) {
-        $this->packingSheetDAO = $packingSheetDAO;
-    }
-
-    /**
-     * @var \PackingSheets\DAO\PackTypeDAO
-     */
-    private $packTypeDAO;
-
-    public function setPackTypeDAO(PackTypeDAO $packTypeDAO) {
-        $this->packTypeDAO = $packTypeDAO;
-    }
+	/**
+	 * @var \PackingSheets\DAO\PackingPartDAO
+	 */
+	private $packingPartDAO;
+	
+	public function setPackingPartDAO(PackingPartDAO $packingPartDAO) {
+		$this->packingPartDAO = $packingPartDAO;
+	}
+	
+	/**
+	 * @var \PackingSheets\DAO\PackTypeDAO
+	 */
+	private $packTypeDAO;
+	
+	public function setPackTypeDAO(PackTypeDAO $packTypeDAO) {
+		$this->packTypeDAO = $packTypeDAO;
+	}
 
     /**
      * Return a list of all Packings, sorted by date (most recent first).
@@ -68,12 +67,8 @@ class PackingDAO extends DAO
      * @return array A list of all packings for the packingSheet.
      */
     public function findAllByPackingSheet($packingSheetId) {
-        // The associated packingSheet is retrieved only once
-        $packingSheet = $this->packingSheetDAO->find($packingSheetId);
-
-        // ps_id is not selected by the SQL query
-        // The packingSheet won't be retrieved during domain objet construction
-        $sql = "select pack_id, pack_netWeight, pack_grossWeight, pack_M1, pack_M2, pack_M3, packType_id, pack_img from t_packing where ps_id=? order by pack_id";
+        
+        $sql = "select * from t_packing where ps_id=? order by pack_id";
         $result = $this->getDb()->fetchAll($sql, array($packingSheetId));
 
         // Convert query result to an array of domain objects
@@ -82,10 +77,61 @@ class PackingDAO extends DAO
             $packId = $row['pack_id'];
             $packing = $this->buildDomainObject($row);
             // The associated packingSheet is defined for the constructed packing
-            $packing->setPSid($packingSheet);
             $packings[$packId] = $packing;
         }
         return $packings;
+    }
+    
+    /**
+     * Add a Packing into the database.
+     *
+     * @param \PackingSheets\Domain\Packing $pack The Packing to save
+     */
+    public function save(Packing $pack) {
+    
+    	$parts = $pack->getParts();
+    	$this->packingPartDAO->deleteAll($pack->getId());
+    
+    	foreach($parts as $part){
+    		$part->setId(null);
+    		$this->packingPartDAO->save($part, $pack->getId());
+    	}
+    
+    	$packData = array(
+    			'ps_id' => $pack->getPsId(),
+    			'pack_netWeight' => $pack->getNetWeight(),
+    			'pack_grossWeight' => $pack->getGrossWeight(),
+    			'pack_M1' => $pack->getM1(),
+    			'pack_M2' => $pack->getM2(),
+    			'pack_M3' => $pack->getM3(),
+    			'pack_img' => $pack->getImg(),
+    			'packType_id' => $pack->getPackTypeid()->getId(),
+    	);
+    
+    	if ($pack->getId()) {
+    		// The PackingSheetPart has already been saved : update it
+    		$this->getDb()->update('t_packing', $packData, array('pack_id' => $pack->getId()));
+    	} else {
+    		// The PackingSheetPart has never been saved : insert it
+    		$this->getDb()->insert('t_packing', $packData);
+    		// Get the id of the newly created PackingSheetPart and set it on the entity.
+    		$id = $this->getDb()->lastInsertId();
+    		$pack->setId($id);
+    	}
+    }
+    
+    /**
+     * Removes a Packing from the database.
+     *
+     * @param integer $id The Packing id.
+     */
+    public function delete($id) {
+    	//Delete the packing
+    	$this->getDb()->delete('t_packing', array('pack_id' => $id));
+    }
+    
+    public function deleteAll($psId){
+    	$this->getDb()->delete('t_packing', array('ps_id' => $psId));
     }
 
     /**
@@ -97,6 +143,7 @@ class PackingDAO extends DAO
     protected function buildDomainObject($row) {
         $packing = new Packing();
         $packing->setId($row['pack_id']);
+        $packing->setPSid($row['ps_id']);
         $packing->setNetWeight($row['pack_netWeight']);
         $packing->setGrossWeight($row['pack_grossWeight']);
         $packing->setM1($row['pack_M1']);
@@ -104,19 +151,16 @@ class PackingDAO extends DAO
         $packing->setM3($row['pack_M3']);
         $packing->setImg($row['pack_img']);
 
-        if (array_key_exists('ps_id', $row)) {
-            // Find and set the associated packingSheet
-            $packingSheetId = $row['ps_id'];
-            $packingSheet = $this->packingSheetDAO->find($packingSheetId);
-            $packing->setPSid($packingSheet);
-        }
-
+        //PackType
         if (array_key_exists('packType_id', $row)) {
-            // Find and set the associated packingSheet
-            $packTypeId = $row['packType_id'];
-            $packType = $this->packTypeDAO->find($packTypeId);
-            $packing->setPackTypeid($packType);
+        	// Find and set the associated packType
+        	$packTypeId = $row['packType_id'];
+        	$packType = $this->packTypeDAO->find($packTypeId);
+        	$packing->setPackTypeid($packType);
         }
+        
+        //Parts
+        $packing->setParts($this->packingPartDAO->findAllByPacking($row['pack_id']));
 
         return $packing;
     }
