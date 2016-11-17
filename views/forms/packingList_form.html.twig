@@ -14,14 +14,66 @@
         {% endfor %}
     {% endif %}
     
-    <div class="well">
-        {{ form_start(packingListForm, { 'attr': {'class': 'form-horizontal'} }) }}
-        	<ul class="parts" data-prototype="{{ form_widget(packingListForm.parts.vars.prototype)|e('html_attr') }}">
-            	{% for psPart in packingListForm.parts %}
-                    <li>{{ form_row(psPart.part_id) }} {{ form_row(psPart.quantity) }}</li>
-                {% endfor %}
-            </ul>
-        {{ form_end(packingListForm) }}
+    <div class="jumbotron vertical-center">
+        <div class="container-fluid">
+            <div class="container"><h2>Packing List <br>
+                    <small>PS {{ packingSheet.ref}} </small></h2>
+                <div class="col-md-4 col-md-offset-8 text-right">
+                	<div class="dropdown">
+                		<a href="{{ path('sheetDetails', { 'id': id }) }}"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-zoom-in"></span> Sheet </button></a>
+                      	<a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create a new Part </button></a>
+                    </div>
+                    <hr></hr>
+                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print Packing List </button></a>
+                </div>
+            </div>
+            <hr></hr>
+            <div class="container">
+            	<div class="well">
+                    {{ form_start(packingListForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                    	<ul class="parts" data-prototype="{{ form_widget(packingListForm.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+                        	{% for psPart in packingListForm.parts %}
+                        		<p>
+                            		<li style="list-style-type: none;">
+                                		<div class="form-group">
+                                            {{ form_label(psPart.part_id, null, { 'label': 'Part', 'label_attr':  {
+                                            'class': 'col-sm-4 control-label'
+                                            }}) }}
+                                            <div class="col-sm-6">
+                                                {{ form_errors(psPart.part_id) }}
+                                                {{ form_widget(psPart.part_id, {'attr':  {
+                                                'class': 'form-control'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(psPart.quantity, null, { 'label_attr':  {
+                                            'class': 'col-sm-4 control-label'
+                                            }}) }}
+                                            <div class="col-sm-6">
+                                                {{ form_errors(psPart.quantity) }}
+                                                {{ form_widget(psPart.quantity, {'attr':  {
+                                                'class': 'form-control'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </li>
+                                </p>
+                                <hr></hr>
+                            {% endfor %}
+                        </ul>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                {{ form_widget(packingListForm.save, {'attr':  {
+                                'class': 'btn btn-primary outline',
+                                'style':'display: block; margin: 0 auto;'
+                                }}) }}
+                            </div>
+                        </div>
+                    {{ form_end(packingListForm) }}
+                </div>
+            </div>
+    	</div>
     </div>
     
     <script>
@@ -29,7 +81,7 @@
     var $collectionHolder;
 
  	// setup an "add a part" link
-     var $addPartLink = $('<a href="#" class="add_part_link">Add a Part</a>');
+     var $addPartLink = $('<br/><a href="#" class="add_part_link"><button type="button" class="btn btn-success outline"><span class="glyphicon glyphicon-copy"></span> Add a Part </button></a>');
      var $newLinkLi = $('<li></li>').append($addPartLink);
     
      jQuery(document).ready(function() {
@@ -84,7 +136,7 @@
     	}
 
 	function addPartFormDeleteLink($partFormLi) {
-	    var $removeFormA = $('<a href="#">Delete this part</a>');
+	    var $removeFormA = $('<p><a href="#"><button type="button" class="btn btn-danger outline"><span class="glyphicon glyphicon-paste"></span> Delete this Part </button></a></p>');
 	    $partFormLi.append($removeFormA);
 
 	    $removeFormA.on('click', function(e) {

@@ -93,4 +93,8 @@ class Part
     public function setHSCode($hscode) {
         $this->hscode = $hscode;
     }
+    
+    public function getCompleteInfos(){
+    	return sprintf('Pn : %s | Sn : %s | Desc : %s | Price : %s | HScode : %s', $this->pn, $this->serial, $this->desc, $this->price, $this->hscode);
+    }
 }

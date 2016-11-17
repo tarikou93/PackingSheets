@@ -56,6 +56,7 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
  //Packing list
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
 	 $packingList = $app['dao.packingList']->findByPackingSheet($id);
+	 $packingSheet = $app['dao.packingSheet']->find($id);
 	 $parts = $app['dao.part']->findAll();
 	 $packingListForm = $app['form.factory']->create(PackingListType::class, $packingList, array('parts' => $parts));
 	 $packingListForm->handleRequest($request);
@@ -65,14 +66,16 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
 	 	//$selectedParts = $packingListForm->get('parts')->getData();
 	 	$app['dao.packingList']->save($packingList);
  		
-	 	$app['session']->getFlashBag()->add('success', 'PackingList succesfully updated.');
-	 	var_dump($packingList);
-	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id)));
+	 	$app['session']->getFlashBag()->add('success', 'Packing List succesfully updated.');
+	 	//var_dump($packingList);
+	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id, 'packingSheet' => $packingSheet)));
 	 }
 	 return $app['twig']->render('/forms/packingList_form.html.twig', array(
-	 		'title' => 'Edit Part',
+	 		'title' => 'Packing List',
 	 		'packingList' => $packingList,
 	 		'parts' => $parts,
+	 		'id' => $id,
+	 		'packingSheet' => $packingSheet,
 	 		'packingListForm' => $packingListForm->createView()));
 		
  })->bind('sheetList');

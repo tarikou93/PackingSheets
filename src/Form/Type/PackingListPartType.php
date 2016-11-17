@@ -18,7 +18,7 @@ class PackingListPartType extends AbstractType
 		$builder
 		->add('part_id', ChoiceType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
-				'choice_label' => 'pn',
+				'choice_label' => 'completeInfos',
 				'choices' => $options['parts_list'],
 				'choice_value' => 'id',
 				'multiple' => false))

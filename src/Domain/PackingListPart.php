@@ -63,5 +63,5 @@ class PackingListPart
 	public function setQuantity($quantity) {
 		$this->quantity = $quantity;
 	}
-
+	
 }
