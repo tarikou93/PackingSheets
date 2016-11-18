@@ -7,8 +7,8 @@ use PackingSheets\Form\Type\PartType;
 use PackingSheets\Form\Type\ContactTypeAdd;
 use PackingSheets\Form\Type\ContactTypeEdit;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use PackingSheets\Domain\PackingSheetPart;
 use PackingSheets\Form\Type\PackingListType;
+use PackingSheets\Form\Type\PackingSheetType;
 
 //use Symfony\Component\Form\Extension\Core\Type\FormType;
 // Home page
@@ -41,6 +41,7 @@ $app->get('/contacts', function () use ($app) {
     return $app['twig']->render('contacts.html.twig', array('contacts' => $contacts, 'codes' => $codes, 'searchTag' => $searchTag));
 })->bind('contacts');
 
+/*
 // PackingSheet details with Packings and detailed parts
 $app->get('/sheets/{id}', function ($id) use ($app) {
     $packingSheet = $app['dao.packingSheet']->find($id);
@@ -50,8 +51,36 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
     $Psid = $id;
     return $app['twig']->render('packingSheetDetails.html.twig', array('packingSheet' => $packingSheet, 'packings' => $packings, 'packingParts' => $packingParts, 
     		'Psid' => $Psid));
-})->bind('sheetDetails');
+})->bind('sheetDetails');*/
 
+//Packing Sheet
+$app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
+
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$parts = $app['dao.part']->findAll();
+	$packTypes = $app['dao.packType']->findAll();
+	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array('parts' => $parts, 'packTypes' => $packTypes));
+	$packingSheetForm->handleRequest($request);
+
+
+	if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
+		//$selectedParts = $packingListForm->get('parts')->getData();
+		$app['dao.packingSheet']->save($packingSheet);
+			
+		$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
+		//var_dump($packingList);
+		return $app->redirect($app['url_generator']->generate('sheetDetails', array('id' => $id, 'packingSheet' => $packingSheet)));
+	}
+	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
+			'title' => 'Packing Sheet',
+			'packingSheet' => $packingSheet,
+			'parts' => $parts,
+			'packTypes' => $packTypes,
+			'id' => $id,
+			'packingSheet' => $packingSheet,
+			'packingSheetForm' => $packingSheetForm->createView()));
+
+})->bind('sheetDetails');
 
  //Packing list
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	

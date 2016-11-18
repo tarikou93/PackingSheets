@@ -18,7 +18,8 @@ class PackingSheetType extends AbstractType
 		->add('packings', CollectionType::class, array(
 				'entry_type' => PackingType::class,
 				'entry_options'  => array(
-						'parts_list'  => $options['parts']
+						'parts_list'  => $options['parts'],
+						'packing_types' => $options['packTypes']
 				),
 				'allow_add' => true,
 				'allow_delete' => true,
@@ -30,7 +31,7 @@ class PackingSheetType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null))
 		;
 	}
 
