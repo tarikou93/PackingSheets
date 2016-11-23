@@ -1,4 +1,184 @@
-var $collectionHolder;
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+    <div class="jumbotron vertical-center">
+        <div class="container-fluid">
+            <div class="container"><h2>Packing Sheet <br>
+                    <small>PS {{ packingSheet.ref}} </small></h2>
+                <div class="col-md-4 col-md-offset-8 text-right">
+                	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
+                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                    <hr></hr>
+                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print Packing Sheet </button></a>
+                </div>
+            </div>
+            <hr></hr>
+            <div class="container">
+            	<div class="well">
+                    {{ form_start(packingSheetForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                    	<ul id="packings" class="packings" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+                    	{% set cptPack = 1 %}
+                    	{% if packingSheetForm.packings is empty %}
+                    		<div class="panel panel-warning">
+                              	<div class="panel-heading">Warning</div>
+                              	<div class="panel-body">No packings found for this Packing</div>
+                            </div>
+                    	{% else %}    	
+                            {% for pack in packingSheetForm.packings %}
+                        		<li style="list-style-type: none;" id="packing">
+                        			<p class="p-text-left"><h3>Packing {{ cptPack }}</h3></p>
+                            		<div class="form-group">
+                                        {{ form_label(pack.M1, null, {  'label': 'M1', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.M1) }}
+                                            {{ form_widget(pack.M1, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(pack.M2, null, {  'label': 'M2', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.M2) }}
+                                            {{ form_widget(pack.M2, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(pack.M3, null, {  'label': 'M3', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.M3) }}
+                                            {{ form_widget(pack.M3, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(pack.netWeight, null, {  'label': 'Net Weight', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.netWeight) }}
+                                            {{ form_widget(pack.netWeight, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(pack.grossWeight, null, { 'label': 'Gross Weight', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.grossWeight) }}
+                                            {{ form_widget(pack.grossWeight, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                               		<div class="form-group">
+                                        {{ form_label(pack.packType_id, null, { 'label': 'Type', 'label_attr':  {
+                                        'class': 'col-sm-4 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(pack.packType_id) }}
+                                            {{ form_widget(pack.packType_id, {'attr':  {
+                                            'class': 'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                            	</li>
+                            	<ul id="parts" class="parts" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+                                    {% set cptPart = 1 %}
+                                    {% if pack.parts is empty %}
+                                    	<div class="panel panel-warning">
+                                          <div class="panel-heading">Warning</div>
+                                          <div class="panel-body">No parts found for this Packing</div>
+                                        </div>
+                                    {% else %}
+                                        {% for part in pack.parts %}
+                                        	<li id="part">
+                                            	<div class="col-md-2"><h4>Part {{ cptPart }}</h4></div>
+                                            	<div class="form-group">
+                                                    {{ form_label(part.part_id, null, { 'label': ' ', 'label_attr':  {
+                                                    'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-10">
+                                                        {{ form_errors(part.part_id) }}
+                                                        {{ form_widget(part.part_id, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
+                                            	</div>
+                                            	<div class="form-group">
+                                                    {{ form_label(part.quantity, null, { 'label': 'Quantity', 'label_attr':  {
+                                                    'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-6">
+                                                        {{ form_errors(part.quantity) }}
+                                                        {{ form_widget(part.quantity, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
+                                            	</div>
+                                            	<div class="form-group">
+                                                    {{ form_label(part.origin, null, { 'label': 'Origin', 'label_attr':  {
+                                                    'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-6">
+                                                        {{ form_errors(part.origin) }}
+                                                        {{ form_widget(part.origin, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
+                                            	</div>
+                                            </li>
+                                        	{% set cptPart = cptPart + 1 %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            	<hr></hr>
+                                {% set cptPack = cptPack + 1 %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                {{ form_widget(packingSheetForm.save, {'attr':  {
+                                'class': 'btn btn-primary outline',
+                                'style':'display: block; margin: 0 auto;'
+                                }}) }}
+                            </div>
+                        </div>
+                        </ul>
+                    {{ form_end(packingSheetForm) }}
+            	</div>
+        	</div>
+		</div>
+	</div>
+    
+    <script>
+    
+    var $collectionHolder;
 
  	// setup an "add a packing" link
      var $addPackingLink = $('<br/><a href="#" class="add_packing_link"><button type="button" class="btn btn-success outline"><span class="glyphicon glyphicon-copy"></span> Add a Packing </button></a>');
@@ -10,7 +190,7 @@ var $collectionHolder;
          $collectionHolder = $('ul.packings');
         
          // add a delete link to all of the existing packing form li elements
-         $collectionHolder.find('li').each(function() {
+         $collectionHolder.find('li#packings').each(function() {
             addPackingFormDeleteLink($(this));
          });
     	    
@@ -67,85 +247,13 @@ var $collectionHolder;
 	        $packingFormLi.remove();
 	    });
 	}
-	
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// js/form.collection.js
-    function FormCollection(div_id)
-    {
-        // keep reference to self in all child functions
-        var self=this;
+ 	
+    </script>
+    </script>
+ 	
+   
+{% endblock %}
 
-        self.construct = function () {
-            // set some shortcuts
-            self.div = $('#'+div_id);
-            self.div.data('index', self.div.find(':input').length);
 
-            // add delete link to existing children
-            self.div.children().each(function() {
-                self.addDeleteLink($(this));
-            });
 
-            // add click event to the Add new button
-            self.div.next().on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
 
-                // add a new tag form (see next code block)
-                self.addNew();
-            });
-        };
-
-        /**
-         * onClick event handler -- adds a new input
-         */
-        self.addNew = function () {
-            // Get the data-prototype explained earlier
-            var prototype = self.div.data('prototype');
-
-            // get the new index
-            var index = self.div.data('index');
-
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            var newForm = prototype.replace(/__name__/g, index);
-
-            // increase the index with one for the next item
-            self.div.data('index', index + 1);
-
-            // Display the form in the page in an li, before the "Add a tag" link li
-            self.div.append($(newForm));
-
-            // add a delete link to the new form
-            self.addDeleteLink( $(self.div.children(':last-child')[0]) );
-
-            // not a very nice intergration.. but when creating stuff that has help icons, 
-            // the popovers will not automatically be instantiated
-            //initHelpPopovers();
-
-            return $(newForm);
-        };
-
-        /**
-         * add Delete icon after input
-         * @param Element row
-         */
-        self.addDeleteLink = function (row) {
-            var $removeFormA = $('<a href="#" class="btn btn-danger" tabindex="-1"><i class="entypo-trash"></i></a>');
-            $(row).find('select').after($removeFormA);
-            row.append($removeFormA);
-            $removeFormA.on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
-
-                // remove the li for the tag form
-                row.remove();
-            });
-        };
-
-        self.construct();
-    }
-
-    new FormCollection('packings');
-    new FormCollection('parts');

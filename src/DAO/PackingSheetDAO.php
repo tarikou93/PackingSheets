@@ -295,17 +295,55 @@ class PackingSheetDAO extends DAO
    public function save(PackingSheet $packingSheet) {
    
    	$packings = $packingSheet->getPackings();
-   	$this->packingDAO->deleteAll($packingSheet->getId());
-   
-   	foreach($packings as $pack){
-   		$pack->setId(null);
-   		$this->packingDAO->save($pack, $packingSheet->getId());
+   	//var_dump($packings);exit;
+   		
+   	$sql = "select * from t_packing where ps_id=?";
+   	$result = $this->getDb()->fetchAll($sql, array($packingSheet->getId()));
+   	 
+   	$packingsDbini = array();
+   	foreach ($result as $row) {
+   		$packingId = $row['pack_id'];
+   		$packingsDbini[$packingId] = $this->packingDAO->buildDomainObject($row);
    	}
-   
+   	
+   	if(!empty($packings)){
+   		   		
+   		foreach($packings as $pack){
+   			$this->packingDAO->save($pack, $packingSheet->getId());
+   		}
+   		
+   		$sql = "select * from t_packing where ps_id=?";
+   		$result = $this->getDb()->fetchAll($sql, array($packingSheet->getId()));
+   		
+   		$packingsDb = array();
+   		foreach ($result as $row) {
+   			$packingId = $row['pack_id'];
+   			$packingsDb[$packingId] = $this->packingDAO->buildDomainObject($row);
+   		}
+   		
+   		//var_dump($packingsDb);exit;
+   		 
+   		$packsDbToDelete = array();
+   		foreach($packingsDb as $packDb){
+   			if (!isset($packings[$packDb->getId()]))
+   			{
+   				array_push($packsDbToDelete, $packDb);
+   				$this->packingDAO->delete($packDb->getId());
+   			}
+   		}
+   		var_dump($packsDbToDelete);exit;
+   	
+   	}
+   	else{
+   		foreach($packingsDbini as $packDb){
+   			$this->packingDAO->delete($packDb->getId());
+   		}
+   	}
+   	
    	$packingSheetData = array(
-   			'ps_id' => $packingSheet->getPsId(),
+   			'ps_id' => $packingSheet->getId(),
    			'ps_ref' => $packingSheet->getRef(),
-   			'group_id' => $packingSheet->getGroup_id()->getId(),
+   			'group_id' => $packingSheet->getGroup_id(),
    			'consignedAddress_id' => $packingSheet->getConsignedAddress_id()->getId(),
    			'deliveryAddress_id' => $packingSheet->getDeliveryAddress_id()->getId(),
    			'consignedContact_id' => $packingSheet->getConsignedContact_id()->getId(),
@@ -319,7 +357,7 @@ class PackingSheetDAO extends DAO
    			'ps_dateIssue' => $packingSheet->getDateIssue(),
    			'ps_collect' => $packingSheet->getCollect(),
    			'autority_id' => $packingSheet->getAutority_id()->getId(),
-   			'customStatus' => $packingSheet->getCustomStatus_id()->getId(),
+   			'customStatus_id' => $packingSheet->getCustomStatus_id()->getId(),
    			'incType_id' => $packingSheet->getIncType_id()->getId(),
    			'incLoc_id' => $packingSheet->getIncLoc_id()->getId(),
    			'currency_id' => $packingSheet->getCurrency_id()->getId(),
@@ -334,7 +372,7 @@ class PackingSheetDAO extends DAO
    
    	if ($packingSheet->getId()) {
    		// The PackingSheet has already been saved : update it
-   		$this->getDb()->update('t_packingsheet', $packingSheetData, array('pack_id' => $packingSheet->getId()));
+   		$this->getDb()->update('t_packingsheet', $packingSheetData, array('ps_id' => $packingSheet->getId()));
    	} else {
    		// The PackingSheetPart has never been saved : insert it
    		$this->getDb()->insert('t_packingsheet', $packingSheetData);
@@ -474,7 +512,7 @@ class PackingSheetDAO extends DAO
             $packingSheet->setImput_id($imput);
         }
         
-        //Parts
+        //Packings
         $packingSheet->setPackings($this->packingDAO->findAllByPackingSheet($row['ps_id']));
 
         return $packingSheet;

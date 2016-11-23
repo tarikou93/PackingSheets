@@ -190,6 +190,13 @@ h2 {
 	padding: 3px 12px;
 }
 
+.btn-warning.outline {
+	border: 2px solid #ffbb33;
+	color: #ffbb33;
+	background: none;
+	padding: 3px 12px;
+}
+
 .p-text-left {
   text-align:left;
 }

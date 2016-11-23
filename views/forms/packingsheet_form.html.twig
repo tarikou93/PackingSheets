@@ -34,10 +34,10 @@
                     	{% set cptPack = 1 %}
                     	{% if packingSheetForm.packings is empty %}
                     		<div class="panel panel-warning">
-                              	<div class="panel-heading">Warning</div>
-                              	<div class="panel-body">No packings found for this Packing</div>
+                              	<div class="panel-heading">No packings found for this Packing Sheet</div>
                             </div>
-                    	{% else %}    	
+                    	{% else %}
+                    		{% spaceless %}    	
                             {% for pack in packingSheetForm.packings %}
                         		<li style="list-style-type: none;" id="packing">
                         			<p class="p-text-left"><h3>Packing {{ cptPack }}</h3></p>
@@ -107,60 +107,81 @@
                                             }}) }}
                                         </div>
                                     </div>
+                                    <div class="panel-group">
+                                      	<div class="panel panel-default">
+                                        	<div class="panel-heading">
+                                              	<h4 class="panel-title">
+                                                	<a data-toggle="collapse" href="#collapse{{ pack.vars.value.id }}">Parts</a>
+                                              	</h4>
+                                        	</div>
+                                        	<div id="collapse{{ pack.vars.value.id }}" class="panel-collapse collapse">
+                                              	<div class="panel-body">
+                                              		<ul id="parts" class="parts" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+                                                        {% set cptPart = 1 %}
+                                                        {% if pack.parts is empty %}
+                                                        	<div class="panel panel-warning">
+                                                              <div class="panel-heading">No parts found for this Packing</div>
+                                                            </div>
+                                                        {% else %}
+                                                            {% for part in pack.parts %}
+                                                            	<li id="part">
+                                                                	<div class="col-md-2"><h4>Part {{ cptPart }}</h4></div>
+                                                                	{% set cptPart = cptPart + 1 %}
+                                                                	<div class="form-group">
+                                                                        {{ form_label(part.part_id, null, { 'label': ' ', 'label_attr':  {
+                                                                        'class': 'col-sm-4 control-label'
+                                                                        }}) }}
+                                                                        <div class="col-sm-10">
+                                                                            {{ form_errors(part.part_id) }}
+                                                                            {{ form_widget(part.part_id, {'attr':  {
+                                                                            'class': 'form-control',
+                                                                            'disabled':'disabled'
+                                                                            }}) }}
+                                                                        </div>
+                                                                	</div>
+                                                                	<div class="form-group">
+                                                                        {{ form_label(part.quantity, null, { 'label': 'Quantity', 'label_attr':  {
+                                                                        'class': 'col-sm-4 control-label'
+                                                                        }}) }}
+                                                                        <div class="col-sm-6">
+                                                                            {{ form_errors(part.quantity) }}
+                                                                            {{ form_widget(part.quantity, {'attr':  {
+                                                                            'class': 'form-control',
+                                                                            'disabled':'disabled'
+                                                                            }}) }}
+                                                                        </div>
+                                                                	</div>
+                                                                	<div class="form-group">
+                                                                        {{ form_label(part.origin, null, { 'label': 'Origin', 'label_attr':  {
+                                                                        'class': 'col-sm-4 control-label'
+                                                                        }}) }}
+                                                                        <div class="col-sm-6">
+                                                                            {{ form_errors(part.origin) }}
+                                                                            {{ form_widget(part.origin, {'attr':  {
+                                                                            'class': 'form-control',
+                                                                            'disabled':'disabled'
+                                                                            }}) }}
+                                                                        </div>
+                                                                	</div>
+                                                                </li>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </ul>
+                                              	</div>
+                                             	<div class="panel-footer">
+                                             		<a href="#" class=""><button type="button" class="btn btn-warning outline"><span class="glyphicon glyphicon-sort"></span> Edit Parts </button></a>
+                                             	</div>
+                                        	</div>
+                                      	</div>
+                                    </div>
                             	</li>
-                            	<ul id="parts" class="parts" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
-                                    {% set cptPart = 1 %}
-                                    {% if pack.parts is empty %}
-                                    	<div class="panel panel-warning">
-                                          <div class="panel-heading">Warning</div>
-                                          <div class="panel-body">No parts found for this Packing</div>
-                                        </div>
-                                    {% else %}
-                                        {% for part in pack.parts %}
-                                        	<li id="part">
-                                            	<div class="col-md-2"><h4>Part {{ cptPart }}</h4></div>
-                                            	<div class="form-group">
-                                                    {{ form_label(part.part_id, null, { 'label': ' ', 'label_attr':  {
-                                                    'class': 'col-sm-4 control-label'
-                                                    }}) }}
-                                                    <div class="col-sm-10">
-                                                        {{ form_errors(part.part_id) }}
-                                                        {{ form_widget(part.part_id, {'attr':  {
-                                                        'class': 'form-control'
-                                                        }}) }}
-                                                    </div>
-                                            	</div>
-                                            	<div class="form-group">
-                                                    {{ form_label(part.quantity, null, { 'label': 'Quantity', 'label_attr':  {
-                                                    'class': 'col-sm-4 control-label'
-                                                    }}) }}
-                                                    <div class="col-sm-6">
-                                                        {{ form_errors(part.quantity) }}
-                                                        {{ form_widget(part.quantity, {'attr':  {
-                                                        'class': 'form-control'
-                                                        }}) }}
-                                                    </div>
-                                            	</div>
-                                            	<div class="form-group">
-                                                    {{ form_label(part.origin, null, { 'label': 'Origin', 'label_attr':  {
-                                                    'class': 'col-sm-4 control-label'
-                                                    }}) }}
-                                                    <div class="col-sm-6">
-                                                        {{ form_errors(part.origin) }}
-                                                        {{ form_widget(part.origin, {'attr':  {
-                                                        'class': 'form-control'
-                                                        }}) }}
-                                                    </div>
-                                            	</div>
-                                            </li>
-                                        	{% set cptPart = cptPart + 1 %}
-                                        {% endfor %}
-                                    {% endif %}
-                                </ul>
                             	<hr></hr>
                                 {% set cptPack = cptPack + 1 %}
                             {% endfor %}
+                            {% endspaceless %}
                         {% endif %}
+                        </ul>
+                        <hr></hr>
                         <div class="form-group">
                             <div class="col-sm-4">
                                 {{ form_widget(packingSheetForm.save, {'attr':  {
@@ -169,7 +190,6 @@
                                 }}) }}
                             </div>
                         </div>
-                        </ul>
                     {{ form_end(packingSheetForm) }}
             	</div>
         	</div>
@@ -188,17 +208,10 @@
 
          // Get the ul that holds the collection of packings
          $collectionHolder = $('ul.packings');
-
-         console.log($collectionHolder.find('li#packing'));
         
          // add a delete link to all of the existing packing form li elements
          $collectionHolder.find('li#packing').each(function() {
             addPackingFormDeleteLink($(this));
-         });
-
-      // add a delete link to all of the existing packing form li elements
-         $collectionHolder.find('li#part').each(function() {
-            addPartFormDeleteLink($(this));
          });
     	    
          // Get the ul that holds the collection of packings
@@ -254,20 +267,8 @@
 	        $packingFormLi.remove();
 	    });
 	}
-
-	function addPartFormDeleteLink($partFormLi) {
-	    var $removeFormA = $('<p><a href="#"><button type="button" class="btn btn-danger outline"><span class="glyphicon glyphicon-paste"></span> Delete this Part </button></a></p>');
-	    $partFormLi.append($removeFormA);
-
-	    $removeFormA.on('click', function(e) {
-	        // prevent the link from creating a "#" on the URL
-	        e.preventDefault();
-
-	        // remove the li for the packing form
-	        $partFormLi.remove();
-	    });
-	}
  	
+    </script>
     </script>
  	
    

@@ -19,11 +19,13 @@ class PackingSheetType extends AbstractType
 				'entry_type' => PackingType::class,
 				'entry_options'  => array(
 						'parts_list'  => $options['parts'],
-						'packing_types' => $options['packTypes']
+						'packing_types' => $options['packTypes'],
+						'label' => false
 				),
 				'allow_add' => true,
 				'allow_delete' => true,
 				'by_reference' => false,
+				'label' => false,
 		))
 
 		->add('save', SubmitType::class);

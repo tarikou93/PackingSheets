@@ -21,7 +21,9 @@ class PackingPartType extends AbstractType
 				'choice_label' => 'completeInfos',
 				'choices' => $options['parts_list'],
 				'choice_value' => 'id',
-				'multiple' => false))
+				'multiple' => false,
+				'label' => false,
+		))
 
 				->add('quantity', TextType::class, array(
 						'constraints' => array(new Assert\NotBlank(),

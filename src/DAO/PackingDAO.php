@@ -87,24 +87,47 @@ class PackingDAO extends DAO
      *
      * @param \PackingSheets\Domain\Packing $pack The Packing to save
      */
-    public function save(Packing $pack) {
-    
+    public function save(Packing $pack, $psId) {
+    	
     	$parts = $pack->getParts();
-    	$this->packingPartDAO->deleteAll($pack->getId());
-    
-    	foreach($parts as $part){
-    		$part->setId(null);
-    		$this->packingPartDAO->save($part, $pack->getId());
+    	
+    	$sql = "select * from t_packing_part where pack_id=?";
+    	$result = $this->getDb()->fetchAll($sql, array($pack->getId()));
+    	 
+    	$partsDb = array();
+    	foreach ($result as $row) {
+    		$partId = $row['pkp_id'];
+    		$partsDb[$partId] = $this->packingPartDAO->buildDomainObject($row);
     	}
+    	
+    	if(!empty($parts)){
+    		 
+    		foreach($parts as $part){
+    			$this->packingPartDAO->save($part, $pack->getId());
+    		}
+    	
+    		foreach($partsDb as $partDb){
+    			if (!isset($parts[$partDb->getId()])) {
+    				$this->packingPartDAO->delete($partDb->getId());
+    			}
+    		}
+    	
+    	}
+    	else{
+    		foreach($partsDb as $partDb){
+    			$this->packingPartDAO->delete($partDb->getId());
+    		}
+    	}
+    	
     
     	$packData = array(
-    			'ps_id' => $pack->getPsId(),
+    			'ps_id' => $psId,
     			'pack_netWeight' => $pack->getNetWeight(),
     			'pack_grossWeight' => $pack->getGrossWeight(),
     			'pack_M1' => $pack->getM1(),
     			'pack_M2' => $pack->getM2(),
     			'pack_M3' => $pack->getM3(),
-    			'pack_img' => $pack->getImg(),
+    			'pack_img' => "packing1.jpg",
     			'packType_id' => $pack->getPackTypeid()->getId(),
     	);
     
@@ -120,6 +143,7 @@ class PackingDAO extends DAO
     	}
     }
     
+    
     /**
      * Removes a Packing from the database.
      *
@@ -127,6 +151,7 @@ class PackingDAO extends DAO
      */
     public function delete($id) {
     	//Delete the packing
+    	$this->packingPartDAO->deleteAll($id);
     	$this->getDb()->delete('t_packing', array('pack_id' => $id));
     }
     

@@ -64,7 +64,8 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 
 
 	if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
-		//$selectedParts = $packingListForm->get('parts')->getData();
+		
+		//$selectedPackings = $packingSheetForm->get('packings')->getData();
 		$app['dao.packingSheet']->save($packingSheet);
 			
 		$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
@@ -73,7 +74,6 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 	}
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet',
-			'packingSheet' => $packingSheet,
 			'parts' => $parts,
 			'packTypes' => $packTypes,
 			'id' => $id,
@@ -81,6 +81,37 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 			'packingSheetForm' => $packingSheetForm->createView()));
 
 })->bind('sheetDetails');
+
+/*
+//Packing Edition
+$app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, $packingid) use ($app) {
+
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$packing = $packingSheet->packingDAO->find($packingid);
+	$parts = $app['dao.part']->findAll();
+	$packTypes = $app['dao.packType']->findAll();
+	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts' => $parts, 'packTypes' => $packTypes));
+	$packingForm->handleRequest($request);
+
+
+	if ($packingForm->isSubmitted() && $packingForm->isValid()) {
+		//$selectedParts = $packingListForm->get('parts')->getData();
+		$app['dao.packing']->save($packing);
+			
+		$app['session']->getFlashBag()->add('success', 'Packing succesfully updated.');
+		//var_dump($packingList);
+		return $app->redirect($app['url_generator']->generate('sheetDetails', array('id' => $id, 'packingSheet' => $packingSheet)));
+	}
+	return $app['twig']->render('/forms/packing_form.html.twig', array(
+			'title' => 'Packing',
+			'parts' => $parts,
+			'packTypes' => $packTypes,
+			'id' => $id,
+			'packingid' => $packingid,
+			'packingSheet' => $packingSheet,
+			'packingForm' => $packingForm->createView()));
+
+})->bind('packingDetails');*/
 
  //Packing list
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
@@ -109,7 +140,6 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 		
  })->bind('sheetList');
  
-
 // Logout
 $app->get('/auth/logout', function () use ($app) {
     //return $app['twig']->render('auth/login.html.twig');
