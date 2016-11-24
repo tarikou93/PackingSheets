@@ -106,10 +106,10 @@ class PackingPartDAO extends DAO
       *
       * @param \PackingSheets\Domain\PackingPart $pkPart The PackingPart to save
       */
-     public function save(PackingPart $pkPart, $Pkid) {
+     public function save(PackingPart $pkPart) {
      		
      	$pkPartData = array(
-     			'pack_id' => $Pkid,
+     			'pack_id' => $pkPart->getPackid(),
      			'part_id' => $pkPart->getPartid()->getId(),
      			'pkp_quantity' => $pkPart->getQuantity(),
      			'pkp_origin' => $pkPart->getOrigin(),

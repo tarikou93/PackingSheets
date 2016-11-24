@@ -87,41 +87,56 @@ class PackingDAO extends DAO
      *
      * @param \PackingSheets\Domain\Packing $pack The Packing to save
      */
-    public function save(Packing $pack, $psId) {
+    public function save(Packing $pack) {
     	
     	$parts = $pack->getParts();
     	
     	$sql = "select * from t_packing_part where pack_id=?";
     	$result = $this->getDb()->fetchAll($sql, array($pack->getId()));
     	 
-    	$partsDb = array();
+    	$partsDbini = array();
     	foreach ($result as $row) {
     		$partId = $row['pkp_id'];
-    		$partsDb[$partId] = $this->packingPartDAO->buildDomainObject($row);
+    		$partsDbini[$partId] = $this->packingPartDAO->buildDomainObject($row);
     	}
     	
     	if(!empty($parts)){
     		 
     		foreach($parts as $part){
-    			$this->packingPartDAO->save($part, $pack->getId());
+    			$part->setPackid($pack->getId());
+    			$this->packingPartDAO->save($part);
     		}
-    	
-    		foreach($partsDb as $partDb){
-    			if (!isset($parts[$partDb->getId()])) {
-    				$this->packingPartDAO->delete($partDb->getId());
+    		 
+    		$sql = "select * from t_packing_part where pack_id=?";
+    		$result = $this->getDb()->fetchAll($sql, array($pack->getId()));
+    		 
+    		//var_dump($result);
+    		//var_dump($packings);
+    		
+    		foreach($result as $partDb){
+    			foreach($parts as $part){
+    				$del =true;
+    				if ($partDb['pkp_id'] === $part->getId())
+    				{
+    					$del = false;
+    					break;
+    				}
+    			}
+    			if($del){
+    				$this->packingPartDAO->delete($partDb['pkp_id']);
     			}
     		}
     	
     	}
     	else{
-    		foreach($partsDb as $partDb){
+    		foreach($partsDbini as $partDb){
     			$this->packingPartDAO->delete($partDb->getId());
     		}
     	}
     	
     
     	$packData = array(
-    			'ps_id' => $psId,
+    			'ps_id' => $pack->getPSid(),
     			'pack_netWeight' => $pack->getNetWeight(),
     			'pack_grossWeight' => $pack->getGrossWeight(),
     			'pack_M1' => $pack->getM1(),

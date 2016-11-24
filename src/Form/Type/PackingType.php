@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class PackingType extends AbstractType
@@ -21,7 +22,8 @@ class PackingType extends AbstractType
 		->add('parts', CollectionType::class, array(
 				'entry_type' => PackingPartType::class,
 				'entry_options'  => array(
-						'parts_list'  => $options['parts_list']
+						'parts_list'  => $options['parts_list'],
+						'label' => false
 				),
 				'allow_add' => true,
 				'allow_delete' => true,
@@ -49,7 +51,9 @@ class PackingType extends AbstractType
 				'choice_label' => 'label',
 				'choices' => $options['packing_types'],
 				'choice_value' => 'id',
-				'multiple' => false));
+				'multiple' => false))
+		
+		->add('save', SubmitType::class);
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {

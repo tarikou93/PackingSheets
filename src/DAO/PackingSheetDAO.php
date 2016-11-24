@@ -309,30 +309,29 @@ class PackingSheetDAO extends DAO
    	if(!empty($packings)){
    		   		
    		foreach($packings as $pack){
-   			$this->packingDAO->save($pack, $packingSheet->getId());
+   			$pack->setPSid($packingSheet->getId());
+   			$this->packingDAO->save($pack);
    		}
    		
    		$sql = "select * from t_packing where ps_id=?";
    		$result = $this->getDb()->fetchAll($sql, array($packingSheet->getId()));
    		
-   		$packingsDb = array();
-   		foreach ($result as $row) {
-   			$packingId = $row['pack_id'];
-   			$packingsDb[$packingId] = $this->packingDAO->buildDomainObject($row);
-   		}
-   		
-   		//var_dump($packingsDb);exit;
+   		//var_dump($result);
+   		//var_dump($packings);
    		 
-   		$packsDbToDelete = array();
-   		foreach($packingsDb as $packDb){
-   			if (!isset($packings[$packDb->getId()]))
-   			{
-   				array_push($packsDbToDelete, $packDb);
-   				$this->packingDAO->delete($packDb->getId());
+   		foreach($result as $packDb){
+   			foreach($packings as $packing){
+   				$del =true;
+   				if ($packDb['pack_id'] === $packing->getId())
+   				{
+   					$del = false;
+   					break;
+   				}
+   			}
+   			if($del){
+   				$this->packingDAO->delete($packDb['pack_id']);
    			}
    		}
-   		var_dump($packsDbToDelete);exit;
-   	
    	}
    	else{
    		foreach($packingsDbini as $packDb){

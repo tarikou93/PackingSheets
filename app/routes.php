@@ -9,6 +9,7 @@ use PackingSheets\Form\Type\ContactTypeEdit;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use PackingSheets\Form\Type\PackingListType;
 use PackingSheets\Form\Type\PackingSheetType;
+use PackingSheets\Form\Type\PackingType;
 
 //use Symfony\Component\Form\Extension\Core\Type\FormType;
 // Home page
@@ -82,15 +83,15 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 
 })->bind('sheetDetails');
 
-/*
+
 //Packing Edition
 $app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, $packingid) use ($app) {
 
 	$packingSheet = $app['dao.packingSheet']->find($id);
-	$packing = $packingSheet->packingDAO->find($packingid);
-	$parts = $app['dao.part']->findAll();
-	$packTypes = $app['dao.packType']->findAll();
-	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts' => $parts, 'packTypes' => $packTypes));
+	$packing = $app['dao.packing']->find($packingid);
+	$parts_list = $app['dao.part']->findAll();
+	$packing_types = $app['dao.packType']->findAll();
+	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts_list' => $parts_list, 'packing_types' => $packing_types));
 	$packingForm->handleRequest($request);
 
 
@@ -104,14 +105,14 @@ $app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, 
 	}
 	return $app['twig']->render('/forms/packing_form.html.twig', array(
 			'title' => 'Packing',
-			'parts' => $parts,
-			'packTypes' => $packTypes,
+			'parts_list' => $parts_list,
+			'packing_types' => $packing_types,
 			'id' => $id,
 			'packingid' => $packingid,
 			'packingSheet' => $packingSheet,
 			'packingForm' => $packingForm->createView()));
 
-})->bind('packingDetails');*/
+})->bind('packingDetails');
 
  //Packing list
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
