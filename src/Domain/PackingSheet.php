@@ -19,67 +19,67 @@ class PackingSheet
     private $ref;
 
     /**
-     * PackingSheet group_id.
+     * PackingSheet groupId.
      *
      * @var integer
      */
-    private $group_id;
+    private $groupId;
 
     /**
-     * PackingSheet consignedAddress_id.
+     * PackingSheet consignedAddressId.
      *
      * @var integer
      */
-    private $consignedAddress_id;
+    private $consignedAddressId;
 
     /**
-     * PackingSheet deliveryAddress_id.
+     * PackingSheet deliveryAddressId.
      *
      * @var integer
      */
-    private $deliveryAddress_id;
+    private $deliveryAddressId;
     
     /**
-     * PackingSheet consignedContact_id.
+     * PackingSheet consignedContactId.
      *
      * @var integer
      */
-    private $consignedContact_id;
+    private $consignedContactId;
 
     /**
-     * PackingSheet deliveryContact_id.
+     * PackingSheet deliveryContactId.
      *
      * @var integer
      */
-    private $deliveryContact_id;
+    private $deliveryContactId;
 
     /**
-     * PackingSheet service_id.
+     * PackingSheet serviceId.
      *
      * @var integer
      */
-    private $service_id;
+    private $serviceId;
 
     /**
-     * PackingSheet content_id.
+     * PackingSheet contentId.
      *
      * @var integer
      */
-    private $content_id;
+    private $contentId;
 
     /**
-     * PackingSheet priority_id.
+     * PackingSheet priorityId.
      *
      * @var integer
      */
-    private $priority_id;
+    private $priorityId;
 
     /**
-     * PackingSheet shipper_id.
+     * PackingSheet shipperId.
      *
      * @var integer
      */
-    private $shipper_id;
+    private $shipperId;
 
     /**
      * PackingSheet yrOrder.
@@ -110,46 +110,46 @@ class PackingSheet
     private $collect;
 
     /**
-     * PackingSheet authority_id.
+     * PackingSheet authorityId.
      *
      * @var integer
      */
-    private $autority_id;
+    private $autorityId;
 
     /**
-     * PackingSheet customStatus_id.
+     * PackingSheet customStatusId.
      *
      * @var integer
      */
-    private $customStatus_id;
+    private $customStatusId;
 
     /**
-     * PackingSheet incType_id.
+     * PackingSheet incTypeId.
      *
      * @var integer
      */
-    private $incType_id;
+    private $incTypeId;
 
     /**
-     * PackingSheet incLoc_id.
+     * PackingSheet incLocId.
      *
      * @var integer
      */
-    private $incLoc_id;
+    private $incLocId;
 
     /**
-     * PackingSheet currency_id.
+     * PackingSheet currencyId.
      *
      * @var integer
      */
-    private $currency_id;
+    private $currencyId;
 
     /**
-     * PackingSheet input_id.
+     * PackingSheet inputId.
      *
      * @var integer
      */
-    private $imput_id;
+    private $imputId;
 
     /**
      * PackingSheet nbrPieces.
@@ -217,76 +217,76 @@ class PackingSheet
         $this->ref = $ref;
     }
 
-    public function getGroup_id() {
-        return $this->group_id;
+    public function getGroupId() {
+        return $this->groupId;
     }
 
-    public function setGroup_id($group_id) {
-        $this->group_id = $group_id;
+    public function setGroupId($groupId) {
+        $this->groupId = $groupId;
     }
 
-    public function getConsignedAddress_id() {
-        return $this->consignedAddress_id;
+    public function getConsignedAddressId() {
+        return $this->consignedAddressId;
     }
 
-    public function setConsignedAddress_id($consignedAddress_id) {
-        $this->consignedAddress_id = $consignedAddress_id;
+    public function setConsignedAddressId($consignedAddressId) {
+        $this->consignedAddressId = $consignedAddressId;
     }
 
-    public function getDeliveryAddress_id() {
-        return $this->deliveryAddress_id;
+    public function getDeliveryAddressId() {
+        return $this->deliveryAddressId;
     }
 
-    public function setDeliveryAddress_id($deliveryAddress_id) {
-        $this->deliveryAddress_id = $deliveryAddress_id;
+    public function setDeliveryAddressId($deliveryAddressId) {
+        $this->deliveryAddressId = $deliveryAddressId;
     }
     
-    public function getConsignedContact_id() {
-        return $this->consignedContact_id;
+    public function getConsignedContactId() {
+        return $this->consignedContactId;
     }
 
-    public function setConsignedContact_id($consignedContact_id) {
-        $this->consignedContact_id = $consignedContact_id;
+    public function setConsignedContactId($consignedContactId) {
+        $this->consignedContactId = $consignedContactId;
     }
 
-    public function getDeliveryContact_id() {
-        return $this->deliveryContact_id;
+    public function getDeliveryContactId() {
+        return $this->deliveryContactId;
     }
 
-    public function setDeliveryContact_id($deliveryContact_id) {
-        $this->deliveryContact_id = $deliveryContact_id;
+    public function setDeliveryContactId($deliveryContactId) {
+        $this->deliveryContactId = $deliveryContactId;
     }
 
-    public function getService_id() {
-        return $this->service_id;
+    public function getServiceId() {
+        return $this->serviceId;
     }
 
-    public function setService_id($service_id) {
-        $this->service_id = $service_id;
+    public function setServiceId($serviceId) {
+        $this->serviceId = $serviceId;
     }
 
-    public function getContent_id() {
-        return $this->content_id;
+    public function getContentId() {
+        return $this->contentId;
     }
 
-    public function setContent_id($content_id) {
-        $this->content_id = $content_id;
+    public function setContentId($contentId) {
+        $this->contentId = $contentId;
     }
 
-    public function getPriority_id() {
-        return $this->priority_id;
+    public function getPriorityId() {
+        return $this->priorityId;
     }
 
-    public function setPriority_id($priority_id) {
-        $this->priority_id = $priority_id;
+    public function setPriorityId($priorityId) {
+        $this->priorityId = $priorityId;
     }
 
-    public function getShipper_id() {
-        return $this->shipper_id;
+    public function getShipperId() {
+        return $this->shipperId;
     }
 
-    public function setShipper_id($shipper_id) {
-        $this->shipper_id = $shipper_id;
+    public function setShipperId($shipperId) {
+        $this->shipperId = $shipperId;
     }
 
     public function getYROrder() {
@@ -313,52 +313,52 @@ class PackingSheet
         $this->dateIssue = $dateIssue;
     }
 
-    public function getAutority_id() {
-        return $this->autority_id;
+    public function getAutorityId() {
+        return $this->autorityId;
     }
 
-    public function setAutority_id($autority_id) {
-        $this->autority_id = $autority_id;
+    public function setAutorityId($autorityId) {
+        $this->autorityId = $autorityId;
     }
 
-    public function getCustomStatus_id() {
-        return $this->customStatus_id;
+    public function getCustomStatusId() {
+        return $this->customStatusId;
     }
 
-    public function setCustomStatus($customStatus_id) {
-        $this->customStatus_id = $customStatus_id;
+    public function setCustomStatusId($customStatusId) {
+        $this->customStatusId = $customStatusId;
     }
 
-    public function getIncType_id() {
-        return $this->incType_id;
+    public function getIncTypeId() {
+        return $this->incTypeId;
     }
 
-    public function setIncType_id($incType_id) {
-        $this->incType_id = $incType_id;
+    public function setIncTypeId($incTypeId) {
+        $this->incTypeId = $incTypeId;
     }
 
-    public function getIncLoc_id() {
-        return $this->incLoc_id;
+    public function getIncLocId() {
+        return $this->incLocId;
     }
 
-    public function setIncLoc_id($incLoc_id) {
-        $this->incLoc_id = $incLoc_id;
+    public function setIncLocId($incLocId) {
+        $this->incLocId = $incLocId;
     }
 
-    public function getCurrency_id() {
-        return $this->currency_id;
+    public function getCurrencyId() {
+        return $this->currencyId;
     }
 
-    public function setCurrency_id($currency_id) {
-        $this->currency_id = $currency_id;
+    public function setCurrencyId($currencyId) {
+        $this->currencyId = $currencyId;
     }
 
-    public function getImput_id() {
-        return $this->imput_id;
+    public function getImputId() {
+        return $this->imputId;
     }
 
-    public function setImput_id($imput_id) {
-        $this->imput_id = $imput_id;
+    public function setImputId($imputId) {
+        $this->imputId = $imputId;
     }
 
     public function getNbrPieces() {

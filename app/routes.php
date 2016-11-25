@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\Part;
 use PackingSheets\Domain\Contact;
+use PackingSheets\Domain\PackingSheet;
 use PackingSheets\Form\Type\PartType;
 use PackingSheets\Form\Type\ContactTypeAdd;
 use PackingSheets\Form\Type\ContactTypeEdit;
@@ -54,13 +55,128 @@ $app->get('/sheets/{id}', function ($id) use ($app) {
     		'Psid' => $Psid));
 })->bind('sheetDetails');*/
 
-//Packing Sheet
-$app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
+//Packing Sheet Consultation
+$app->match('/sheets/{id}/details', function(Request $request, $id) use ($app) {
 
 	$packingSheet = $app['dao.packingSheet']->find($id);
 	$parts = $app['dao.part']->findAll();
 	$packTypes = $app['dao.packType']->findAll();
-	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array('parts' => $parts, 'packTypes' => $packTypes));
+	$addresses = $app['dao.address']->findAll();
+	$contacts = $app['dao.contact']->findAll();
+	$services = $app['dao.service']->findAll();
+	$contents = $app['dao.content']->findAll();
+	$priorities = $app['dao.priority']->findAll();
+	$shippers = $app['dao.shipper']->findAll();
+	$autorities = $app['dao.autority']->findAll();
+	$customStatuses = $app['dao.customStatus']->findAll();
+	$incTypes = $app['dao.incotermsType']->findAll();
+	$incLocs = $app['dao.incotermsLocation']->findAll();
+	$currencies = $app['dao.currency']->findAll();
+	$imputs = $app['dao.imput']->findAll();
+	
+	
+	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
+			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => true,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs	
+	));
+	$packingSheetForm->handleRequest($request);
+
+
+	if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
+
+		//$selectedPackings = $packingSheetForm->get('packings')->getData();
+		$app['dao.packingSheet']->save($packingSheet);
+			
+		$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
+		//var_dump($packingList);
+		return $app->redirect($app['url_generator']->generate('sheetDetails', array('id' => $id, 'packingSheet' => $packingSheet)));
+	}
+	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
+			'title' => 'Packing Sheet Consultation',
+			'parts' => $parts,
+			'packTypes' => $packTypes,
+			'read_only' => true,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
+			'id' => $id,
+			'packingSheet' => $packingSheet,
+			'packingSheetForm' => $packingSheetForm->createView()));
+
+})->bind('sheetDetails');
+
+//Packing Sheet Creation
+$app->match('/sheets/create', function(Request $request) use ($app) {
+
+	$packingSheet = new PackingSheet();
+	$parts = $app['dao.part']->findAll();
+	$packTypes = $app['dao.packType']->findAll();
+	$addresses = $app['dao.address']->findAll();
+	$contacts = $app['dao.contact']->findAll();
+	$services = $app['dao.service']->findAll();
+	$contents = $app['dao.content']->findAll();
+	$priorities = $app['dao.priority']->findAll();
+	$shippers = $app['dao.shipper']->findAll();
+	$autorities = $app['dao.autority']->findAll();
+	$customStatuses = $app['dao.customStatus']->findAll();
+	$incTypes = $app['dao.incotermsType']->findAll();
+	$incLocs = $app['dao.incotermsLocation']->findAll();
+	$currencies = $app['dao.currency']->findAll();
+	$imputs = $app['dao.imput']->findAll();
+	
+	
+	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
+			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => false,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs
+	));
+	$packingSheetForm->handleRequest($request);
+
+
+	if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
+
+		//$selectedPackings = $packingSheetForm->get('packings')->getData();
+		$app['dao.packingSheet']->save($packingSheet);
+			
+		$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
+		//var_dump($packingList);
+		return $app->redirect($app['url_generator']->generate('sheetDetails'));
+	}
+	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
+			'title' => 'Packing Sheet Edition',
+			'parts' => $parts,
+			'packTypes' => $packTypes,
+			'read_only' => false,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
+			'packingSheetForm' => $packingSheetForm->createView()));
+
+})->bind('sheetCreate');
+
+//Packing Sheet Edition
+$app->match('/sheets/{id}/edit', function(Request $request, $id) use ($app) {
+
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$parts = $app['dao.part']->findAll();
+	$packTypes = $app['dao.packType']->findAll();
+	$addresses = $app['dao.address']->findAll();
+	$contacts = $app['dao.contact']->findAll();
+	$services = $app['dao.service']->findAll();
+	$contents = $app['dao.content']->findAll();
+	$priorities = $app['dao.priority']->findAll();
+	$shippers = $app['dao.shipper']->findAll();
+	$autorities = $app['dao.autority']->findAll();
+	$customStatuses = $app['dao.customStatus']->findAll();
+	$incTypes = $app['dao.incotermsType']->findAll();
+	$incLocs = $app['dao.incotermsLocation']->findAll();
+	$currencies = $app['dao.currency']->findAll();
+	$imputs = $app['dao.imput']->findAll();
+	
+	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
+			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => false,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs
+	));
 	$packingSheetForm->handleRequest($request);
 
 
@@ -74,14 +190,17 @@ $app->match('/sheets/{id}', function(Request $request, $id) use ($app) {
 		return $app->redirect($app['url_generator']->generate('sheetDetails', array('id' => $id, 'packingSheet' => $packingSheet)));
 	}
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
-			'title' => 'Packing Sheet',
+			'title' => 'Packing Sheet Edition',
 			'parts' => $parts,
 			'packTypes' => $packTypes,
+			'read_only' => false,
+			'addresses' => $addresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
 			'id' => $id,
 			'packingSheet' => $packingSheet,
 			'packingSheetForm' => $packingSheetForm->createView()));
 
-})->bind('sheetDetails');
+})->bind('sheetEdit');
 
 
 //Packing Edition
@@ -101,7 +220,7 @@ $app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, 
 			
 		$app['session']->getFlashBag()->add('success', 'Packing succesfully updated.');
 		//var_dump($packingList);
-		return $app->redirect($app['url_generator']->generate('sheetDetails', array('id' => $id, 'packingSheet' => $packingSheet)));
+		return $app->redirect($app['url_generator']->generate('sheetEdit', array('id' => $id, 'packingSheet' => $packingSheet)));
 	}
 	return $app['twig']->render('/forms/packing_form.html.twig', array(
 			'title' => 'Packing',

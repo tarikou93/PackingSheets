@@ -32,18 +32,23 @@ class PackingType extends AbstractType
 		))
 		
 		->add('M1', TextType::class, array(
+				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 		
 		->add('M2', TextType::class, array(
+				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 		
 		->add('M3', TextType::class, array(
+				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 		
 		->add('netWeight', TextType::class, array(
+				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 		
 		->add('grossWeight', TextType::class, array(
+				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 
 		->add('packType_id', ChoiceType::class, array(
@@ -51,14 +56,17 @@ class PackingType extends AbstractType
 				'choice_label' => 'label',
 				'choices' => $options['packing_types'],
 				'choice_value' => 'id',
-				'multiple' => false))
+				'multiple' => false,
+				'attr' => array('readonly' => $options['read_only'])))
 		
-		->add('save', SubmitType::class);
+		->add('save', SubmitType::class, array(
+				'label' => false,
+				'attr' => array('readonly' => $options['read_only'])));
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null, 'read_only' => null, 'readonly' => null))
 		;
 	}
 

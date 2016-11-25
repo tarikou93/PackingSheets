@@ -19,7 +19,9 @@
             <div class="container"><h2>Packing Sheet <br>
                     <small>PS {{ packingSheet.ref}} </small></h2>
                 <div class="col-md-3 col-md-offset-9 text-right">
-                    <a href="{{ path('sheetDetails', { 'id': id }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Packing Sheet </button></a>
+                	<a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create a new Part </button></a>
+                    <hr>
+                    <a href="{{ path('sheetEdit', { 'id': id }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Packing Sheet </button></a>
                 </div>
             </div>
             <hr></hr>

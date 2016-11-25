@@ -16,21 +16,43 @@
     
     <div class="jumbotron vertical-center">
         <div class="container-fluid">
-            <div class="container"><h2>Packing Sheet <br>
-                    <small>PS {{ packingSheet.ref}} </small></h2>
-                <div class="col-md-4 col-md-offset-8 text-right">
-                	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
-                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-                    <hr></hr>
-                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print Packing Sheet </button></a>
-                </div>
+            <div class="container">
+            	<h2> Packing Sheet <br>
+            	{% if packingSheet is defined %}
+                    <small>PS {{ packingSheet.ref}} </small>
+                    </h2>
+                    <div class="col-md-4 col-md-offset-8 text-right">
+                    	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
+                    	{% if read_only is not empty %}
+                        	<a href="{{ path('sheetEdit', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button></a>
+                        {% endif %}
+                        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                        <hr></hr>
+                        {% if read_only is empty %}
+                    		<a href="{{ path('sheetDetails', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Cancel </button></a>		
+                    	{% endif %}
+                        <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print Packing Sheet </button></a>
+                    </div>
+                {% else %}
+                	<div class="col-md-4 col-md-offset-8 text-right">
+                   		<a href="{{ path('sheets') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Cancel </button></a>		
+                    </div>
+                {% endif %}
             </div>
             <hr></hr>
             <div class="container">
+            	{% if read_only is empty %}
+            		<div class="panel panel-warning">
+              			<div class="panel-heading"><h4>Edition</h4></div>
+            		</div>
+            	{% else %}
+            		<div class="panel panel-info">
+              			<div class="panel-heading"><h4>Details</h4></div>
+            		</div>
+            	{% endif %}
             	<div class="well">
                     {{ form_start(packingSheetForm, { 'attr': {'class': 'form-horizontal'} }) }}
-                    	<ul id="packings" class="packings" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+     					<ul id="packings" class="packings" data-prototype="{{ form_widget(packingSheetForm.packings.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
                     	{% set cptPack = 1 %}
                     	{% if packingSheetForm.packings is empty %}
                     		<div class="panel panel-warning">
@@ -40,7 +62,7 @@
                     		{% spaceless %}    	
                             {% for pack in packingSheetForm.packings %}
                         		<li style="list-style-type: none;" id="packing">
-                        			<p class="p-text-left"><h3>Packing {{ cptPack }}</h3></p>
+                        			<p><h4><u>Packing {{ cptPack }}</u></h4></p>
                             		<div class="form-group">
                                         {{ form_label(pack.M1, null, {  'label': 'M1', 'label_attr':  {
                                         'class': 'col-sm-4 control-label'
@@ -133,7 +155,7 @@
                                                         {% else %}
                                                             {% for part in pack.parts %}
                                                             	<li id="part">
-                                                                	<div class="col-md-2"><h4>Part {{ cptPart }}</h4></div>
+                                                                	<div class="col-md-2"><h4>Item {{ cptPart }}</h4></div>
                                                                 	{% set cptPart = cptPart + 1 %}
                                                                 	<div class="form-group">
                                                                         {{ form_label(part.part_id, null, { 'label': ' ', 'label_attr':  {
@@ -143,7 +165,7 @@
                                                                             {{ form_errors(part.part_id) }}
                                                                             {{ form_widget(part.part_id, {'attr':  {
                                                                             'class': 'form-control',
-                                                                            'disabled':'disabled'
+                                                                            'readonly': 'readonly'
                                                                             }}) }}
                                                                         </div>
                                                                 	</div>
@@ -155,7 +177,7 @@
                                                                             {{ form_errors(part.quantity) }}
                                                                             {{ form_widget(part.quantity, {'attr':  {
                                                                             'class': 'form-control',
-                                                                            'disabled':'disabled'
+                                                                            'readonly': 'readonly'
                                                                             }}) }}
                                                                         </div>
                                                                 	</div>
@@ -167,7 +189,7 @@
                                                                             {{ form_errors(part.origin) }}
                                                                             {{ form_widget(part.origin, {'attr':  {
                                                                             'class': 'form-control',
-                                                                            'disabled':'disabled'
+                                                                            'readonly': 'readonly'
                                                                             }}) }}
                                                                         </div>
                                                                 	</div>
@@ -176,9 +198,11 @@
                                                         {% endif %}
                                                     </ul>
                                               	</div>
+                                              	{% if read_only is empty %}
                                              	<div class="panel-footer">
                                              		<a href="{{ path('packingDetails', { 'id': id, 'packingid': pack.vars.value.id }) }}" class=""><button type="button" class="btn btn-warning outline"><span class="glyphicon glyphicon-sort"></span> Edit Parts </button></a>
                                              	</div>
+                                             	{% endif %}
                                         	</div>
                                       	</div>
                                     </div>
@@ -190,95 +214,97 @@
                         {% endif %}
                         </ul>
                         <hr></hr>
-                        <div class="form-group">
-                            <div class="col-sm-4">
-                                {{ form_widget(packingSheetForm.save, {'attr':  {
-                                'class': 'btn btn-primary outline',
-                                'style':'display: block; margin: 0 auto;'
-                                }}) }}
+                        {% if read_only is empty %}
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    {{ form_widget(packingSheetForm.save, {'attr':  {
+                                    'class': 'btn btn-primary outline',
+                                    'style':'display: block; margin: 0 auto;'
+                                    }}) }}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {{ form_end(packingSheetForm) }}
             	</div>
         	</div>
 		</div>
 	</div>
     
-    <script>
-    
-    var $collectionHolder;
-
- 	// setup an "add a packing" link
-     var $addPackingLink = $('<br/><a href="#" class="add_packing_link"><button type="button" class="btn btn-success outline"><span class="glyphicon glyphicon-copy"></span> Add a Packing </button></a>');
-     var $newLinkLi = $('<li></li>').append($addPackingLink);
-    
-     jQuery(document).ready(function() {
-
-         // Get the ul that holds the collection of packings
-         $collectionHolder = $('ul.packings');
+    {% if read_only is empty %}
+        <script>
         
-         // add a delete link to all of the existing packing form li elements
-         $collectionHolder.find('li#packing').each(function() {
-            addPackingFormDeleteLink($(this));
+        var $collectionHolder;
+    
+     	// setup an "add a packing" link
+         var $addPackingLink = $('<br/><a href="#" class="add_packing_link"><button type="button" class="btn btn-success outline"><span class="glyphicon glyphicon-copy"></span> Add a Packing </button></a>');
+         var $newLinkLi = $('<li></li>').append($addPackingLink);
+        
+         jQuery(document).ready(function() {
+    
+             // Get the ul that holds the collection of packings
+             $collectionHolder = $('ul.packings');
+            
+             // add a delete link to all of the existing packing form li elements
+             $collectionHolder.find('li#packing').each(function() {
+                addPackingFormDeleteLink($(this));
+             });
+        	    
+             // Get the ul that holds the collection of packings
+             //$collectionHolder = $('ul.packings');
+        
+             // add the "add a Packing" anchor and li to the packings ul
+             $collectionHolder.append($newLinkLi);
+        
+             // count the current form inputs we have (e.g. 2), use that as the new
+             // index when inserting a new item (e.g. 2)
+             $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        
+             $addPackingLink.on('click', function(e) {
+                 // prevent the link from creating a "#" on the URL
+                 e.preventDefault();
+        
+                 // add a new packing form (see next code block)
+                 addPackingForm($collectionHolder, $newLinkLi);
+             });
          });
-    	    
-         // Get the ul that holds the collection of packings
-         //$collectionHolder = $('ul.packings');
     
-         // add the "add a Packing" anchor and li to the packings ul
-         $collectionHolder.append($newLinkLi);
+         function addPackingForm($collectionHolder, $newLinkLi) {
+        	    // Get the data-prototype explained earlier
+        	    var prototype = $collectionHolder.data('prototype');
     
-         // count the current form inputs we have (e.g. 2), use that as the new
-         // index when inserting a new item (e.g. 2)
-         $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        	    // get the new index
+        	    var index = $collectionHolder.data('index');
     
-         $addPackingLink.on('click', function(e) {
-             // prevent the link from creating a "#" on the URL
-             e.preventDefault();
+        	    // Replace '__name__' in the prototype's HTML to
+        	    // instead be a number based on how many items we have
+        	    var newForm = prototype.replace(/__name__/g, index);
     
-             // add a new packing form (see next code block)
-             addPackingForm($collectionHolder, $newLinkLi);
-         });
-     });
-
-     function addPackingForm($collectionHolder, $newLinkLi) {
-    	    // Get the data-prototype explained earlier
-    	    var prototype = $collectionHolder.data('prototype');
-
-    	    // get the new index
-    	    var index = $collectionHolder.data('index');
-
-    	    // Replace '__name__' in the prototype's HTML to
-    	    // instead be a number based on how many items we have
-    	    var newForm = prototype.replace(/__name__/g, index);
-
-    	    // increase the index with one for the next item
-    	    $collectionHolder.data('index', index + 1);
-
-    	    // Display the form in the page in an li, before the "Add a Packing" link li
-    	    var $newFormLi = $('<li></li>').append(newForm);
-    	    $newLinkLi.before($newFormLi);
-
-    	 	// add a delete link to the new form
-    	    addPackingFormDeleteLink($newFormLi);
+        	    // increase the index with one for the next item
+        	    $collectionHolder.data('index', index + 1);
+    
+        	    // Display the form in the page in an li, before the "Add a Packing" link li
+        	    var $newFormLi = $('<li></li>').append(newForm);
+        	    $newLinkLi.before($newFormLi);
+    
+        	 	// add a delete link to the new form
+        	    addPackingFormDeleteLink($newFormLi);
+        	}
+    
+    	function addPackingFormDeleteLink($packingFormLi) {
+    	    var $removeFormA = $('<p><a href="#"><button type="button" class="btn btn-danger outline"><span class="glyphicon glyphicon-paste"></span> Delete this Packing </button></a></p>');
+    	    $packingFormLi.append($removeFormA);
+    
+    	    $removeFormA.on('click', function(e) {
+    	        // prevent the link from creating a "#" on the URL
+    	        e.preventDefault();
+    
+    	        // remove the li for the packing form
+    	        $packingFormLi.remove();
+    	    });
     	}
-
-	function addPackingFormDeleteLink($packingFormLi) {
-	    var $removeFormA = $('<p><a href="#"><button type="button" class="btn btn-danger outline"><span class="glyphicon glyphicon-paste"></span> Delete this Packing </button></a></p>');
-	    $packingFormLi.append($removeFormA);
-
-	    $removeFormA.on('click', function(e) {
-	        // prevent the link from creating a "#" on the URL
-	        e.preventDefault();
-
-	        // remove the li for the packing form
-	        $packingFormLi.remove();
-	    });
-	}
- 	
-    </script>
-    </script>
- 	
+     	
+        </script>
+	{% endif %}	
    
 {% endblock %}
 

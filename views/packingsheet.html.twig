@@ -8,7 +8,7 @@
             <div class="container"><h2>Packing Sheets <br>
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
-                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new sheet</button>
+                    <a href="{{ path('sheetCreate') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new sheet</button></a>
                     {% if searchTag == 1 %}
                 		<hr></hr>
                 		<a href="{{ path('sheets') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to Packing Sheets list </button></a>
@@ -49,15 +49,16 @@
                                         <tr>
                                             <td>{{ packingSheet.ref }}</td>
                                             <td>{{ packingSheet.AWB }}</td>
-                                            <td>{{ packingSheet.shipper_id.label}}</td>
-                                            <td>{{ packingSheet.consignedAddress_id.label}}</td>
-                                            <td>{{ packingSheet.service_id.label }}</td>
-                                            <td>{{ packingSheet.autority_id.label }}</td>
+                                            <td>{{ packingSheet.shipperId.label}}</td>
+                                            <td>{{ packingSheet.consignedAddressId.label}}</td>
+                                            <td>{{ packingSheet.serviceId.label }}</td>
+                                            <td>{{ packingSheet.autorityId.label }}</td>
                                             <td><a href="{{ path('sheetDetails', { 'id': packingSheet.id }) }}">
                                                     <button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in"></span></button></a></td>
                                             <td><a href="{{ path('sheetList', { 'id': packingSheet.id }) }}">
                                                     <button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-list-alt"></span></button></a></td>
-                                            <td><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                                            <td><a href="{{ path('sheetEdit', { 'id': packingSheet.id }) }}">
+                                            		<button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></a></td>
                                             <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
                                             <td>
                                             	<div class="dropdown">

@@ -93,5 +93,9 @@ class Contact
     public function setFaxNr($faxNr) {
         $this->faxNr = $faxNr;
     }
+    
+    public function getCompleteInfos(){
+    	return sprintf('Name : %s | Mail : %s | Phone : %s | Fax : %s', $this->name, $this->mail, $this->phoneNr, $this->faxNr);
+    }
 }
 

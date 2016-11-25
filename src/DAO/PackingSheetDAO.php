@@ -342,30 +342,30 @@ class PackingSheetDAO extends DAO
    	$packingSheetData = array(
    			'ps_id' => $packingSheet->getId(),
    			'ps_ref' => $packingSheet->getRef(),
-   			'group_id' => $packingSheet->getGroup_id(),
-   			'consignedAddress_id' => $packingSheet->getConsignedAddress_id()->getId(),
-   			'deliveryAddress_id' => $packingSheet->getDeliveryAddress_id()->getId(),
-   			'consignedContact_id' => $packingSheet->getConsignedContact_id()->getId(),
-   			'deliveryContact_id' => $packingSheet->getDeliveryContact_id()->getId(),
-   			'service_id' => $packingSheet->getService_id()->getId(),
-   			'content_id' => $packingSheet->getContent_id()->getId(),
-   			'priority_id' => $packingSheet->getPriority_id()->getId(),
-   			'shipper_id' => $packingSheet->getShipper_id()->getId(),
+   			'group_id' => $packingSheet->getGroupId(),
+   			'consignedAddress_id' => $packingSheet->getConsignedAddressId()->getId(),
+   			'deliveryAddress_id' => $packingSheet->getDeliveryAddressId()->getId(),
+   			'consignedContact_id' => $packingSheet->getConsignedContactId()->getId(),
+   			'deliveryContact_id' => $packingSheet->getDeliveryContactId()->getId(),
+   			'service_id' => $packingSheet->getServiceId()->getId(),
+   			'content_id' => $packingSheet->getContentId()->getId(),
+   			'priority_id' => $packingSheet->getPriorityId()->getId(),
+   			'shipper_id' => $packingSheet->getShipperId()->getId(),
    			'ps_yrOrder' => $packingSheet->getYROrder(),
    			'ps_AWB' => $packingSheet->getAWB(),
    			'ps_dateIssue' => $packingSheet->getDateIssue(),
-   			'ps_collect' => $packingSheet->getCollect(),
-   			'autority_id' => $packingSheet->getAutority_id()->getId(),
-   			'customStatus_id' => $packingSheet->getCustomStatus_id()->getId(),
-   			'incType_id' => $packingSheet->getIncType_id()->getId(),
-   			'incLoc_id' => $packingSheet->getIncLoc_id()->getId(),
-   			'currency_id' => $packingSheet->getCurrency_id()->getId(),
-   			'imput_id' => $packingSheet->getImput_id()->getId(),
+   			'ps_collect' => ($packingSheet->getCollect() === true) ? 1 : 0,
+   			'autority_id' => $packingSheet->getAutorityId()->getId(),
+   			'customStatus_id' => $packingSheet->getCustomStatusId()->getId(),
+   			'incType_id' => $packingSheet->getIncTypeId()->getId(),
+   			'incLoc_id' => $packingSheet->getIncLocId()->getId(),
+   			'currency_id' => $packingSheet->getCurrencyId()->getId(),
+   			'imput_id' => $packingSheet->getImputId()->getId(),
    			'ps_nbrPieces' => $packingSheet->getNbrPieces(),
    			'ps_Weight' => $packingSheet->getWeight(),
    			'ps_totalPrice' => $packingSheet->getTotalPrice(),
-   			'ps_signed' => $packingSheet->getSigned(),
-   			'ps_printed' => $packingSheet->getPrinted(),
+   			'ps_signed' => ($packingSheet->getSigned() === true) ? 1 : 0,
+   			'ps_printed' => ($packingSheet->getPrinted() === true) ? 1 : 0,
    			'ps_memo' => $packingSheet->getMemo(),
    	);
    
@@ -387,8 +387,9 @@ class PackingSheetDAO extends DAO
     * @param integer $id The Packing id.
     */
    public function delete($id) {
-   	//Delete the packing
-   	$this->getDb()->delete('t_packing', array('pack_id' => $id));
+   	//Delete the packingSheet
+   	$this->packingDAO->deleteAll($id);
+   	$this->getDb()->delete('t_packingsheet', array('ps_id' => $id));
    }
 
     /**
@@ -398,117 +399,123 @@ class PackingSheetDAO extends DAO
      * @return \PackingSheets\Domain\PackingSheet
      */
     protected function buildDomainObject($row) {
+    	
+    	$signed = ($row['ps_signed'] === 1) ? true : false;
+    	$printed = ($row['ps_printed'] === 1) ? true : false;
+    	$collect = ($row['ps_collect'] === 1) ? true : false;
+    	
         $packingSheet = new PackingSheet();
         $packingSheet->setId($row['ps_id']);
         $packingSheet->setRef($row['ps_ref']);
-        $packingSheet->setGroup_id($row['group_id']);
+        $packingSheet->setGroupId($row['group_id']);
         $packingSheet->setYROrder($row['ps_yrOrder']);
         $packingSheet->setAWB($row['ps_AWB']);
         $packingSheet->setDateIssue($row['ps_dateIssue']);
         $packingSheet->setNbrPieces($row['ps_nbrPieces']);
         $packingSheet->setTotalPrice($row['ps_totalPrice']);
-        $packingSheet->setSigned($row['ps_signed']);
-        $packingSheet->setPrinted($row['ps_printed']);
+        $packingSheet->setWeight($row['ps_weight']);
+        $packingSheet->setSigned($signed);
+        $packingSheet->setPrinted($printed);
         $packingSheet->setMemo($row['ps_memo']);
-        $packingSheet->setCollect($row['ps_collect']);
+        $packingSheet->setCollect($collect);
         
 
         if (array_key_exists('consignedAddress_id', $row)) {
             // Find and set the associated consignedAddress
             $consignedAddressId = $row['consignedAddress_id'];
             $consignedAddress = $this->consignedAddressDAO->find($consignedAddressId);
-            $packingSheet->setConsignedAddress_id($consignedAddress);
+            $packingSheet->setConsignedAddressId($consignedAddress);
         }
 
         if (array_key_exists('deliveryAddress_id', $row)) {
             // Find and set the associated deliveryAddress
             $deliveryAddressId = $row['deliveryAddress_id'];
             $deliveryAddress = $this->deliveryAddressDAO->find($deliveryAddressId);
-            $packingSheet->setDeliveryAddress_id($deliveryAddress);
+            $packingSheet->setDeliveryAddressId($deliveryAddress);
         }
         
         if (array_key_exists('consignedContact_id', $row)) {
             // Find and set the associated consignedContact
             $consignedContactId = $row['consignedContact_id'];
             $consignedContact = $this->consignedContactDAO->find($consignedContactId);
-            $packingSheet->setConsignedContact_id($consignedContact);
+            $packingSheet->setConsignedContactId($consignedContact);
         }
 
         if (array_key_exists('deliveryContact_id', $row)) {
             // Find and set the associated deliveryContact
             $deliveryContactId = $row['deliveryContact_id'];
             $deliveryContact = $this->deliveryContactDAO->find($deliveryContactId);
-            $packingSheet->setDeliveryContact_id($deliveryContact);
+            $packingSheet->setDeliveryContactId($deliveryContact);
         }
 
         if (array_key_exists('service_id', $row)) {
             // Find and set the associated service
             $serviceId = $row['service_id'];
             $service = $this->serviceDAO->find($serviceId);
-            $packingSheet->setService_id($service);
+            $packingSheet->setServiceId($service);
         }
 
         if (array_key_exists('content_id', $row)) {
             // Find and set the associated content
             $contentId = $row['content_id'];
             $content = $this->contentDAO->find($contentId);
-            $packingSheet->setContent_id($content);
+            $packingSheet->setContentId($content);
         }
 
         if (array_key_exists('priority_id', $row)) {
             // Find and set the associated priority
             $priorityId = $row['priority_id'];
             $priority = $this->priorityDAO->find($priorityId);
-            $packingSheet->setPriority_id($priority);
+            $packingSheet->setPriorityId($priority);
         }
 
         if (array_key_exists('shipper_id', $row)) {
             // Find and set the associated shipper
             $shipperId = $row['shipper_id'];
             $shipper = $this->shipperDAO->find($shipperId);
-            $packingSheet->setShipper_id($shipper);
+            $packingSheet->setShipperId($shipper);
         }
 
         if (array_key_exists('autority_id', $row)) {
             // Find and set the associated autority
             $autorityId = $row['autority_id'];
             $autority = $this->autorityDAO->find($autorityId);
-            $packingSheet->setAutority_id($autority);
+            $packingSheet->setAutorityId($autority);
         }
 
         if (array_key_exists('customStatus_id', $row)) {
             // Find and set the associated customStatus
             $customStatusId = $row['customStatus_id'];
             $customStatus = $this->customStatusDAO->find($customStatusId);
-            $packingSheet->setCustomStatus($customStatus);
+            $packingSheet->setCustomStatusId($customStatus);
         }
 
         if (array_key_exists('incType_id', $row)) {
             // Find and set the associated incType
             $incotermsTypeId = $row['incType_id'];
             $incotermsType = $this->incotermsTypeDAO->find($incotermsTypeId);
-            $packingSheet->setIncType_id($incotermsType);
+            $packingSheet->setIncTypeId($incotermsType);
         }
 
         if (array_key_exists('incLoc_id', $row)) {
             // Find and set the associated incLoc
             $incotermsLocationId = $row['incLoc_id'];
             $incotermsLocation = $this->incotermsLocationDAO->find($incotermsLocationId);
-            $packingSheet->setIncLoc_id($incotermsLocation);
+            $packingSheet->setIncLocId($incotermsLocation);
         }
 
         if (array_key_exists('currency_id', $row)) {
             // Find and set the associated currency
             $currencyId = $row['currency_id'];
             $currency = $this->currencyDAO->find($currencyId);
-            $packingSheet->setCurrency_id($currency);
+            $packingSheet->setCurrencyId($currency);
         }
 
         if (array_key_exists('imput_id', $row)) {
             // Find and set the associated imput
             $imputId = $row['imput_id'];
             $imput = $this->imputDAO->find($imputId);
-            $packingSheet->setImput_id($imput);
+            $packingSheet->setImputId($imput);
         }
         
         //Packings
