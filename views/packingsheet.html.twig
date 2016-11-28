@@ -8,7 +8,7 @@
             <div class="container"><h2>Packing Sheets <br>
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
-                    <a href="{{ path('sheetCreate') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new sheet</button></a>
+                    <a href="{{ path('sheet', {'status': "create"}) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new sheet</button></a>
                     {% if searchTag == 1 %}
                 		<hr></hr>
                 		<a href="{{ path('sheets') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to Packing Sheets list </button></a>
@@ -53,11 +53,11 @@
                                             <td>{{ packingSheet.consignedAddressId.label}}</td>
                                             <td>{{ packingSheet.serviceId.label }}</td>
                                             <td>{{ packingSheet.autorityId.label }}</td>
-                                            <td><a href="{{ path('sheetDetails', { 'id': packingSheet.id }) }}">
+                                            <td><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'details' }) }}">
                                                     <button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in"></span></button></a></td>
                                             <td><a href="{{ path('sheetList', { 'id': packingSheet.id }) }}">
                                                     <button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-list-alt"></span></button></a></td>
-                                            <td><a href="{{ path('sheetEdit', { 'id': packingSheet.id }) }}">
+                                            <td><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'edit' }) }}">
                                             		<button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></a></td>
                                             <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
                                             <td>
