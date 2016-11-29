@@ -11,10 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
-use PackingSheets\Domain\Code;
+//use Symfony\Component\Form\FormEvents;
+//use Symfony\Component\Form\FormEvent;
+//use Symfony\Component\Form\FormInterface;
+//use PackingSheets\Domain\Code;
 use PackingSheets\Domain\Address;
 use PackingSheets\DAO\AddressDAO;
 
@@ -40,7 +40,9 @@ class PackingSheetType extends AbstractType
 				'choice_label' => 'label',
 				'choices' => $options['codes'],
 				'choice_value' => 'id',
-				'multiple' => false))
+				'multiple' => false,
+				'data' => $options['consignedOldCode']
+		))
 		
 		->add('deliveryCode', ChoiceType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
@@ -48,7 +50,9 @@ class PackingSheetType extends AbstractType
 				'choice_label' => 'label',
 				'choices' => $options['codes'],
 				'choice_value' => 'id',
-				'multiple' => false))
+				'multiple' => false,
+				'data' => $options['deliveryOldCode']
+		))
 		
 		->add('consignedAddressId', ChoiceType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
@@ -220,7 +224,7 @@ class PackingSheetType extends AbstractType
 			$builder->add('save', SubmitType::class);
 		}
 		
-		
+		/*
 		$formModifierConsigned = function (FormInterface $form, Code $code, AddressDAO $adr) {
 		
 			$consignedAddresses = null === $code ? array() : $adr->findByCode($code->getId());
@@ -253,7 +257,7 @@ class PackingSheetType extends AbstractType
 					$code = $event->getForm()->getData();
 					$formModifierConsigned($event->getForm()->getParent(), $code, $options['address']);
 				}
-		);
+		);*/
 		
 	}
 
@@ -261,7 +265,8 @@ class PackingSheetType extends AbstractType
 		$resolver
 		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null, 'read_only' => null, 'address' => null, 'status' => null,
 				'codes' => null,'consignedAddresses' => null, 'deliveryAddresses' => null, 'contacts' => null, 'services' => null, 'contents' => null, 'priorities' => null, 'shippers' => null,
-				'autorities' => null, 'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null
+				'autorities' => null, 'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
+				'deliveryOldCode' =>  null, 'consignedOldCode' => null
 		))
 		->setRequired('address')
 		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')

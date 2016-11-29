@@ -50,6 +50,27 @@ class ContactDAO extends DAO
        else
            throw new \Exception("No Content matching id " . $id);
    }
+   
+   /**
+    * Returns a Contact matching the supplied address id.
+    *
+    * @param integer $adr
+    *
+    * @return \PackingSheet\Domain\Contact|throws an exception if no matching Contact is found
+    */
+   public function findByAddress($adr) {
+   	 
+   	$sql = "select * from t_contact where contact_addressId=".$adr;
+   	$result = $this->getDb()->fetchAll($sql);
+   
+   	// Convert query result to an array of domain objects
+   	$contacts = array();
+   	foreach ($result as $row) {
+   		$contactId = $row['contact_id'];
+   		$contacts[$contactId] = $this->buildDomainObject($row);
+   	}
+   	return $contacts;
+   }
 
    /**
      * Return a list of filtered Contacts, results of search.

@@ -56,6 +56,9 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	else{
 		$packingSheet = $app['dao.packingSheet']->find($id);
 		$read_only = ($status === "details") ? true : false;
+		
+		$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId()->getId());
+		$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId()->getId());
 	}
 	
 	$parts = $app['dao.part']->findAll();
@@ -82,17 +85,37 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
 			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address,
 			'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses,'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
-			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs
+			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
+			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
+			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null
 	));
 	
-	$idConsignedCode = 0;
+
 	if($request->isMethod('POST')){
 		if($request->isXmlHttpRequest()){
 			switch ($request->get('flag')){		
-				case "consigned_code" : 
+				case "packing_sheet_consignedCode" : 
 					$idConsignedCode = $request->get('packing_sheet_consignedCode');
 					$consignedAddresses = $app['dao.address']->findByCode($idConsignedCode);
-					return new JsonResponse(array('consignedAddresses' => $consignedAddresses));
+					return new JsonResponse(array('packing_sheet_consignedAddressId' => $consignedAddresses));
+					break;
+					
+				case "packing_sheet_deliveryCode" :
+					$idDeliveryCode = $request->get('packing_sheet_deliveryCode');
+					$deliveryAddresses = $app['dao.address']->findByCode($idDeliveryCode);
+					return new JsonResponse(array('packing_sheet_deliveryAddressId' => $deliveryAddresses));
+					break;
+					
+				case "packing_sheet_consignedAddressId" :
+					$idConsignedAddress = $request->get('packing_sheet_consignedAddressId');
+					$consignedContacts = $app['dao.contact']->findByAddress($idConsignedAddress);
+					return new JsonResponse(array('packing_sheet_consignedContactId' => $consignedContacts));
+					break;
+				
+				case "packing_sheet_deliveryAddressId" :
+					$idDeliveryAddress = $request->get('packing_sheet_deliveryAddressId');
+					$deliveryContacts = $app['dao.contact']->findByAddress($idDeliveryAddress);
+					return new JsonResponse(array('packing_sheet_deliveryContactId' => $deliveryContacts));
 					break;
 			}	
 		}
@@ -106,7 +129,6 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			}
 		}
 	}
-	var_dump($idConsignedCode);
 
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
@@ -116,6 +138,8 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			'codes' => $codes, 'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
 			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
 			'id' => isset($id) ? $id : null,
+			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
+			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null,
 			'packingSheet' => $packingSheet,
 			'status' => $status,
 			'packingSheetForm' => $packingSheetForm->createView()));

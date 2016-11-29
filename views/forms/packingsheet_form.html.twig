@@ -19,7 +19,7 @@
             <div class="container">
             	<h2> Packing Sheet <br/>
             	{% if packingSheet is defined %}
-                    <small>PS {{ packingSheet.ref}} </small></h2>
+                    <small> {{ packingSheet.ref}} </small></h2>
                     <div class="col-md-4 col-md-offset-8 text-right">
                     	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
                     	{% if status is same as ("details") %}
