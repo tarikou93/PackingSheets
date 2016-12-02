@@ -18,11 +18,13 @@ class PackingListType extends AbstractType
 		->add('parts', CollectionType::class, array(
 				'entry_type' => PackingListPartType::class,
 				'entry_options'  => array(
-        			'parts_list'  => $options['parts']
+        			'parts_list'  => $options['parts'],
+					'label' => false
     			),
 				'allow_add' => true,
 				'allow_delete' => true,
 				'by_reference' => false,
+				'label' => false
 		))
 		
 		->add('save', SubmitType::class);

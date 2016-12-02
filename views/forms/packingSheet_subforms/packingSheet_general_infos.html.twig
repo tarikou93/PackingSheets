@@ -1,0 +1,253 @@
+<div class="row">
+	<div class="col-md-4"><h4>Packing Sheet / Order</h4></div>
+	<div class="col-md-3 col-md-offset-5"><i><h4>Group {{ packingSheet.groupId }}</h4></i></div>
+</div>
+<hr/>
+<div class="col-md-offset-3" align="left"><h2><small>Sheet</small></h2></div>
+<br/>  
+<div class="modal-body row">
+  	<div class="col-md-6">
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.ref, null, {  'label': 'Reference', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.ref) }}
+                {{ form_widget(packingSheetForm.ref, {'attr':  {
+                'class': 'form-control',
+                'readonly': 'readonly'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(packingSheetForm.AWB, null, {  'label': 'AWB', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.AWB) }}
+                {{ form_widget(packingSheetForm.AWB, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(packingSheetForm.dateIssue, null, {  'label': 'Date', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.dateIssue) }}
+                {{ form_widget(packingSheetForm.dateIssue, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+    </div>
+  	<div class="col-md-6">
+  		<div class="form-group">
+            {{ form_label(packingSheetForm.autorityId, null, {  'label': 'Autority', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.autorityId) }}
+                {{ form_widget(packingSheetForm.autorityId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(packingSheetForm.groupId, null, {  'label': 'Group', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.groupId) }}
+                {{ form_widget(packingSheetForm.groupId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.signed, null, {  'label': 'Signed', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-1">
+                {{ form_errors(packingSheetForm.signed) }}
+                {{ form_widget(packingSheetForm.signed, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+            {{ form_label(packingSheetForm.printed, null, {  'label':'Printed', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-1">
+                {{ form_errors(packingSheetForm.printed) }}
+                {{ form_widget(packingSheetForm.printed, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+  	</div>
+</div>
+<div class="col-md-6 col-md-offset-3"><hr/></div>
+<br/>
+<div class="col-md-offset-3" align="left"><h2><small>Order - Specifications</small></h2></div>
+<br/>
+<div class="form-group">
+    {{ form_label(packingSheetForm.contentId, null, {  'label': 'Content', 'label_attr':  {
+    'class': 'col-sm-4 control-label'
+    }}) }}
+    <div class="col-sm-4">
+        {{ form_errors(packingSheetForm.contentId) }}
+        {{ form_widget(packingSheetForm.contentId, {'attr':  {
+        'class': 'form-control'
+        }}) }}
+    </div>
+</div>
+<div class="form-group">
+    {{ form_label(packingSheetForm.priorityId, null, {  'label': 'Priority', 'label_attr':  {
+    'class': 'col-sm-4 control-label'
+    }}) }}
+    <div class="col-sm-4">
+        {{ form_errors(packingSheetForm.priorityId) }}
+        {{ form_widget(packingSheetForm.priorityId, {'attr':  {
+        'class': 'form-control'
+        }}) }}
+    </div>
+</div>
+<div class="form-group">
+    {{ form_label(packingSheetForm.shipperId, null, {  'label': 'Shipper', 'label_attr':  {
+    'class': 'col-sm-4 control-label'
+    }}) }}
+    <div class="col-sm-4">
+        {{ form_errors(packingSheetForm.shipperId) }}
+        {{ form_widget(packingSheetForm.shipperId, {'attr':  {
+        'class': 'form-control'
+        }}) }}
+    </div>
+</div>
+<div class="form-group">
+    {{ form_label(packingSheetForm.customStatusId, null, {  'label': 'Custom Status', 'label_attr':  {
+    'class': 'col-sm-4 control-label'
+    }}) }}
+    <div class="col-sm-4">
+        {{ form_errors(packingSheetForm.customStatusId) }}
+        {{ form_widget(packingSheetForm.customStatusId, {'attr':  {
+        'class': 'form-control'
+        }}) }}
+    </div>
+</div>
+<div class="col-md-6 col-md-offset-3"><hr/></div>
+<br/>
+<div class="col-md-offset-3" align="left"><h2><small>Order - Financial</small></h2></div>
+<br/>
+<div class="modal-body row">
+  	<div class="col-md-6">
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.yrOrder, null, {  'label': 'Year', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-4">
+                {{ form_errors(packingSheetForm.yrOrder) }}
+                {{ form_widget(packingSheetForm.yrOrder, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.incTypeId, null, {  'label': 'Incoterms Type', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(packingSheetForm.incTypeId) }}
+                {{ form_widget(packingSheetForm.incTypeId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.incLocId, null, {  'label': 'Incoterms Location', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(packingSheetForm.incLocId) }}
+                {{ form_widget(packingSheetForm.incLocId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.currencyId, null, {  'label': 'Currency', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(packingSheetForm.currencyId) }}
+                {{ form_widget(packingSheetForm.currencyId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    </div>
+  	<div class="col-md-6">
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.serviceId, null, {  'label': 'Service', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.serviceId) }}
+                {{ form_widget(packingSheetForm.serviceId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.imputId, null, {  'label': 'Imputation', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(packingSheetForm.imputId) }}
+                {{ form_widget(packingSheetForm.imputId, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+    	<div class="form-group">
+            {{ form_label(packingSheetForm.collect, null, {  'label': 'Collect', 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-1">
+                {{ form_errors(packingSheetForm.collect) }}
+                {{ form_widget(packingSheetForm.collect, {'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+    	</div>
+  	</div>
+</div>
+<div class="col-md-6 col-md-offset-3"><hr/></div>
+<br/>
+<div class="col-md-offset-1" align="left"><h2><small>Memo</small></h2></div>
+<br/>
+<div class="form-group">
+    {{ form_label(packingSheetForm.memo, null, {  'label': ' ', 'label_attr':  {
+    'class': 'col-sm-4 control-label'
+    }}) }}
+    <div class="col-sm-10 col-md-offset-1">
+        {{ form_errors(packingSheetForm.memo) }}
+        {{ form_widget(packingSheetForm.memo, {'attr':  {
+        'class': 'form-control',
+        'rows': '5'
+        }}) }}
+    </div>
+    <div class="form-group">
+    	<div class="col-md-10 col-md-offset-1">
+    		<br/>
+    		<h2><small>Predefined Memos</small></h2>
+          	<select class="form-control" id="usualMemos">
+            	<option>TestMemo1</option>
+            	<option>Testmemo2</option>
+          	</select>
+      	</div>
+    </div>
+</div>
+
+
+

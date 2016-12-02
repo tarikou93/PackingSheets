@@ -16,19 +16,25 @@
     
     <div class="jumbotron vertical-center">
         <div class="container-fluid">
-            <div class="container"><h2>Packing Sheet <br>
-                    <small>PS {{ packingSheet.ref}} </small></h2>
+            <div class="container"><h2>Packings <br>
+                    <small>PS {{ psRef }} </small></h2>
                 <div class="col-md-3 col-md-offset-9 text-right">
                 	<a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create a new Part </button></a>
                     <hr>
-                    <a href="{{ path('sheet', { 'id': id, 'status': 'edit' }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Packing Sheet </button></a>
+                    <a href="{{ path('packings', { 'id': id }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Packings </button></a>
                 </div>
             </div>
             <hr></hr>
             <div class="container">
-            	<div class="panel panel-warning">
-              		<div class="panel-heading"><h4>Packing {{ packingid }} <br/><small>Edition</small></h4></div>
+            	{% if status is same as ('create') %}
+                	<div class="panel panel-success">
+                  		<div class="panel-heading"><h4>Creation</h4></div>
+                	</div>
+            	{% elseif status is same as ('edit') %}
+            		<div class="panel panel-warning">
+              		<div class="panel-heading"><h4> Edition <br/></h4></div>
             	</div>
+            	{% endif %}
             	<div class="well">
                     {{ form_start(packingForm, { 'attr': {'class': 'form-horizontal'} }) }}
                     	<div class="well">
@@ -162,81 +168,8 @@
                 </div>
             </div>
     	</div>
-    </div>
-    
-    <script>
-    
-    var $collectionHolder;
-
- 	// setup an "add a part" link
-     var $addPartLink = $('<br/><a href="#" class="add_part_link"><button type="button" class="btn btn-success outline"><span class="glyphicon glyphicon-copy"></span> Add a Part </button></a>');
-     var $newLinkLi = $('<li></li>').append($addPartLink);
-    
-     jQuery(document).ready(function() {
-
-         // Get the ul that holds the collection of parts
-         $collectionHolder = $('ul.parts');
-        
-         // add a delete link to all of the existing part form li elements
-         $collectionHolder.find('li').each(function() {
-            addPartFormDeleteLink($(this));
-         });
-    	    
-         // Get the ul that holds the collection of parts
-         //$collectionHolder = $('ul.parts');
-    
-         // add the "add a Part" anchor and li to the parts ul
-         $collectionHolder.append($newLinkLi);
-    
-         // count the current form inputs we have (e.g. 2), use that as the new
-         // index when inserting a new item (e.g. 2)
-         $collectionHolder.data('index', $collectionHolder.find(':input').length);
-    
-         $addPartLink.on('click', function(e) {
-             // prevent the link from creating a "#" on the URL
-             e.preventDefault();
-    
-             // add a new part form (see next code block)
-             addPartForm($collectionHolder, $newLinkLi);
-         });
-     });
-
-     function addPartForm($collectionHolder, $newLinkLi) {
-    	    // Get the data-prototype explained earlier
-    	    var prototype = $collectionHolder.data('prototype');
-
-    	    // get the new index
-    	    var index = $collectionHolder.data('index');
-
-    	    // Replace '__name__' in the prototype's HTML to
-    	    // instead be a number based on how many items we have
-    	    var newForm = prototype.replace(/__name__/g, index);
-
-    	    // increase the index with one for the next item
-    	    $collectionHolder.data('index', index + 1);
-
-    	    // Display the form in the page in an li, before the "Add a Part" link li
-    	    var $newFormLi = $('<li></li>').append(newForm);
-    	    $newLinkLi.before($newFormLi);
-
-    	 	// add a delete link to the new form
-    	    addPartFormDeleteLink($newFormLi);
-    	}
-
-	function addPartFormDeleteLink($partFormLi) {
-	    var $removeFormA = $('<p><a href="#"><button type="button" class="btn btn-danger outline"><span class="glyphicon glyphicon-paste"></span> Delete this Part </button></a></p>');
-	    $partFormLi.append($removeFormA);
-
-	    $removeFormA.on('click', function(e) {
-	        // prevent the link from creating a "#" on the URL
-	        e.preventDefault();
-
-	        // remove the li for the part form
-	        $partFormLi.remove();
-	    });
-	}
- 	
-    </script>
+    </div>  
+    <script src="/scripts/dynamic_parts_packing_form.js"></script> 
 {% endblock %}
 
 

@@ -37,11 +37,11 @@
                                         <th>Consigned</th>
                                         <th>From service</th>
                                         <th>Autority</th>
-                                        <th>Details</th>
                                         <th>List</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
+                                        <th>Packings</th>
+                                        <th>Sheet</th>
                                         <th>Print</th>
+                                        <th>Delete</th>        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,23 +53,29 @@
                                             <td>{{ packingSheet.consignedAddressId.label}}</td>
                                             <td>{{ packingSheet.serviceId.label }}</td>
                                             <td>{{ packingSheet.autorityId.label }}</td>
-                                            <td><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'details' }) }}">
-                                                    <button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in"></span></button></a></td>
-                                            <td><a href="{{ path('sheetList', { 'id': packingSheet.id }) }}">
-                                                    <button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-list-alt"></span></button></a></td>
-                                            <td><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'edit' }) }}">
-                                            		<button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></a></td>
-                                            <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                                            <td><a href="{{ path('sheetList', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-list btn-sm"><span class="glyphicon glyphicon-list-alt"></span></button></a></td>
+                                            <td><a href="{{ path('packings', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-packings btn-sm"><span class="glyphicon glyphicon-inbox"></span></button></a></td>     
+                                            <td>
+                                                <div class="dropdown">
+                                                  	<button class="btn btn-sheet btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span>
+                                                  	<span class="caret"></span></button>
+                                                  	<ul class="dropdown-menu">
+                                                    	<li><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'details' }) }}"><span class="glyphicon glyphicon-zoom-in"></span>  Details</a></li>
+                                                    	<li><a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'edit' }) }}"><span class="glyphicon glyphicon-pencil"></span>  Edit</a></li>
+                                                  	</ul>
+                                                </div>
+                                            </td>
                                             <td>
                                             	<div class="dropdown">
                                                   	<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-print"></span>
                                                   	<span class="caret"></span></button>
                                                   	<ul class="dropdown-menu">
-                                                    	<li><a href="#">Packing List</a></li>
-                                                    	<li><a href="#">Packing Sheet</a></li>
+                                                    	<li><a href="#">List</a></li>
+                                                    	<li><a href="#">Sheet</a></li>
                                                   	</ul>
                                                 </div>    
                                             </td>
+											<td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>                                 
                                         </tr>
                                     {% endfor %}
                                 </tbody>

@@ -164,6 +164,7 @@ h2 {
   left: 4px;
 }
 
+
 /*.btn.outline {
 	background: none;
 	padding: 6px 12px;
@@ -206,4 +207,34 @@ h2 {
 
 .p-text-left {
   text-align:left;
+}
+
+.btn-packings,
+.btn-packings:hover,
+.btn-packings:active,
+.btn-packings:visited,
+.btn-packings:focus {
+    background-color: #2BBBAD;
+    border-color: #26a69a;
+    color: #ffffff;
+}
+
+.btn-list,
+.btn-list:hover,
+.btn-list:active,
+.btn-list:visited,
+.btn-list:focus {
+    background-color: #9ccc65;
+    border-color: #8bc34a;
+    color: #ffffff;
+}
+
+.btn-sheet,
+.btn-sheet:hover,
+.btn-sheet:active,
+.btn-sheet:visited,
+.btn-sheet:focus {
+    background-color: #64b5F6;
+    border-color: #42a5f5;
+    color: #ffffff;
 }

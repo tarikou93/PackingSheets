@@ -1,4 +1,5 @@
 <?php
+ini_set('xdebug.var_display_max_depth', '10');
 
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\Part;
@@ -11,6 +12,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use PackingSheets\Form\Type\PackingListType;
 use PackingSheets\Form\Type\PackingSheetType;
 use PackingSheets\Form\Type\PackingType;
+use PackingSheets\Domain\Packing;
+use PackingSheets\Domain\PackingList;
+//use PackingSheets\Form\Type\ContactSearchType;
+
 
 //use Symfony\Component\Form\Extension\Core\Type\FormType;
 // Home page
@@ -36,13 +41,47 @@ $app->get('/parts', function () use ($app) {
 
 // Contacts list page
 $app->get('/contacts', function () use ($app) {
-    $contacts = $app['dao.contact']->findAll();
     $codes = $app['dao.code']->findAll();
-    
     $searchTag = 0;
-    return $app['twig']->render('contacts.html.twig', array('contacts' => $contacts, 'codes' => $codes, 'searchTag' => $searchTag));
+    return $app['twig']->render('contacts.html.twig', array('codes' => $codes, 'searchTag' => $searchTag));
 })->bind('contacts');
 
+/*
+// Contacts list page
+$app->match('/contacts', function(Request $request) use ($app) {
+	
+	$searchTag = 0;
+	$codes = $app['dao.code']->findAll();
+
+	$addressDAO = $app['dao.address'];
+	$codeDAO = $app['dao.code'];
+
+	$contactForm = $app['form.factory']->create(ContactSearchType::class, array('codes' => $codes, 'codeDAO' => $codeDAO, 'addressDAO' => $addressDAO));
+
+	if($request->isMethod('POST')){
+		if($request->isXmlHttpRequest()){
+			$id = $request->get('code');
+			$addresses = $app['dao.address']->findByCode($id);
+			return new JsonResponse(array('addresses' => $addresses));
+		}
+		else{
+			$contactForm->handleRequest($request);
+			if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+				$searchedContacts = $app['dao.contact']->findBySearch($request);
+				return $app->redirect($app['url_generator']->generate('contacts', array('codes' => $searchedContacts, 'searchTag' => 1)));
+			}
+		}
+		 
+	}
+
+	return $app['twig']->render('/forms/contact_form.html.twig', array(
+			'title' => 'Contacts',
+			'codes' => $codes,
+			'searchTag = 0' => $searchTag,
+			'contactForm' => $contactForm->createView()));
+})->bind('contacts');
+
+*/
 
 //Packing Sheet General
 $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use ($app) {
@@ -57,12 +96,13 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		$packingSheet = $app['dao.packingSheet']->find($id);
 		$read_only = ($status === "details") ? true : false;
 		
-		$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId()->getId());
-		$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId()->getId());
+		$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId());
+		$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId());
 	}
 	
 	$parts = $app['dao.part']->findAll();
-	$codes = $app['dao.code']->findAll();
+	//$codes = $app['dao.code']->findAll();
+	$codes = $app['dao.code']->findAllArrayResults();
 	$packTypes = $app['dao.packType']->findAll();
 	
 	$consignedAddresses = $app['dao.address']->findAll();
@@ -81,16 +121,21 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	$imputs = $app['dao.imput']->findAll();
 	
 	$address = $app['dao.address'];
-
+	//var_dump($app['session']->get('auth')['packingSheetsSeries']);exit;
+	$availableGroups = $app['session']->get('auth')['packingSheetsSeries'];
+	
+	//var_dump($packingSheet);exit;
+	
 	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
-			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address,
+			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address, 'availableGroups' => $availableGroups,
 			'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses,'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
 			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
 			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null
 	));
 	
-
+	$consignedContacts = array();
+	
 	if($request->isMethod('POST')){
 		if($request->isXmlHttpRequest()){
 			switch ($request->get('flag')){		
@@ -108,33 +153,42 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 					
 				case "packing_sheet_consignedAddressId" :
 					$idConsignedAddress = $request->get('packing_sheet_consignedAddressId');
-					$consignedContacts = $app['dao.contact']->findByAddress($idConsignedAddress);
+					$consignedContacts = $app['dao.contact']->findAllByAddress($idConsignedAddress);
 					return new JsonResponse(array('packing_sheet_consignedContactId' => $consignedContacts));
 					break;
 				
 				case "packing_sheet_deliveryAddressId" :
 					$idDeliveryAddress = $request->get('packing_sheet_deliveryAddressId');
-					$deliveryContacts = $app['dao.contact']->findByAddress($idDeliveryAddress);
+					$deliveryContacts = $app['dao.contact']->findAllByAddress($idDeliveryAddress);
 					return new JsonResponse(array('packing_sheet_deliveryContactId' => $deliveryContacts));
 					break;
 			}	
 		}
 		else{
 			$packingSheetForm->handleRequest($request);
-			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
-				$app['dao.packingSheet']->save($packingSheet);					
+			
+			//var_dump($packingSheet);exit;
+			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {	
+				$app['dao.packingSheet']->save($packingSheet);
+				
+				$packingList = new PackingList();
+				$packingList->setPsId($packingSheet->getId());
+				$app['dao.packingList']->save($packingList);
+				
 				$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
-
-				return $app->redirect($app['url_generator']->generate('sheet', array('id' => $id, 'status' => 'details', 'packingSheet' => $packingSheet)));
+				return $app->redirect($app['url_generator']->generate('sheets'));
 			}
 		}
 	}
+	
+	//var_dump($app['dao.code']->find(2));exit;
 
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
 			'parts' => $parts,
 			'packTypes' => $packTypes,
 			'read_only' => $read_only,
+			'availableGroups' => $availableGroups,
 			'codes' => $codes, 'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
 			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
 			'id' => isset($id) ? $id : null,
@@ -146,12 +200,31 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 
 })->value('id', 0)->bind('sheet');
 
+// Packings list page
+$app->get('/sheets/{id}/packings', function ($id) use ($app) {
+	$packings = $app['dao.packing']->findAllByPackingSheet($id);
+	$psRef = $app['dao.packingSheet']->find($id)->getRef();
+	//var_dump($packings);exit;
+	return $app['twig']->render('packings.html.twig', array(
+			'title' => 'Packings',
+			'packings' => $packings, 
+			'idSheet' => $id, 
+			'psRef' => $psRef));
+})->bind('packings');
 
-//Packing Edition
-$app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, $packingid) use ($app) {
 
-	$packingSheet = $app['dao.packingSheet']->find($id);
-	$packing = $app['dao.packing']->find($packingid);
+//Packing Page
+$app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $request, $id, $packingid, $status) use ($app) {
+	
+	if($status === "create"){
+		$packing = new Packing();
+		$packing->setPSid($id);
+	}
+	else{
+		$packing = $app['dao.packing']->find($packingid);
+	}
+
+	$psRef = $app['dao.packingSheet']->find($id)->getRef();
 	$parts_list = $app['dao.part']->findAll();
 	$packing_types = $app['dao.packType']->findAll();
 	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts_list' => $parts_list, 'packing_types' => $packing_types));
@@ -160,27 +233,46 @@ $app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, 
 
 	if ($packingForm->isSubmitted() && $packingForm->isValid()) {
 		//$selectedParts = $packingListForm->get('parts')->getData();
+
 		$app['dao.packing']->save($packing);
 			
 		$app['session']->getFlashBag()->add('success', 'Packing succesfully updated.');
 		//var_dump($packingList);
-		return $app->redirect($app['url_generator']->generate('sheet', array('id' => $id, 'status' => 'edit', 'packingSheet' => $packingSheet)));
+		return $app->redirect($app['url_generator']->generate('packings', array('id' => $id)));
 	}
 	return $app['twig']->render('/forms/packing_form.html.twig', array(
 			'title' => 'Packing',
-			'parts_list' => $parts_list,
-			'packing_types' => $packing_types,
 			'id' => $id,
+			'psRef' => $psRef,
+			'status' => $status,
 			'packingid' => $packingid,
-			'packingSheet' => $packingSheet,
 			'packingForm' => $packingForm->createView()));
 
-})->bind('packingDetails');
+})->value('packingid', 0)->bind('packing');
+
+// Remove a Packing
+$app->match('/sheets/{id}/packings/{packingid}/delete', function(Request $request, $id, $packingid) use ($app) {
+	var_dump($packingid);exit;
+	try{
+		//Delete the Packing
+		$app['dao.packing']->delete($packingid);
+		$app['session']->getFlashBag()->add('success', 'Packing succesfully removed.');
+		// Redirect to admin home page
+		return $app->redirect($app['url_generator']->generate('packings', array('id' => $id)));
+
+	} catch (Exception $e) {
+		//The INSERT query failed due to a key constraint violation.
+		$app['session']->getFlashBag()->add('danger', 'This packing cannot be removed.');
+		// Redirect to admin home page
+		return $app->redirect($app['url_generator']->generate('packings', array('id' => $id)));
+	}
+
+})->bind('packing_delete');
 
  //Packing list
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
 	 $packingList = $app['dao.packingList']->findByPackingSheet($id);
-	 $packingSheet = $app['dao.packingSheet']->find($id);
+	 $psRef = $app['dao.packingSheet']->find($id)->getRef();
 	 $parts = $app['dao.part']->findAll();
 	 $packingListForm = $app['form.factory']->create(PackingListType::class, $packingList, array('parts' => $parts));
 	 $packingListForm->handleRequest($request);
@@ -192,14 +284,14 @@ $app->match('/sheets/{id}/packing/{packingid}', function(Request $request, $id, 
  		
 	 	$app['session']->getFlashBag()->add('success', 'Packing List succesfully updated.');
 	 	//var_dump($packingList);
-	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id, 'packingSheet' => $packingSheet)));
+	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id, 'psRef' => $psRef)));
 	 }
 	 return $app['twig']->render('/forms/packingList_form.html.twig', array(
 	 		'title' => 'Packing List',
 	 		'packingList' => $packingList,
 	 		'parts' => $parts,
 	 		'id' => $id,
-	 		'packingSheet' => $packingSheet,
+	 		'psRef' => $psRef,
 	 		'packingListForm' => $packingListForm->createView()));
 		
  })->bind('sheetList');
@@ -210,6 +302,7 @@ $app->get('/auth/logout', function () use ($app) {
     return;
 })->bind('logout');
 
+// Searches
 
 //PackingSheet Search
 $app->post('/search_packingsheets', function () use ($app) {
@@ -237,9 +330,12 @@ $app->post('/search_contacts', function () use ($app) {
     return $app['twig']->render('contacts.html.twig', array('contacts' => $contacts, 'addresses' => $addresses, 'codes' => $codes, 'searchTag' => $searchTag));
 })->bind('searchContacts');
 
+// Ajax Routes
 
 //PackingSheet filter addresses by code with Ajax
 $app->get('/sheets_ajax_address', function () use ($app) {
+	
+	var_dump('test');exit;
 
     if (isset($_GET["code"])) {
         $code = $_GET['code'];
@@ -273,6 +369,8 @@ $app->get('/sheets_ajax_contact', function () use ($app) {
 })->bind('sheets_ajax_contact');
 
 
+// Parts
+
 // Add a new part
 $app->match('/part/add', function(Request $request) use ($app) {
     $part = new Part();
@@ -305,7 +403,6 @@ $app->match('/part/{id}/edit', function($id, Request $request) use ($app) {
 })->bind('part_edit');
 
 
-
 // Remove a part
 $app->get('/part/{id}/delete', function($id, Request $request) use ($app) {
     try{
@@ -323,6 +420,9 @@ $app->get('/part/{id}/delete', function($id, Request $request) use ($app) {
     }
     
 })->bind('part_delete');
+
+
+// Contacts
 
 // Add a new contact
 $app->match('/contact/add', function(Request $request) use ($app) {
@@ -361,10 +461,13 @@ $app->match('/contact/{id}/edit', function($id, Request $request) use ($app) {
     $contact = $app['dao.contact']->find($id);
     $codes = $app['dao.code']->findAll();
   
-    $code = $contact->getAddressId()->getCodeId();
-    $address = $app['dao.address'];
+    $addressOld = $app['dao.address']->find($contact->getAddressId());
+    $codeOld = $app['dao.code']->find($addressOld->getCodeId());
     
-    $contactForm = $app['form.factory']->create(ContactTypeEdit::class, $contact, array('codes' => $codes, 'code' => $code, 'address' => $address));
+    $addressDAO = $app['dao.address'];
+    $codeDAO = $app['dao.code'];
+    
+    $contactForm = $app['form.factory']->create(ContactTypeEdit::class, $contact, array('codes' => $codes, 'codeOld' => $codeOld, 'codeDAO' => $codeDAO, 'addressDAO' => $addressDAO));
     
     if($request->isMethod('POST')){
     	if($request->isXmlHttpRequest()){

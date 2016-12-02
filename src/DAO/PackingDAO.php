@@ -89,6 +89,28 @@ class PackingDAO extends DAO
      */
     public function save(Packing $pack) {
     	
+    	$packData = array(
+    			'ps_id' => $pack->getPSid(),
+    			'pack_netWeight' => $pack->getNetWeight(),
+    			'pack_grossWeight' => $pack->getGrossWeight(),
+    			'pack_M1' => $pack->getM1(),
+    			'pack_M2' => $pack->getM2(),
+    			'pack_M3' => $pack->getM3(),
+    			'pack_img' => "packing1.jpg",
+    			'packType_id' => $pack->getPackTypeid()->getId(),
+    	);
+    	
+    	if ($pack->getId()) {
+    		// The Packing has already been saved : update it
+    		$this->getDb()->update('t_packing', $packData, array('pack_id' => $pack->getId()));
+    	} else {
+    		// The Packing has never been saved : insert it
+    		$this->getDb()->insert('t_packing', $packData);
+    		// Get the id of the newly created Packing and set it on the entity.
+    		$id = $this->getDb()->lastInsertId();
+    		$pack->setId($id);
+    	}
+    	
     	$parts = $pack->getParts();
     	
     	$sql = "select * from t_packing_part where pack_id=?";
@@ -132,29 +154,6 @@ class PackingDAO extends DAO
     		foreach($partsDbini as $partDb){
     			$this->packingPartDAO->delete($partDb->getId());
     		}
-    	}
-    	
-    
-    	$packData = array(
-    			'ps_id' => $pack->getPSid(),
-    			'pack_netWeight' => $pack->getNetWeight(),
-    			'pack_grossWeight' => $pack->getGrossWeight(),
-    			'pack_M1' => $pack->getM1(),
-    			'pack_M2' => $pack->getM2(),
-    			'pack_M3' => $pack->getM3(),
-    			'pack_img' => "packing1.jpg",
-    			'packType_id' => $pack->getPackTypeid()->getId(),
-    	);
-    
-    	if ($pack->getId()) {
-    		// The PackingSheetPart has already been saved : update it
-    		$this->getDb()->update('t_packing', $packData, array('pack_id' => $pack->getId()));
-    	} else {
-    		// The PackingSheetPart has never been saved : insert it
-    		$this->getDb()->insert('t_packing', $packData);
-    		// Get the id of the newly created PackingSheetPart and set it on the entity.
-    		$id = $this->getDb()->lastInsertId();
-    		$pack->setId($id);
     	}
     }
     

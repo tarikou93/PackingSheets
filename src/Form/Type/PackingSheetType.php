@@ -27,10 +27,11 @@ class PackingSheetType extends AbstractType
 		$builder
 		
 		->add('ref', TextType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])		
+		))
 				
-		->add('groupId', TextType::class, array(
+		->add('groupId', ChoiceType::class, array(
+				'choices' => $options['availableGroups'],
 				'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())))
 				
@@ -131,8 +132,7 @@ class PackingSheetType extends AbstractType
 				'constraints' => array(new Assert\NotBlank())))
 				
 		->add('collect', CheckboxType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('autorityId', ChoiceType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
@@ -184,24 +184,19 @@ class PackingSheetType extends AbstractType
 				
 				
 		->add('nbrPieces', TextType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('weight', TextType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 						
 		->add('totalPrice', TextType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('signed', CheckboxType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 						
 		->add('printed', CheckboxType::class, array(
-				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('memo', TextareaType::class, array(
 				'attr' => array('readonly' => $options['read_only'])))	
@@ -211,7 +206,7 @@ class PackingSheetType extends AbstractType
 				'entry_options'  => array(
 						'parts_list'  => $options['parts'],
 						'packing_types' => $options['packTypes'],
-						'read_only' => $options['read_only'],
+						//'read_only' => $options['read_only'],
 						'label' => false
 				),
 				'allow_add' => true,
@@ -266,7 +261,7 @@ class PackingSheetType extends AbstractType
 		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null, 'read_only' => null, 'address' => null, 'status' => null,
 				'codes' => null,'consignedAddresses' => null, 'deliveryAddresses' => null, 'contacts' => null, 'services' => null, 'contents' => null, 'priorities' => null, 'shippers' => null,
 				'autorities' => null, 'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
-				'deliveryOldCode' =>  null, 'consignedOldCode' => null
+				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null
 		))
 		->setRequired('address')
 		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')

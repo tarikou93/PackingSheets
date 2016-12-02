@@ -6,6 +6,15 @@ use PackingSheets\Domain\Code;
 
 class CodeDAO extends DAO
 {
+	
+	/**
+	 * @var \PackingSheets\DAO\AddressDAO
+	 */
+	private $addressDAO;
+	
+	public function setAddressDAO(AddressDAO $addressDAO) {
+		$this->addressDAO = $addressDAO;
+	}
 
     /**
      * Return a list of all Codes, sorted by date (most recent first).
@@ -42,6 +51,23 @@ class CodeDAO extends DAO
            throw new \Exception("No Code matching id " . $id);
    }
    
+   
+   public function findAllArrayResults(){
+   		$sql = "select * from t_code order by code_id desc";
+   		$result = $this->getDb()->fetchAll($sql);
+   		
+   		// Convert query result to an array of domain objects
+   		$codes = array();
+   		foreach ($result as $row) {
+   			$codeId = $row['code_id'];
+   			$code = new Code();
+   			$code->setId($row['code_id']);
+   			$code->setLabel($row['code_label']);
+   			$codes[$codeId] = $code;
+   		}
+   		
+   		return $codes;
+   }
 
     /**
      * Creates a Code object based on a DB row.
@@ -53,6 +79,10 @@ class CodeDAO extends DAO
         $code = new Code();
         $code->setId($row['code_id']);
         $code->setLabel($row['code_label']);
+        
+        //Addresses
+        $code->setAddresses($this->addressDAO->findByCode($row['code_id']));
+        
         return $code;
     }
 }

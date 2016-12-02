@@ -1,13 +1,2 @@
-Test
-
-{% if packingList.parts is empty %}
-    Empty Packing List
-{% else %}
-	List Id : {{ packingList.id }}
-	{% for packListPart in packingList.parts %}
-    	- Part Id : {{ packListPart.partId.id }}
-    	- Part Desc : {{ packListPart.partId.desc }}
-    	- Part Pn : {{ packListPart.partId.pn }}
-    {% endfor %}
-{% endif %}
+TEST
 

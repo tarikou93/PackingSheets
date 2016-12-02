@@ -29,7 +29,7 @@ class ContactTypeEdit extends AbstractType
 				'choices' => $options['codes'],
 				'choice_value' => 'id',
 				'multiple' => false,
-				'data' => $options['code']))
+				'data' => $options['codeOld']))
 			
 			->add('name', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank())))
@@ -41,16 +41,16 @@ class ContactTypeEdit extends AbstractType
 				'required' => false));
 		;
 		
-		$formModifier = function (FormInterface $form, Code $code, AddressDAO $adr) {
+		$formModifier = function (FormInterface $form, Code $code) {
 
-			$addresses = null === $code ? array() : $adr->findByCode($code->getId());
+			$addresses = null === $code ? array() : $code->getAddresses();
 			
 			$form->add('addressId', ChoiceType::class, array(
                         'constraints' => array(new Assert\NotBlank()),
                         'choice_label' => 'label',
 						'choice_value' => 'id',
                         'choices' => $addresses,
-						'placeholder' => '',
+						//'placeholder' => '',
                         'multiple' => false,
 					
 			));
@@ -61,7 +61,10 @@ class ContactTypeEdit extends AbstractType
 			function (FormEvent $event) use ($formModifier, $options) {
 				$data = $event->getData();
 				
-			$formModifier($event->getForm(), $data->getAddressId()->getCodeId(), $options['address']);
+				$addressTemp = $options['addressDAO']->find($data->getAddressId());
+				$codeTemp = $options['codeDAO']->find($addressTemp->getCodeId());
+				
+			$formModifier($event->getForm(), $codeTemp);
 			
 			}
 		);
@@ -71,7 +74,7 @@ class ContactTypeEdit extends AbstractType
 			FormEvents::POST_SUBMIT,
 			function (FormEvent $event) use ($formModifier, $options) {
 				$code = $event->getForm()->getData();
-				$formModifier($event->getForm()->getParent(), $code, $options['address']);
+				$formModifier($event->getForm()->getParent(), $code);
 			}
 		);
 	}
@@ -79,10 +82,10 @@ class ContactTypeEdit extends AbstractType
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
 		//->setDefault('codes', null)
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\Contact', 'codes' => null, 'code' => null, 'address' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\Contact', 'codes' => null, 'codeOld' => null, 'addressDAO' => null, 'codeDAO' => null))
 		->setRequired('codes', 'code', 'address')
 		->setAllowedTypes('codes', array('array'))
-		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')
+		->setAllowedTypes('addressDAO', 'PackingSheets\DAO\AddressDAO')
 		;
 	}
 	

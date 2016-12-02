@@ -17,6 +17,13 @@ class Code
      * @var string
      */
     private $label;
+    
+    /**
+     * Code addresses.
+     *
+     * @var array(Address)
+     */
+    private $addresses;
 
     public function getId() {
         return $this->id;
@@ -32,6 +39,14 @@ class Code
 
     public function setLabel($label) {
         $this->label = $label;
+    }
+    
+    public function getAddresses() {
+    	return $this->addresses;
+    }
+    
+    public function setAddresses($addresses) {
+    	$this->addresses = $addresses;
     }
 
 }

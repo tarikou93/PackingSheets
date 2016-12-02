@@ -1,0 +1,120 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Packings{% endblock %}
+
+{% block content %}
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <div class="jumbotron vertical-center">
+        <div class="container-fluid">
+            <div class="container"><h2>Packings <br>
+                    <small>PS {{ psRef }}</small></h2>
+                <div class="col-md-3 col-md-offset-9">
+                    <a href="{{ path('packing', { 'id': idSheet, 'status': 'create' }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new packing</button></a>
+            		<hr></hr>
+            		<a href="{{ path('sheet', { 'id': idSheet, 'status': 'details' }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to Sheet </button></a>
+                </div>
+            </div>
+            <div id="exTab2" class="container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#1" data-toggle="tab">Packings</a></li>
+                </ul>
+                <div class="tab-content ">
+                    <div class="tab-pane active" id="1">
+                        {% if (packings is empty) %}
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">No Packings found for this Packing Sheet</div>
+                            </div>
+                        {% else %}
+                        	{% set cpt = 1 %}
+                            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                    	<th>Nr</th>
+                                        <th>Net Weight</th>
+                                        <th>Gross Weight</th>
+                                        <th>M1</th>
+                                        <th>M2</th>
+                                        <th>M3</th>
+                                        <th>Type</th>
+                                        <th>Image</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pack in packings %}
+                                        <tr>
+                                        	<td>{{ cpt }}</td>
+                                            <td>{{ pack.netWeight }}</td>
+                                            <td>{{ pack.grossWeight }}</td>
+                                            <td>{{ pack.M1 }}</td>
+                                            <td>{{ pack.M2 }}</td>
+                                            <td>{{ pack.M3 }}</td>
+                                            <td>{{ pack.packTypeId.label }}</td>
+                                            <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#imgModal{{ cpt }}">
+                                                                <span class="glyphicon glyphicon-picture"></span></button></td>
+                                            <td><a href="{{ path('packing', { 'id': idSheet, 'packingid': pack.id, 'status': 'edit' }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
+                                                        </span></button></a>
+                                            </td>
+                                            <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ pack.id }}">
+                                                    <span class="glyphicon glyphicon-remove"></span></button>
+                                            </td>
+                                        </tr>
+                                    <div class="modal fade" id="deleteConfirm{{ pack.id }}" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <div class="panel panel-danger">
+                                                        <div class="panel-heading panel-height"><h4>Packing Deletion : {{ cpt }}</small></h4></div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this packing ? <br/>
+                                                    It will be definitely removed from the database.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <a href="{{ path('packing_delete', { 'id': idSheet, 'packingid': pack.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ pack.id }}">
+                                                            Delete </button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="imgModal{{ cpt }}" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                          <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="/img/{{pack.img}}" style="width:304px;height:228px;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% set cpt = cpt + 1 %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

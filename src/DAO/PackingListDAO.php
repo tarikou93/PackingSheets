@@ -61,15 +61,17 @@ class PackingListDAO extends DAO
 		$parts = $packList->getParts();
 		$this->packingListPartDAO->deleteAll($packList->getId());
 		
-		foreach($parts as $part){
-			$part->setId(null);
-			$this->packingListPartDAO->save($part, $packList->getId());
+		if($parts !== null){
+			foreach($parts as $part){
+				$part->setId(null);
+				$this->packingListPartDAO->save($part, $packList->getId());
+			}	
 		}
-
+		
 		$packListData = array(
 				'ps_id' => $packList->getPsId(),
 		);
-
+		
 		if ($packList->getId()) {
 			// The PackingSheetPart has already been saved : update it
 			$this->getDb()->update('t_packinglist', $packListData, array('pl_id' => $packList->getId()));

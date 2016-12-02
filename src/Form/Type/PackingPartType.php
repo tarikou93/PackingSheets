@@ -22,16 +22,21 @@ class PackingPartType extends AbstractType
 				'choices' => $options['parts_list'],
 				'choice_value' => 'id',
 				'multiple' => false,
-				'label' => false,
+				'label' => 'Part',
+				'attr' => array('class' => 'form-control .col-md-6')
 		))
 
-				->add('quantity', TextType::class, array(
-						'constraints' => array(new Assert\NotBlank(),
-								new Assert\Regex(array(
-										'pattern' => '/(?:\d*\.)?\d+/')))))
-										
-				->add('origin', TextType::class, array(
-						'constraints' => array(new Assert\NotBlank())));
+		->add('quantity', TextType::class, array(
+				'constraints' => array(new Assert\NotBlank(),
+						new Assert\Regex(array(
+								'pattern' => '/(?:\d*\.)?\d+/'))),
+				'attr' => array('class' => 'form-control')
+		))
+								
+		->add('origin', TextType::class, array(
+				'constraints' => array(new Assert\NotBlank()),
+				'attr' => array('class' => 'form-control')
+		));
 
 	}
 

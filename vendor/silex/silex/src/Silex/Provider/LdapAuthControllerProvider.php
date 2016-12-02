@@ -58,19 +58,19 @@ class LdapAuthControllerProvider implements ControllerProviderInterface
                         
                         if(in_array('CN=BRUAPPPackingSheet_Admin,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
                             $acredLevel = 3;
-                            $packingSheetsSeries = 3;
+                            $packingSheetsSeries = array('1' => 1, '2' => 2);
                         }
                         elseif(in_array('CN=BRUAPPPackingSheet_SuperUser,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
                             $acredLevel = 2;
-                            $packingSheetsSeries = 3;
+                            $packingSheetsSeries = array('1' => 1, '2' => 2);
                         }
                         else{
                             if(in_array('CN=BRUAPPPackingSheet_User_G1,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
-                                $packingSheetsSeries = 1;
+                                $packingSheetsSeries = array('1' => 1);
                                 $acredLevel = 1;
                             }
                             elseif(in_array('CN=BRUAPPPackingSheet_User_G2,OU=PackingSheet,OU=Apps,OU=Groups,OU=BRU,DC=company,DC=corp', $groups)){
-                                $packingSheetsSeries = 2;
+                                $packingSheetsSeries = array('2' => 2);
                                 $acredLevel = 1;
                             }
                             else {

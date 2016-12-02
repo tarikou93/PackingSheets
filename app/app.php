@@ -102,19 +102,19 @@ $app['dao.shipper'] = function($app) {
 };
 
 $app['dao.code'] = function ($app) {
-    return new PackingSheets\DAO\CodeDAO($app['db']);
+    $codeDAO = new PackingSheets\DAO\CodeDAO($app['db']);
+    $codeDAO->setAddressDAO($app['dao.address']);
+    return $codeDAO;
 };
 
 $app['dao.address'] = function($app) {
   $addressDAO = new PackingSheets\DAO\AddressDAO($app['db']);
-  $addressDAO->setAddressCodeDAO($app['dao.code']);
+  $addressDAO->setContactDAO($app['dao.contact']);
   return $addressDAO;
 };
 
 $app['dao.contact'] = function($app) {
-  $contactDAO = new PackingSheets\DAO\ContactDAO($app['db']);
-  $contactDAO->setAddressDAO($app['dao.address']);
-  return $contactDAO;
+  return new PackingSheets\DAO\ContactDAO($app['db']);
 };
 
 $app['dao.autority'] = function ($app) {

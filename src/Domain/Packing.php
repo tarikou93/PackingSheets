@@ -156,6 +156,10 @@ class Packing
     
     public function addPart(PackingPart $pkPart)
     {
+    	if($this->parts === null){
+    		$this->setParts(array());
+    	}
+    	
     	if (array_search($pkPart, $this->parts) == false) {
     		array_push($this->parts, $pkPart);
     	}

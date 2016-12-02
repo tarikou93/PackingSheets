@@ -8,15 +8,6 @@ class ContactDAO extends DAO
 {
 
     /**
-     * @var \PackingSheets\DAO\AddressDAO
-     */
-    private $addressDAO;
-
-    public function setAddressDAO(AddressDAO $addressDAO) {
-        $this->addressDAO = $addressDAO;
-    }
-    
-    /**
      * Return a list of all Contacts, sorted by date (most recent first).
      *
      * @return array A list of all Contacts.
@@ -52,17 +43,17 @@ class ContactDAO extends DAO
    }
    
    /**
-    * Returns a Contact matching the supplied address id.
+    * Returns a contact matching the supplied address.
     *
-    * @param integer $adr
+    * @param integer $address
     *
-    * @return \PackingSheet\Domain\Contact|throws an exception if no matching Contact is found
+    * @return \PackingSheet\DomaiContact|throws an exception if no matching contact is found
     */
-   public function findByAddress($adr) {
+   public function findByAddress($address) {
    	 
-   	$sql = "select * from t_contact where contact_addressId=".$adr;
+   	$sql = "select * from t_contact where contact_addressId=".$address;
    	$result = $this->getDb()->fetchAll($sql);
-   
+   	
    	// Convert query result to an array of domain objects
    	$contacts = array();
    	foreach ($result as $row) {
@@ -90,7 +81,9 @@ class ContactDAO extends DAO
         $query = "SELECT c.*
                 FROM t_contact c
                 INNER JOIN t_address ad
-                    ON c.contact_addressId = ad.address_id";
+                    ON c.contact_addressId = ad.address_id
+        		INNER JOIN t_code code
+        			ON ad.address_codeId = code.code_id";
         
         $conditions = array();
 
@@ -176,13 +169,7 @@ class ContactDAO extends DAO
         $contact->setMail($row['contact_mail']);
         $contact->setPhoneNr($row['contact_phoneNr']);
         $contact->setFaxNr($row['contact_fax']);
-        
-        if (array_key_exists('contact_addressId', $row)) {
-            // Find and set the associated address
-            $addressId = $row['contact_addressId'];
-            $address = $this->addressDAO->find($addressId);
-            $contact->setAddressId($address);
-        }
+        $contact->setAddressId($row['contact_addressId']);
         
         return $contact;
     }

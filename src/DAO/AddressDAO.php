@@ -8,12 +8,12 @@ class AddressDAO extends DAO
 {
 
     /**
-     * @var \PackingSheets\DAO\CodeDAO
+     * @var \PackingSheets\DAO\ContactDAO
      */
-    private $addressCodeDAO;
+    private $contactDAO;
 
-    public function setAddressCodeDAO(CodeDAO $codeDAO) {
-        $this->addressCodeDAO = $codeDAO;
+    public function setContactDAO(ContactDAO $contactDAO) {
+        $this->contactDAO = $contactDAO;
     }
 
     /**
@@ -82,13 +82,10 @@ class AddressDAO extends DAO
         $address = new Address();
         $address->setId($row['address_id']);
         $address->setLabel($row['address_label']);
+        $address->setCodeId($row['address_codeId']);
         
-        if (array_key_exists('address_codeId', $row)) {
-            // Find and set the associated code
-            $addressCodeId = $row['address_codeId'];
-            $addressCode = $this->addressCodeDAO->find($addressCodeId);
-            $address->setCodeId($addressCode);
-        }
+        //Contacts
+        $address->setContacts($this->contactDAO->findByAddress($row['address_id']));
 
         return $address;
     }

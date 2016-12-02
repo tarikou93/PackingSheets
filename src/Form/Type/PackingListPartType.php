@@ -21,12 +21,17 @@ class PackingListPartType extends AbstractType
 				'choice_label' => 'completeInfos',
 				'choices' => $options['parts_list'],
 				'choice_value' => 'id',
-				'multiple' => false))
+				'multiple' => false,
+				'attr' => array('class' => 'form-control'),
+				'label' => false
+		))
 										
 		->add('quantity', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank(), 
-			new Assert\Regex(array(
-            'pattern' => '/(?:\d*\.)?\d+/')))));
+					new Assert\Regex(array(
+		            'pattern' => '/(?:\d*\.)?\d+/'))),
+				'attr' => array('class' => 'form-control')
+			));
 										
 	}
 

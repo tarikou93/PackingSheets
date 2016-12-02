@@ -26,6 +26,13 @@ class Address implements JsonSerializable
      * @var string
      */
     private $label;
+    
+    /**
+     * Address contacts.
+     *
+     * @var array(Contact)
+     */
+    private $contacts;
 
     public function getId() {
         return $this->id;
@@ -51,11 +58,19 @@ class Address implements JsonSerializable
         $this->label = $label;
     }
     
+    public function getContacts() {
+    	return $this->contacts;
+    }
+    
+    public function setContacts($contacts) {
+    	$this->contacts = $contacts;
+    }
+    
     public function jsonSerialize()
     {
     	return array(
     			'id' => $this->id,
-    			'codeId'=> $this->codeId->getId(),
+    			'codeId'=> $this->codeId,
     			'label' => $this->label,
     	);
     }
