@@ -3,6 +3,7 @@
 namespace PackingSheets\DAO;
 
 use PackingSheets\Domain\PackingSheet;
+use PackingSheets\Domain\PackingList;
 
 class PackingSheetDAO extends DAO
 {
@@ -144,6 +145,15 @@ class PackingSheetDAO extends DAO
     
     public function setPackingDAO(PackingDAO $packingDAO) {
     	$this->packingDAO = $packingDAO;
+    }
+    
+    /**
+     * @var \PackingSheets\DAO\PackingListDAO
+     */
+    private $packingListDAO;
+    
+    public function setPackingListDAO(PackingListDAO $packingListDAO) {
+    	$this->packingListDAO = $packingListDAO;
     }
 
     /**
@@ -335,7 +345,17 @@ class PackingSheetDAO extends DAO
    		$id = $this->getDb()->lastInsertId();
    		$packingSheet->setId($id);
    	}
-   
+   	
+   	if($packingSheet->getPackingList() === null){
+   		$packingList = new PackingList();
+   		$packingList->setPsId($packingSheet->getId());
+   		$this->packingListDAO->save($packingList);
+   	}
+   	
+   	else{
+   		$this->packingListDAO->save($packingSheet->getPackingList());
+   	}
+   	
    	$packings = $packingSheet->getPackings();
    	//var_dump($packings);exit;
    		
@@ -391,6 +411,7 @@ class PackingSheetDAO extends DAO
    public function delete($id) {
    	//Delete the packingSheet
    	$this->packingDAO->deleteAll($id);
+   	$this->packingListDAO->delete($id);
    	$this->getDb()->delete('t_packingsheet', array('ps_id' => $id));
    }
 
@@ -538,6 +559,7 @@ class PackingSheetDAO extends DAO
         $packingSheet->setTotalPrice($totPrice);
         $packingSheet->setWeight($totWeight);
 
+        $packingSheet->setPackingList($this->packingListDAO->findByPackingSheet($row['ps_id']));
 
         return $packingSheet;
     }

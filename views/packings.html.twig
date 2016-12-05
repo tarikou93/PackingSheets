@@ -17,9 +17,12 @@
         <div class="container-fluid">
             <div class="container"><h2>Packings <br>
                     <small>PS {{ psRef }}</small></h2>
-                <div class="col-md-3 col-md-offset-9">
+                <div class="col-md-4 col-md-offset-8">
                     <a href="{{ path('packing', { 'id': idSheet, 'status': 'create' }) }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create new packing</button></a>
-            		<hr></hr>
+                    <hr/>
+                    <a href="{{ path('packingAssignation', { 'id': idSheet }) }}"><button type="button" class="btn btn-packings"><span class="glyphicon glyphicon-download-alt"></span> Assign List Part to Packing</button></a>
+            		<a href="{{ path('sheetList', { 'id': idSheet }) }}"><button type="button" class="btn btn-list"><span class="glyphicon glyphicon-list-alt"></span> List</button></a>
+            		<hr/>
             		<a href="{{ path('sheet', { 'id': idSheet, 'status': 'details' }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to Sheet </button></a>
                 </div>
             </div>
@@ -69,44 +72,44 @@
                                                     <span class="glyphicon glyphicon-remove"></span></button>
                                             </td>
                                         </tr>
-                                    <div class="modal fade" id="deleteConfirm{{ pack.id }}" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <div class="panel panel-danger">
-                                                        <div class="panel-heading panel-height"><h4>Packing Deletion : {{ cpt }}</small></h4></div>
+                                        <div class="modal fade" id="deleteConfirm{{ pack.id }}" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <div class="panel panel-danger">
+                                                            <div class="panel-heading panel-height"><h4>Packing Deletion : {{ cpt }}</small></h4></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this packing ? <br/>
+                                                        It will be definitely removed from the database.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <a href="{{ path('packing_delete', { 'id': idSheet, 'packingid': pack.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ pack.id }}">
+                                                                Delete </button></a>
                                                     </div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    Are you sure you want to delete this packing ? <br/>
-                                                    It will be definitely removed from the database.
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                    <a href="{{ path('packing_delete', { 'id': idSheet, 'packingid': pack.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ pack.id }}">
-                                                            Delete </button></a>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="imgModal{{ cpt }}" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
+                                                	</div>
+                                                    <div class="modal-body">
+                                                        <img src="/img/{{pack.img}}" style="width:304px;height:228px;">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal fade" id="imgModal{{ cpt }}" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <img src="/img/{{pack.img}}" style="width:304px;height:228px;">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     {% set cpt = cpt + 1 %}
                                 {% endfor %}
                                 </tbody>

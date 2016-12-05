@@ -12,8 +12,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use PackingSheets\Form\Type\PackingListType;
 use PackingSheets\Form\Type\PackingSheetType;
 use PackingSheets\Form\Type\PackingType;
+use PackingSheets\Form\Type\PackingAssignationType;
 use PackingSheets\Domain\Packing;
 use PackingSheets\Domain\PackingList;
+use PackingSheets\Domain\PackingAssignation;
 //use PackingSheets\Form\Type\ContactSearchType;
 
 
@@ -168,20 +170,16 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			$packingSheetForm->handleRequest($request);
 			
 			//var_dump($packingSheet);exit;
-			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {	
+			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {			
 				$app['dao.packingSheet']->save($packingSheet);
-				
-				$packingList = new PackingList();
-				$packingList->setPsId($packingSheet->getId());
-				$app['dao.packingList']->save($packingList);
-				
+						
 				$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
 				return $app->redirect($app['url_generator']->generate('sheets'));
 			}
 		}
 	}
 	
-	//var_dump($app['dao.code']->find(2));exit;
+	//var_dump($app['dao.packingSheet']->find(18));exit;
 
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
@@ -199,6 +197,25 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			'packingSheetForm' => $packingSheetForm->createView()));
 
 })->value('id', 0)->bind('sheet');
+
+// Remove a Packing Sheet
+$app->match('/delete_sheet/{id}', function(Request $request, $id) use ($app) {
+	
+	try{
+		//Delete the Packing
+		$app['dao.packingSheet']->delete($id);
+		$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully removed.');
+		// Redirect to admin home page
+		return $app->redirect($app['url_generator']->generate('sheets'));
+
+	} catch (Exception $e) {
+		//The INSERT query failed due to a key constraint violation.
+		$app['session']->getFlashBag()->add('danger', 'This packing sheet cannot be removed.');
+		// Redirect to admin home page
+		return $app->redirect($app['url_generator']->generate('sheets'));
+	}
+
+})->value('id', 0)->bind('packingsheet_delete');
 
 // Packings list page
 $app->get('/sheets/{id}/packings', function ($id) use ($app) {
@@ -224,7 +241,7 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 		$packing = $app['dao.packing']->find($packingid);
 	}
 
-	$psRef = $app['dao.packingSheet']->find($id)->getRef();
+	$packingSheet = $app['dao.packingSheet']->find($id);
 	$parts_list = $app['dao.part']->findAll();
 	$packing_types = $app['dao.packType']->findAll();
 	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts_list' => $parts_list, 'packing_types' => $packing_types));
@@ -243,16 +260,47 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 	return $app['twig']->render('/forms/packing_form.html.twig', array(
 			'title' => 'Packing',
 			'id' => $id,
-			'psRef' => $psRef,
+			'psRef' => $packingSheet->getRef(),
 			'status' => $status,
 			'packingid' => $packingid,
 			'packingForm' => $packingForm->createView()));
 
 })->value('packingid', 0)->bind('packing');
 
+
+//Packing Assignation
+$app->match('/sheets/{id}/packings_assignation', function(Request $request, $id) use ($app) {
+
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	$packings = $packingSheet->getPackings();
+	$psRef = $packingSheet->getRef();
+	$packingListParts = $packingSheet->getPackingList()->getParts();
+	$packingAssignation = new PackingAssignation();
+
+	$packingAssignationForm = $app['form.factory']->create(PackingAssignationType::class, $packingAssignation, array('packingListParts' => $packingListParts, 'packings' => $packings));
+	$packingAssignationForm->handleRequest($request);
+
+
+	if ($packingAssignationForm->isSubmitted() && $packingAssignationForm->isValid()) {
+		//$selectedParts = $packingListForm->get('parts')->getData();
+
+		$app['dao.packingAssignation']->assignPacking($packingAssignation);
+			
+		$app['session']->getFlashBag()->add('success', 'Packing List Part succesfully added to Packing.');
+		//var_dump($packingList);
+		return $app->redirect($app['url_generator']->generate('packings', array('id' => $id)));
+	}
+	return $app['twig']->render('/forms/packingAssignation_form.html.twig', array(
+			'title' => 'Packing Assignation',
+			'id' => $id,
+			'psRef' => $psRef,
+			'packingAssignationForm' => $packingAssignationForm->createView()));
+
+})->bind('packingAssignation');
+
 // Remove a Packing
-$app->match('/sheets/{id}/packings/{packingid}/delete', function(Request $request, $id, $packingid) use ($app) {
-	var_dump($packingid);exit;
+$app->match('/sheets/{id}/delete_packing/{packingid}', function(Request $request, $id, $packingid) use ($app) {
+
 	try{
 		//Delete the Packing
 		$app['dao.packing']->delete($packingid);
@@ -273,8 +321,8 @@ $app->match('/sheets/{id}/packings/{packingid}/delete', function(Request $reques
  $app->match('/sheetslist/{id}', function(Request $request, $id) use ($app) {	
 	 $packingList = $app['dao.packingList']->findByPackingSheet($id);
 	 $psRef = $app['dao.packingSheet']->find($id)->getRef();
-	 $parts = $app['dao.part']->findAll();
-	 $packingListForm = $app['form.factory']->create(PackingListType::class, $packingList, array('parts' => $parts));
+	 $parts_list = $app['dao.part']->findAll();
+	 $packingListForm = $app['form.factory']->create(PackingListType::class, $packingList, array('parts_list' => $parts_list));
 	 $packingListForm->handleRequest($request);
 	 
 	 
@@ -284,12 +332,12 @@ $app->match('/sheets/{id}/packings/{packingid}/delete', function(Request $reques
  		
 	 	$app['session']->getFlashBag()->add('success', 'Packing List succesfully updated.');
 	 	//var_dump($packingList);
-	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id, 'psRef' => $psRef)));
+	 	return $app->redirect($app['url_generator']->generate('sheetList', array('id' => $id)));
 	 }
 	 return $app['twig']->render('/forms/packingList_form.html.twig', array(
 	 		'title' => 'Packing List',
 	 		'packingList' => $packingList,
-	 		'parts' => $parts,
+	 		'parts_list' => $parts_list,
 	 		'id' => $id,
 	 		'psRef' => $psRef,
 	 		'packingListForm' => $packingListForm->createView()));

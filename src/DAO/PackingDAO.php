@@ -170,7 +170,9 @@ class PackingDAO extends DAO
     }
     
     public function deleteAll($psId){
-    	$this->getDb()->delete('t_packing', array('ps_id' => $psId));
+    	foreach($this->findAllByPackingSheet($psId) as $pack){
+    		$this->delete($pack->getId());
+    	}
     }
 
     /**

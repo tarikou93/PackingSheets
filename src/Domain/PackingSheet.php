@@ -200,6 +200,12 @@ class PackingSheet
      */
     private $packings;
     
+    /**
+     * PackingSheet packing list.
+     *
+     * @var Packing List
+     */
+    private $packingList;
 
     public function getId() {
         return $this->id;
@@ -425,6 +431,14 @@ class PackingSheet
     	$this->packings = $packings;
     }
     
+    public function getPackingList() {
+    	return $this->packingList;
+    }
+    
+    public function setPackingList($packingList) {
+    	$this->packingList = $packingList;
+    }
+    
     public function addPacking(Packing $packing)
     {
     	if (array_search($packing, $this->packings) == false) {
@@ -436,6 +450,20 @@ class PackingSheet
     {
     	if (($key = array_search($packing, $this->packings)) !== false) {
     		unset($this->packings[$key]);
+    	}
+    }
+    
+    public function addPackingList(PackingList $packingList)
+    {
+    	if (array_search($packingList, $this->packingList) == false) {
+    		array_push($this->packingList, $packingList);
+    	}
+    }
+    
+    public function removePackingList(PackingList $packingList)
+    {
+    	if (($key = array_search($packingList, $this->packingList)) !== false) {
+    		unset($this->packingList[$key]);
     	}
     }
     

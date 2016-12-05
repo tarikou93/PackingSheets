@@ -20,7 +20,7 @@
                     <small>PS {{ psRef }} </small></h2>
                 <div class="col-md-3 col-md-offset-9 text-right">
                 	<a href="{{ path('part_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create a new Part </button></a>
-                    <hr>
+                    <hr/>
                     <a href="{{ path('packings', { 'id': id }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Packings </button></a>
                 </div>
             </div>
@@ -38,6 +38,7 @@
             	<div class="well">
                     {{ form_start(packingForm, { 'attr': {'class': 'form-horizontal'} }) }}
                     	<div class="well">
+                    		<p><h4><u>Packing</u></h4></p>
                         	<div class="form-group">
                                 {{ form_label(packingForm.M1, null, {  'label': 'M1', 'label_attr':  {
                                 'class': 'col-sm-4 control-label'

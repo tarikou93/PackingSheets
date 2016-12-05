@@ -61,6 +61,8 @@ $app['dao.packingSheet'] = function($app) {
   $packingSheetDAO->setCurrencyDAO($app['dao.currency']);
   $packingSheetDAO->setImputDAO($app['dao.imput']);
   $packingSheetDAO->setPackingDAO($app['dao.packing']);
+  $packingSheetDAO->setPackingListDAO($app['dao.packingList']);
+
   return $packingSheetDAO;
 };
 
@@ -87,6 +89,13 @@ $app['dao.packingListPart'] = function($app) {
 	$packingListPartDAO = new PackingSheets\DAO\PackingListPartDAO($app['db']);
 	$packingListPartDAO->setPartDAO($app['dao.part']);
 	return $packingListPartDAO;
+};
+
+$app['dao.packingAssignation'] = function($app) {
+	$packingAssignationDAO = new PackingSheets\DAO\PackingAssignationDAO($app['db']);
+	$packingAssignationDAO->setPackingListPartDAO($app['dao.packingListPart']);
+	$packingAssignationDAO->setPackingPartDAO($app['dao.packingPart']);
+	return $packingAssignationDAO;
 };
 
 $app['dao.packType'] = function($app) {

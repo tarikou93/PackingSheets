@@ -171,4 +171,8 @@ class Packing
     		unset($this->parts[$key]);
     	}
     }
+    
+    public function getCompleteInfos(){
+    	return sprintf('NetWeight : %s | Gross Weight : %s | M1 : %s | M2 : %s | M3 : %s | Type : %s', $this->netWeight, $this->grossWeight, $this->M1, $this->M2, $this->M3, $this->packType_id->getLabel());
+    }
 }

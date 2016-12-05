@@ -89,10 +89,14 @@ class PackingListDAO extends DAO
 	 *
 	 * @param integer $id The PackinhSheetPart id.
 	 */
-	public function delete($id) {
-		//Delete the contact
-		$this->getDb()->delete('t_packinglist', array('pl_id' => $id));
+	public function delete($PsId) {
+		//Delete the PackingList
+		$packList = $this->findByPackingSheet($PsId);
+		
+		$this->packingListPartDAO->deleteAll($packList->getId());
+		$this->getDb()->delete('t_packinglist', array('pl_id' => $packList->getId()));
 	}
+	
 
 	/**
 	 * Return a list of all packinglist for a packingsheet.

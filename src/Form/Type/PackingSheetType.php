@@ -214,10 +214,23 @@ class PackingSheetType extends AbstractType
 				'by_reference' => false,
 				'label' => false,
 		));
+		
+		/*->add('packingList', CollectionType::class, array(
+				'entry_type' => PackingListType::class,
+				'entry_options'  => array(
+						'parts_list'  => $options['parts'],
+						'label' => false
+				),
+				'allow_add' => true,
+				'allow_delete' => true,
+				'by_reference' => false,
+				'label' => false,
+		))*/
 
 		if($options['read_only'] === false){
 			$builder->add('save', SubmitType::class);
 		}
+		
 		
 		/*
 		$formModifierConsigned = function (FormInterface $form, Code $code, AddressDAO $adr) {
