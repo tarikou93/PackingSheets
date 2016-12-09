@@ -96,7 +96,7 @@ class PackingDAO extends DAO
     			'pack_M1' => $pack->getM1(),
     			'pack_M2' => $pack->getM2(),
     			'pack_M3' => $pack->getM3(),
-    			'pack_img' => "packing1.jpg",
+    			'pack_img' => $pack->getImg(),
     			'packType_id' => $pack->getPackTypeid()->getId(),
     	);
     	

@@ -173,6 +173,25 @@ class PackingSheetDAO extends DAO
         }
         return $packingSheets;
     }
+    
+    /**
+     * Return a list of all PackingSheets for a user, sorted by date (most recent first).
+     *
+     * @return array A list of all PackingSheets accesible for the current user.
+     */
+    public function findAllByUserSeries($series) {
+		
+    	$sql = "select * from t_packingsheet where group_id in (".implode(',',$series).") order by ps_id desc";
+    	$result = $this->getDb()->fetchAll($sql);
+    
+    	// Convert query result to an array of domain objects
+    	$packingSheets = array();
+    	foreach ($result as $row) {
+    		$packingSheetId = $row['ps_id'];
+    		$packingSheets[$packingSheetId] = $this->buildDomainObject($row);
+    	}
+    	return $packingSheets;
+    }
 
     /**
      * Return a list of filtered PackingSheets, results of search.
@@ -329,6 +348,7 @@ class PackingSheetDAO extends DAO
    			'ps_signed' => ($packingSheet->getSigned() === true) ? 1 : 0,
    			'ps_printed' => ($packingSheet->getPrinted() === true) ? 1 : 0,
    			'ps_memo' => $packingSheet->getMemo(),
+   			'ps_signingUser' => $packingSheet->getSigningUser(),
    			'ps_Weight' => ($packingSheet->getWeight() === null) ? 0 : $packingSheet->getWeight(),
    			'ps_totalPrice' => ($packingSheet->getTotalPrice() === null) ? 0 : $packingSheet->getTotalPrice(),
    			'ps_nbrPieces' => ($packingSheet->getNbrPieces() === null) ? 0 : $packingSheet->getNbrPieces(),
@@ -423,9 +443,9 @@ class PackingSheetDAO extends DAO
      */
     protected function buildDomainObject($row) {
     	
-    	$signed = ($row['ps_signed'] === 1) ? true : false;
-    	$printed = ($row['ps_printed'] === 1) ? true : false;
-    	$collect = ($row['ps_collect'] === 1) ? true : false;
+    	$signed = ($row['ps_signed'] === '1') ? true : false;
+    	$printed = ($row['ps_printed'] === '1') ? true : false;
+    	$collect = ($row['ps_collect'] === '1') ? true : false;
     	
         $packingSheet = new PackingSheet();
         $packingSheet->setId($row['ps_id']);
@@ -440,6 +460,7 @@ class PackingSheetDAO extends DAO
         $packingSheet->setSigned($signed);
         $packingSheet->setPrinted($printed);
         $packingSheet->setMemo($row['ps_memo']);
+        $packingSheet->setSigningUser($row['ps_signingUser']);
         $packingSheet->setCollect($collect);
         
 

@@ -9,7 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class PackingType extends AbstractType
 {
@@ -17,6 +19,8 @@ class PackingType extends AbstractType
 	public function buildform(FormBuilderInterface $builder, array $options)
 	{
 
+		$file = $builder->getData()->getImg();
+		
 		$builder
 
 		->add('parts', CollectionType::class, array(
@@ -71,11 +75,23 @@ class PackingType extends AbstractType
 				
 		))
 		
+		->add('img', FileType::class, array(
+				'label' => 'Image (.jpg/.png file)',
+				'required' => false,
+		))
+		
 		->add('save', SubmitType::class, array(
 				'label' => false,
 				//'attr' => array('readonly' => $options['read_only'])
 				
 		));
+		
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use($file){
+			if($event->getData()->getImg() === null){
+				$event->getForm()->getData()->setImg($file);
+			}
+		});
+
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {

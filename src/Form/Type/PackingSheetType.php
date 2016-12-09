@@ -132,6 +132,7 @@ class PackingSheetType extends AbstractType
 				'constraints' => array(new Assert\NotBlank())))
 				
 		->add('collect', CheckboxType::class, array(
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('autorityId', ChoiceType::class, array(
@@ -193,9 +194,11 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('signed', CheckboxType::class, array(
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 						
 		->add('printed', CheckboxType::class, array(
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('memo', TextareaType::class, array(
@@ -215,18 +218,6 @@ class PackingSheetType extends AbstractType
 				'label' => false,
 		));
 		
-		/*->add('packingList', CollectionType::class, array(
-				'entry_type' => PackingListType::class,
-				'entry_options'  => array(
-						'parts_list'  => $options['parts'],
-						'label' => false
-				),
-				'allow_add' => true,
-				'allow_delete' => true,
-				'by_reference' => false,
-				'label' => false,
-		))*/
-
 		if($options['read_only'] === false){
 			$builder->add('save', SubmitType::class);
 		}

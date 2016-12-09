@@ -244,3 +244,8 @@ background: #26a69a; color: #ffffff; }
 
 .panel-list {
 background: #8bc34a; color: #ffffff; }
+
+select[readonly]{
+    background: #eee;
+    cursor:no-drop;
+}

@@ -194,6 +194,13 @@ class PackingSheet
     private $memo;
     
     /**
+     * PackingSheet signingUser.
+     *
+     * @var string
+     */
+    private $signingUser;
+    
+    /**
      * PackingSheet packings array.
      *
      * @var Packing array
@@ -413,6 +420,14 @@ class PackingSheet
 
     public function setMemo($memo) {
         $this->memo = $memo;
+    }
+    
+    public function getSigningUser() {
+    	return $this->signingUser;
+    }
+    
+    public function setSigningUser($signingUser) {
+    	$this->signingUser = $signingUser;
     }
 
     public function getCollect() {
