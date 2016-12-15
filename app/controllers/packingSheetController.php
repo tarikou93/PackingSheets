@@ -1,18 +1,42 @@
 <?php
 
 use PackingSheets\Form\Type\PackingSheetType;
+use PackingSheets\Form\Type\PackingSheetSearchType;
 use PackingSheets\Domain\PackingSheet;
+use PackingSheets\Domain\PackingSheetSearch;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Intl\Tests\Data\Provider\Json\JsonRegionDataProviderTest;
 
-// PackingSheets list page
-$app->get('/sheets', function () use ($app) {
 
-	$packingSheets = $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']);
+// Sheets list page
+$app->match('/sheets', function(Request $request) use ($app) {
+	
+	$groups = $app['session']->get('auth')['packingSheetsSeries'];
 	$codes = $app['dao.code']->findAll();
-	$inputs = $app['dao.imput']->findAll();
-	$searchTag = 0;
-	return $app['twig']->render('packingSheet.html.twig', array('packingSheets' => $packingSheets, 'codes' => $codes, 'inputs' => $inputs, 'searchTag' => $searchTag));
+	$services = $app['dao.service']->findAll();
+	$imputs = $app['dao.imput']->findAll();
+	
+	$psSearch = new PackingSheetSearch();
+	$psSearchForm = $app['form.factory']->create(PackingSheetSearchType::class, $psSearch, array('codes' => $codes, 'services' => $services, 'imputs' => $imputs,'availableGroups' => $groups));
+
+	$psSearchForm->handleRequest($request);
+	if ($psSearchForm->isSubmitted() && $psSearchForm->isValid()) {
+		$searchedSheets = $app['dao.packingSheet']->findBySearch($psSearch);
+		//var_dump($searchedSheets);exit;
+		return $app['twig']->render('sheets.html.twig', array(
+				'title' => 'Sheets',
+				'sheets' => $searchedSheets,
+				'searchTag' => 1,
+				'psSearchForm' => $psSearchForm->createView()));
+	}
+
+	return $app['twig']->render('sheets.html.twig', array(
+			'title' => 'Sheets',
+			'sheets' => $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']),
+			'searchTag' => 0,
+			'psSearchForm' => $psSearchForm->createView()));
+
 })->bind('sheets');
 
 
@@ -30,16 +54,12 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		$read_only = ($status === "details") ? true : false;
 
 		$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId());
-		$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId());
 		
-		if($status === 'edit'){
-			if($packingSheet->getSigned()){
-				if($packingSheet->getSigningUser() !== $app['session']->get('user')['username']){
-					
-					$app['session']->getFlashBag()->add('danger', 'This Packing Sheet has been signed by another User. Please ask to edit.');
-					return $app->redirect($app['url_generator']->generate('sheets'));
-				}
-			}			
+		if($packingSheet->getDeliveryAddressId() !== null){
+			$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId());		
+		}
+		else{
+			$deliveryOldCode = null;
 		}
 	}
 
@@ -56,7 +76,6 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	$contents = $app['dao.content']->findAll();
 	$priorities = $app['dao.priority']->findAll();
 	$shippers = $app['dao.shipper']->findAll();
-	$autorities = $app['dao.autority']->findAll();
 	$customStatuses = $app['dao.customStatus']->findAll();
 	$incTypes = $app['dao.incotermsType']->findAll();
 	$incLocs = $app['dao.incotermsLocation']->findAll();
@@ -67,18 +86,24 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	//var_dump($app['session']->get('user')['username']);exit;
 	$availableGroups = $app['session']->get('auth')['packingSheetsSeries'];
 
-	//var_dump($packingSheet);exit;
+
+	$images = array();
+	$packings = $packingSheet->getPackings();
+
+	if($packings !== null){
+		foreach($packings as $pack){
+			$images[$pack->getId()] = $pack->getImg();
+		}
+	}
 
 	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
 			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address, 'availableGroups' => $availableGroups,
 			'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses,'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
-			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
+			'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs, 'images' => $images,
 			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null
 	));
-
-	$consignedContacts = array();
-
+	
 	if($request->isMethod('POST')){
 		if($request->isXmlHttpRequest()){
 			switch ($request->get('flag')){
@@ -96,13 +121,13 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 						
 				case "packing_sheet_consignedAddressId" :
 					$idConsignedAddress = $request->get('packing_sheet_consignedAddressId');
-					$consignedContacts = $app['dao.contact']->findAllByAddress($idConsignedAddress);
+					$consignedContacts = $app['dao.contact']->findByAddress($idConsignedAddress);
 					return new JsonResponse(array('packing_sheet_consignedContactId' => $consignedContacts));
 					break;
 
 				case "packing_sheet_deliveryAddressId" :
 					$idDeliveryAddress = $request->get('packing_sheet_deliveryAddressId');
-					$deliveryContacts = $app['dao.contact']->findAllByAddress($idDeliveryAddress);
+					$deliveryContacts = $app['dao.contact']->findByAddress($idDeliveryAddress);
 					return new JsonResponse(array('packing_sheet_deliveryContactId' => $deliveryContacts));
 					break;
 			}
@@ -113,11 +138,9 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			//var_dump($packingSheet);exit;
 			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
 				
-				if($packingSheet->getSigned()){
-					$packingSheet->setSigningUser($app['session']->get('user')['username']);
-				}
-				
-				$app['dao.packingSheet']->save($packingSheet);
+				$userName = $app['session']->get('user')['name'][0]." ".$app['session']->get('user')['firstName'][0];
+				//var_dump($packingSheet);exit;
+				$app['dao.packingSheet']->save($packingSheet, $userName);
 
 				$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
 				return $app->redirect($app['url_generator']->generate('sheets'));
@@ -125,7 +148,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		}
 	}
 
-	//var_dump($app['dao.packingSheet']->find(18));exit;
+	//var_dump($packingSheetForm);exit;
 
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
@@ -134,7 +157,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			'read_only' => $read_only,
 			'availableGroups' => $availableGroups,
 			'codes' => $codes, 'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
-			'autorities' => $autorities, 'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
+			'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
 			'id' => isset($id) ? $id : null,
 			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null,

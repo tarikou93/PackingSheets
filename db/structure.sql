@@ -52,22 +52,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-
--- -----------------------------------------------------
--- Table `packingsheets`.`t_autority`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `packingsheets`.`t_autority` ;
-
-CREATE TABLE IF NOT EXISTS `packingsheets`.`t_autority` (
-  `aut_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `aut_label` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
-  `aut_telNumber` VARCHAR(20) CHARACTER SET 'utf8' NOT NULL,
-  PRIMARY KEY (`aut_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
 -- -----------------------------------------------------
 -- Table `packingsheets`.`t_contact`
 -- -----------------------------------------------------
@@ -256,9 +240,9 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
   `ps_ref` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   `group_id` INT(11) NOT NULL,
   `consignedAddress_id` INT(11) NOT NULL,
-  `deliveryAddress_id` INT(11) NOT NULL,
+  `deliveryAddress_id` INT(11),
   `consignedContact_id` INT(11) NOT NULL,
-  `deliveryContact_id` INT(11) NOT NULL,
+  `deliveryContact_id` INT(11),
   `service_id` INT(11) NOT NULL,
   `content_id` INT(11) NOT NULL,
   `priority_id` INT(11) NOT NULL,
@@ -267,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
   `ps_AWB` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   `ps_dateIssue` DATE NOT NULL,
   `ps_collect` TINYINT(1) NULL DEFAULT NULL,
-  `autority_id` INT(11) NOT NULL,
+  `ps_autority` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
   `customStatus_id` INT(11) NOT NULL,
   `incType_id` INT(11) NOT NULL,
   `incLoc_id` INT(11) NOT NULL,
@@ -279,13 +263,11 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
   `ps_signed` TINYINT(1) NULL DEFAULT NULL,
   `ps_printed` TINYINT(1) NULL DEFAULT NULL,
   `ps_memo` VARCHAR(500) CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  `ps_signingUser` VARCHAR(50) CHARACTER SET 'utf8' NULL DEFAULT NULL,
   PRIMARY KEY (`ps_id`),
   INDEX `fk_ps_service` (`service_id` ASC),
   INDEX `fk_ps_content` (`content_id` ASC),
   INDEX `fk_ps_priority` (`priority_id` ASC),
   INDEX `fk_ps_shipper` (`shipper_id` ASC),
-  INDEX `fk_ps_autority` (`autority_id` ASC),
   INDEX `fk_ps_customStatus` (`customStatus_id` ASC),
   INDEX `fk_ps_incType` (`incType_id` ASC),
   INDEX `fk_ps_incLoc` (`incLoc_id` ASC),
@@ -295,9 +277,6 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
   INDEX `fk_ps_deliveryAddress_idx` (`deliveryAddress_id` ASC),
   INDEX `fk_ps_consignedContact_idx` (`consignedContact_id` ASC),
   INDEX `fk_ps_deliveryContact_idx` (`deliveryContact_id` ASC),
-  CONSTRAINT `fk_ps_autority`
-    FOREIGN KEY (`autority_id`)
-    REFERENCES `packingsheets`.`t_autority` (`aut_id`),
   CONSTRAINT `fk_ps_consignedAddress`
     FOREIGN KEY (`consignedAddress_id`)
     REFERENCES `packingsheets`.`t_address` (`address_id`)

@@ -54,7 +54,6 @@ $app['dao.packingSheet'] = function($app) {
   $packingSheetDAO->setContentDAO($app['dao.content']);
   $packingSheetDAO->setPriorityDAO($app['dao.priority']);
   $packingSheetDAO->setShipperDAO($app['dao.shipper']);
-  $packingSheetDAO->setAutorityDAO($app['dao.autority']);
   $packingSheetDAO->setCustomStatusDAO($app['dao.customStatus']);
   $packingSheetDAO->setIncotermsTypeDAO($app['dao.incotermsType']);
   $packingSheetDAO->setIncotermsLocationDAO($app['dao.incotermsLocation']);
@@ -124,10 +123,6 @@ $app['dao.address'] = function($app) {
 
 $app['dao.contact'] = function($app) {
   return new PackingSheets\DAO\ContactDAO($app['db']);
-};
-
-$app['dao.autority'] = function ($app) {
-    return new PackingSheets\DAO\AutorityDAO($app['db']);
 };
 
 $app['dao.content'] = function ($app) {

@@ -113,33 +113,66 @@
                                     <div class="container-fluid">
                                         <section class="container">
                                             <div class="container-page">
-                                                <form class="form-signin form-horizontal" role="form" action="#" method="post">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-6">
-                                                            <label>Part Number</label>
-                                                            <input type="text" name="pn" class="form-control" id="pn" value="">
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label>Serial Number</label>
-                                                            <input type="text" name="sn" class="form-control" id="sn" value="">
-                                                        </div>
+                                            {{ form_start(partSearchForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                                                <div class="form-group">
+                                                    {{ form_label(partSearchForm.pn, null, {  'label': 'Part Number', 'label_attr':  {
+                                                    	'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-4">
+                                                        {{ form_errors(partSearchForm.pn) }}
+                                                        {{ form_widget(partSearchForm.pn, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
                                                     </div>
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <label>HSCode</label>
-                                                            <input type="text" name="hscode" class="form-control" id="hscode" value="">
-                                                        </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(partSearchForm.serial, null, {  'label': 'Serial Number', 'label_attr':  {
+                                                        	'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-4">
+                                                        {{ form_errors(partSearchForm.serial) }}
+                                                        {{ form_widget(partSearchForm.serial, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
                                                     </div>
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <label>Description</label>
-                                                            <textarea type="text" name="desc" class="form-control" id="desc" value=""></textarea>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(partSearchForm.hscode, null, {  'label': 'HSCode', 'label_attr':  {
+                                                        	'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-6">
+                                                        {{ form_errors(partSearchForm.hscode) }}
+                                                        {{ form_widget(partSearchForm.hscode, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(partSearchForm.desc, null, {  'label': 'Description', 'label_attr':  {
+                                                        	'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-6">
+                                                        {{ form_errors(partSearchForm.desc) }}
+                                                        {{ form_widget(partSearchForm.desc, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
                                                     </div>
-                                                </form>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(partSearchForm.price, null, {  'label': 'Price', 'label_attr':  {
+                                                        	'class': 'col-sm-4 control-label'
+                                                    }}) }}
+                                                    <div class="col-sm-4">
+                                                        {{ form_errors(partSearchForm.price) }}
+                                                        {{ form_widget(partSearchForm.price, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button>
+                                                </div>
+                                            {{ form_end(partSearchForm) }}
                                             </div>
                                         </section>
                                     </div>

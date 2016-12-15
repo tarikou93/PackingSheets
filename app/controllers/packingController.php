@@ -45,7 +45,7 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 	$packingSheet = $app['dao.packingSheet']->find($id);
 	$parts_list = $app['dao.part']->findAll();
 	$packing_types = $app['dao.packType']->findAll();
-	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts_list' => $parts_list, 'packing_types' => $packing_types));
+	$packingForm = $app['form.factory']->create(PackingType::class, $packing, array('parts_list' => $parts_list, 'packing_types' => $packing_types, 'context' => 'packingForm'));
 	$packingForm->handleRequest($request);
 
 

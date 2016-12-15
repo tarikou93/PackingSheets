@@ -43,13 +43,14 @@
     </div>
   	<div class="col-md-6">
   		<div class="form-group">
-            {{ form_label(packingSheetForm.autorityId, null, {  'label': 'Autority', 'label_attr':  {
+            {{ form_label(packingSheetForm.autority, null, {  'label': 'Autority', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
-                {{ form_errors(packingSheetForm.autorityId) }}
-                {{ form_widget(packingSheetForm.autorityId, {'attr':  {
-                'class': 'form-control'
+                {{ form_errors(packingSheetForm.autority) }}
+                {{ form_widget(packingSheetForm.autority, {'attr':  {
+                'class': 'form-control',
+                'readonly': 'readonly'
                 }}) }}
             </div>
         </div>
@@ -293,7 +294,7 @@
     </div>
 </div>
 
-<script src="/scripts/disable_imput_collect.js"></script> 
+<script src="/scripts/disable_imput_signed_collect.js"></script>
 
 
 

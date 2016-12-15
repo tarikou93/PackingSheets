@@ -12,14 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PackingType extends AbstractType
 {
 
 	public function buildform(FormBuilderInterface $builder, array $options)
 	{
-
-		$file = $builder->getData()->getImg();
+		$file = null;
+		if($options['context'] === 'packingForm'){
+			$file = $builder->getData()->getImg();
+		}
 		
 		$builder
 
@@ -35,11 +38,13 @@ class PackingType extends AbstractType
 				'label' => false,
 		))
 		
+		
 		->add('M1', TextType::class, array(
 				//'attr' => array('readonly' => $options['read_only']),
 				'constraints' => array(new Assert\NotBlank())
 				
 		))
+		
 		
 		->add('M2', TextType::class, array(
 				//'attr' => array('readonly' => $options['read_only']),
@@ -78,6 +83,7 @@ class PackingType extends AbstractType
 		->add('img', FileType::class, array(
 				'label' => 'Image (.jpg/.png file)',
 				'required' => false,
+				'data_class' => null
 		))
 		
 		->add('save', SubmitType::class, array(
@@ -86,17 +92,23 @@ class PackingType extends AbstractType
 				
 		));
 		
-		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use($file){
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use($options, $file){
 			if($event->getData()->getImg() === null){
-				$event->getForm()->getData()->setImg($file);
+				if($options['context'] === 'packingForm'){
+					$event->getForm()->getData()->setImg($file);
+				}
+				else{
+					$event->getForm()->getData()->setImg($options['images'][$event->getForm()->getData()->getId()]);
+				}
 			}
 		});
+		
 
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null, 'read_only' => null, 'readonly' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null, 'read_only' => null, 'readonly' => null, 'images' => null, 'context' => null))
 		;
 	}
 

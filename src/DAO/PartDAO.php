@@ -64,12 +64,13 @@ class PartDAO extends DAO
      *
      * @return array A list of resulting Parts.
      */
-    public function findBySearch() {
+    public function findBySearch(Part $searchPart) {
         
-        $by_pn = $_POST['pn'];
-        $by_sn = $_POST['sn'];
-        $by_desc = $_POST['desc'];
-        $by_hscode = $_POST['hscode'];
+        $by_pn = $searchPart->getPN();
+        $by_sn = $searchPart->getSerial();
+        $by_desc = $searchPart->getDesc();
+        $by_hscode = $searchPart->getHSCode();
+        $by_price = $searchPart->getPrice();
         
         //Do real escaping here
 
@@ -89,6 +90,9 @@ class PartDAO extends DAO
         if ($by_hscode != "") {
             $conditions[] = "part_HSCode LIKE '%$by_hscode%'";
         }
+        if ($by_price != "") {
+        	$conditions[] = "part_price LIKE '%$by_price%'";
+        }
         
         
         $sql = $query;
@@ -96,6 +100,7 @@ class PartDAO extends DAO
             $sql .= " WHERE " . implode(' AND ', $conditions);
         }
 
+        //print_r($sql);exit;
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

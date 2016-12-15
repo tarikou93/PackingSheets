@@ -110,11 +110,11 @@ class PackingSheet
     private $collect;
 
     /**
-     * PackingSheet authorityId.
+     * PackingSheet authority.
      *
-     * @var integer
+     * @var string
      */
-    private $autorityId;
+    private $autority;
 
     /**
      * PackingSheet customStatusId.
@@ -192,13 +192,6 @@ class PackingSheet
      * @var string
      */
     private $memo;
-    
-    /**
-     * PackingSheet signingUser.
-     *
-     * @var string
-     */
-    private $signingUser;
     
     /**
      * PackingSheet packings array.
@@ -326,12 +319,12 @@ class PackingSheet
         $this->dateIssue = $dateIssue;
     }
 
-    public function getAutorityId() {
-        return $this->autorityId;
+    public function getAutority() {
+        return $this->autority;
     }
 
-    public function setAutorityId($autorityId) {
-        $this->autorityId = $autorityId;
+    public function setAutority($autority) {
+        $this->autority = $autority;
     }
 
     public function getCustomStatusId() {
@@ -422,14 +415,6 @@ class PackingSheet
         $this->memo = $memo;
     }
     
-    public function getSigningUser() {
-    	return $this->signingUser;
-    }
-    
-    public function setSigningUser($signingUser) {
-    	$this->signingUser = $signingUser;
-    }
-
     public function getCollect() {
         return $this->collect;
     }

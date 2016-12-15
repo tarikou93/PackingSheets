@@ -2,16 +2,33 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Form\Type\PartType;
+use PackingSheets\Form\Type\PartSearchType;
 use PackingSheets\Domain\Part;
 
-// Parts list page
-$app->get('/parts', function () use ($app) {
-	$parts = $app['dao.part']->findAll();
-	$searchTag = 0;
-	return $app['twig']->render('parts.html.twig', array('parts' => $parts, 'searchTag' => $searchTag));
-})->bind('parts');
+// Contacts list page
+$app->match('/parts', function(Request $request) use ($app) {
 
-// Parts
+	$partSearch = new Part();
+	$partSearchForm = $app['form.factory']->create(PartSearchType::class, $partSearch);
+		
+	$partSearchForm->handleRequest($request);
+	if ($partSearchForm->isSubmitted() && $partSearchForm->isValid()) {
+		$searchedParts = $app['dao.part']->findBySearch($partSearch);
+		//var_dump($searchedParts);exit;
+		return $app['twig']->render('parts.html.twig', array(
+				'title' => 'Parts',
+				'parts' => $searchedParts,
+				'searchTag' => 1,
+				'partSearchForm' => $partSearchForm->createView()));
+	}
+
+	return $app['twig']->render('parts.html.twig', array(
+			'title' => 'Parts',
+			'parts' => $app['dao.part']->findAll(),
+			'searchTag' => 0,
+			'partSearchForm' => $partSearchForm->createView()));
+
+})->bind('parts');
 
 // Add a new part
 $app->match('/part/add', function(Request $request) use ($app) {

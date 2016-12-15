@@ -14,10 +14,6 @@ if($("#packing_sheet_groupId").attr("readonly") === "readonly"){
 	$("#packing_sheet_groupId option:not(:selected)").prop("disabled", true);
 }
 
-if($("#packing_sheet_autorityId").attr("readonly") === "readonly"){
-	$("#packing_sheet_autorityId option:not(:selected)").prop("disabled", true);
-}
-
 if($("#packing_sheet_contentId").attr("readonly") === "readonly"){
 	$("#packing_sheet_contentId option:not(:selected)").prop("disabled", true);
 }

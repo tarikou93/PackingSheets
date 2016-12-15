@@ -2,7 +2,9 @@
 
 namespace PackingSheets\Domain;
 
-class Contact
+use JsonSerializable;
+
+class Contact implements JsonSerializable
 {
     /**
      * Contact id.
@@ -96,6 +98,18 @@ class Contact
     
     public function getCompleteInfos(){
     	return sprintf('Name : %s | Mail : %s | Phone : %s | Fax : %s', $this->name, $this->mail, $this->phoneNr, $this->faxNr);
+    }
+    
+    public function jsonSerialize()
+    {
+    	return array(
+    			'id' => $this->id,
+    			'name'=> $this->name,
+    			'mail' => $this->mail,
+    			'phoneNr' => $this->phoneNr,
+    			'faxNr' => $this->faxNr,
+    			'addressId' => $this->addressId
+    	);
     }
 }
 

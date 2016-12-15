@@ -46,12 +46,12 @@ class PackingSheetType extends AbstractType
 		))
 		
 		->add('deliveryCode', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'mapped' => false,
 				'choice_label' => 'label',
 				'choices' => $options['codes'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'data' => $options['deliveryOldCode']
 		))
 		
@@ -64,11 +64,11 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 		
 		->add('deliveryAddressId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['deliveryAddresses'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('consignedContactId', ChoiceType::class, array(
@@ -80,11 +80,11 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('deliveryContactId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'completeInfos',
 				'choices' => $options['contacts'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('serviceId', ChoiceType::class, array(
@@ -135,12 +135,7 @@ class PackingSheetType extends AbstractType
 				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
-		->add('autorityId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
-				'choice_label' => 'label',
-				'choices' => $options['autorities'],
-				'choice_value' => 'id',
-				'multiple' => false,
+		->add('autority', TextType::class, array(
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('customStatusId', ChoiceType::class, array(
@@ -209,6 +204,7 @@ class PackingSheetType extends AbstractType
 				'entry_options'  => array(
 						'parts_list'  => $options['parts'],
 						'packing_types' => $options['packTypes'],
+						'images' => $options['images'],
 						//'read_only' => $options['read_only'],
 						'label' => false
 				),
@@ -264,8 +260,8 @@ class PackingSheetType extends AbstractType
 		$resolver
 		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null, 'read_only' => null, 'address' => null, 'status' => null,
 				'codes' => null,'consignedAddresses' => null, 'deliveryAddresses' => null, 'contacts' => null, 'services' => null, 'contents' => null, 'priorities' => null, 'shippers' => null,
-				'autorities' => null, 'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
-				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null
+				'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
+				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null, 'images' => null
 		))
 		->setRequired('address')
 		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')

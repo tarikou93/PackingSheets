@@ -3,6 +3,7 @@
 namespace PackingSheets\DAO;
 
 use PackingSheets\Domain\PackingSheet;
+use PackingSheets\Domain\PackingSheetSearch;
 use PackingSheets\Domain\PackingList;
 
 class PackingSheetDAO extends DAO
@@ -84,14 +85,6 @@ class PackingSheetDAO extends DAO
         return $this->shipperDAO;
     }
 
-    /**
-     * @var \PackingSheets\DAO\AutorityDAO
-     */
-    private $autorityDAO;
-
-    public function setAutorityDAO(AutorityDAO $autorityDAO) {
-        $this->autorityDAO = $autorityDAO;
-    }
 
     /**
      * @var \PackingSheets\DAO\CustomStatusDAO
@@ -198,96 +191,118 @@ class PackingSheetDAO extends DAO
      *
      * @return array A list of resulting PackingSheets.
      */
-    public function findBySearch() {
-        $by_ref = $_POST['ref'];
-        $by_awb = $_POST['awb'];
-        $by_date = $_POST['date'];
-        $by_pn = $_POST['pn'];
-        $by_sn = $_POST['sn'];
-        $by_desc = $_POST['desc'];
-        $by_hscode = $_POST['hscode'];
-        $by_input = $_POST['input'];
-        $by_address = isset($_POST['address']) ? $_POST['address'] : "";
-        $by_contact = isset($_POST['contact']) ? $_POST['contact'] : "";
-        $cd = $_POST['cd'];
-        $signed = isset($_POST['signed']);
-        $printed = isset($_POST['printed']);
-      
+    public function findBySearch(PackingSheetSearch $psSearch) {
+    	
+    	//var_dump($psSearch);exit;
+    	
+        $by_ref = (null !== $psSearch->getRef()) ? $psSearch->getRef() : "";
+        $by_awb = (null !== $psSearch->getAWB()) ? $psSearch->getAWB() : "";
+        $by_date = (null !== $psSearch->getDateIssue()) ? $psSearch->getDateIssue() : "";
+        $by_pn = (null !== $psSearch->getPn()) ? $psSearch->getPn() : "";
+        $by_sn = (null !== $psSearch->getSerial()) ? $psSearch->getSerial() : "";
+        $by_desc = (null !== $psSearch->getDesc()) ? $psSearch->getDesc() : "";
+        $by_hscode = (null !== $psSearch->getHSCode()) ? $psSearch->getHSCode() : "";
+        $by_input = (null !== $psSearch->getImputId()) ? $psSearch->getImputId()->getId() : "";
+        $by_service = (null !== $psSearch->getServiceId()) ? $psSearch->getServiceId()->getId() : "";
+        $by_address = (null !== $psSearch->getConsignedAddressId()) ? $psSearch->getConsignedAddressId()->getId() : "";
+        $by_contact = (null !== $psSearch->getConsignedContactId()) ? $psSearch->getConsignedContactId()->getId() : "";
+        $signed = $psSearch->getSigned();
+        $printed = $psSearch->getPrinted();
+        $by_group = (null !== $psSearch->getGroupId()) ? $psSearch->getGroupId() : "";
+        
+        $selectedGroups = "";
+        $groupsLength = count($by_group);
+        
+        for ($i = 0; $i < $groupsLength; $i++) {
+        	if($i === $groupsLength-1){
+        		$selectedGroups .= $by_group[$i];
+        	}
+        	else{
+        		$selectedGroups .= $by_group[$i].",";
+        	}
+        }
+            
         //Do real escaping here
 
         $query = "SELECT ps.*
                 FROM t_packingsheet ps
-                INNER JOIN t_packing pack
+                LEFT JOIN t_packing pack
                     ON ps.ps_id = pack.ps_id
-                INNER JOIN t_packing_part packpart
+                LEFT JOIN t_packing_part packpart
                     ON packpart.pack_id = pack.pack_id
-                INNER JOIN t_part part
-                    ON packpart.part_id = part.part_id";
+               	LEFT JOIN t_part part
+                    ON packpart.part_id = part.part_id
+        		LEFT JOIN t_address address
+        			ON address.address_id = ps.consignedAddress_id
+        		LEFT JOIN t_contact contact
+        			ON ps.consignedContact_id = contact.contact_id";
+        
         
         $conditions = array();
 
         if ($by_ref != "") {
             $conditions[] = "ps_ref LIKE '%$by_ref%'";
         }
+        
         if ($by_awb != "") {
             $conditions[] = "ps_AWB LIKE '%$by_awb%'";
         }
+        
         if ($by_date != "") {
             $conditions[] = "ps_dateIssue LIKE '%$by_date%'";
         }
+        
         if ($by_pn != "") {
             $conditions[] = "part_pn LIKE '%$by_pn%'";
         }
+        
         if ($by_sn != "") {
             $conditions[] = "part_serial LIKE '%$by_sn%'";
         }
+        
         if ($by_desc != "") {
             $conditions[] = "part_desc LIKE '%$by_desc%'";
         }
+        
         if ($by_hscode != "") {
             $conditions[] = "part_HSCode LIKE '%$by_hscode%'";
         }
+        
         if ($by_input != "") {
             $conditions[] = "imput_id LIKE '%$by_input%'";
         }
+        
+        if ($by_service != "") {
+        	$conditions[] = "service_id LIKE '%$by_service%'";
+        }
+        
         if ($signed) {
             $conditions[] = "ps_signed = 1";
         }
+        
         if ($printed) {
             $conditions[] = "ps_printed = 1";
         }
-        if($cd == "1"){
 
-            $addJoin = " JOIN t_address ad ON ps.consignedAddress_id = ad.address_id"
-                    . " JOIN t_contact c ON ps.consignedContact_id = c.contact_id";
-                    
-            if ($by_address != "") {
-                $conditions[] = "consignedAddress_id LIKE '%$by_address%'";
-            }
-            if ($by_contact != "") {
-                $conditions[] = "consignedContact_id LIKE '%$by_contact%'";
-            }
-        }
-        if($cd === "2"){
-            $addJoin = " JOIN t_address ad ON ps.deliveryAddress_id = ad.address_id"
-                    . " JOIN t_contact c ON ps.deliveryContact_id = c.contact_id";
-            
-            if ($by_address != "") {
-                $conditions[] = "deliveryAddress_id LIKE '%$by_address%'";
-            }
-            if ($by_contact != "") {
-                $conditions[] = "deliveryContact_id LIKE '%$by_contact%'";
-            }
-        }
-        else{
-            $addJoin = "";
+        if ($by_address != "") {
+            $conditions[] = "consignedAddress_id LIKE '%$by_address%'";
         }
         
-        $sql = $query.$addJoin;
+        if ($by_contact != "") {
+            $conditions[] = "consignedContact_id LIKE '%$by_contact%'";
+        }
+        
+        if ($selectedGroups != "") {
+        	$conditions[] = "group_id IN ($selectedGroups)";
+        }
+        
+        $sql = $query;
         if (count($conditions) > 0) {
             $sql .= " WHERE " . implode(' AND ', $conditions);
         }
-             
+                  
+        //print_r($sql);exit;
+        
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -296,6 +311,7 @@ class PackingSheetDAO extends DAO
             $packingSheetId = $row['ps_id'];
             $packingSheets[$packingSheetId] = $this->buildDomainObject($row);
         }
+        
         return $packingSheets;
     }
 
@@ -321,16 +337,16 @@ class PackingSheetDAO extends DAO
     *
     * @param \PackingSheets\Domain\Packing $pack The Packing to save
     */
-   public function save(PackingSheet $packingSheet) {
+   public function save(PackingSheet $packingSheet, $userName) {
    	
    	$packingSheetData = array(
    			'ps_id' => $packingSheet->getId(),
-   			'ps_ref' => ($packingSheet->getRef() === null) ? (date('Ymd').'/'.$packingSheet->getGroupId().($this->getDb()->lastInsertId())) : $packingSheet->getRef(),
+   			'ps_ref' => ($packingSheet->getRef() === null) ? (date('Ymd').'/'.$packingSheet->getGroupId().($this->getDb()->lastInsertId()+1)) : $packingSheet->getRef(),
    			'group_id' => $packingSheet->getGroupId(),
    			'consignedAddress_id' => $packingSheet->getConsignedAddressId()->getId(),
-   			'deliveryAddress_id' => $packingSheet->getDeliveryAddressId()->getId(),
+   			'deliveryAddress_id' => ($packingSheet->getDeliveryAddressId() === null) ? null : $packingSheet->getDeliveryAddressId()->getId(),
    			'consignedContact_id' => $packingSheet->getConsignedContactId()->getId(),
-   			'deliveryContact_id' => $packingSheet->getDeliveryContactId()->getId(),
+   			'deliveryContact_id' => ($packingSheet->getDeliveryContactId() === null) ? null : $packingSheet->getDeliveryContactId()->getId(),
    			'service_id' => $packingSheet->getServiceId()->getId(),
    			'content_id' => $packingSheet->getContentId()->getId(),
    			'priority_id' => $packingSheet->getPriorityId()->getId(),
@@ -339,7 +355,7 @@ class PackingSheetDAO extends DAO
    			'ps_AWB' => $packingSheet->getAWB(),
    			'ps_dateIssue' => $packingSheet->getDateIssue(),
    			'ps_collect' => ($packingSheet->getCollect() === true) ? 1 : 0,
-   			'autority_id' => $packingSheet->getAutorityId()->getId(),
+   			'ps_autority' => ($packingSheet->getAutority() === null) ? $userName : $packingSheet->getAutority(),
    			'customStatus_id' => $packingSheet->getCustomStatusId()->getId(),
    			'incType_id' => $packingSheet->getIncTypeId()->getId(),
    			'incLoc_id' => $packingSheet->getIncLocId()->getId(),
@@ -348,7 +364,6 @@ class PackingSheetDAO extends DAO
    			'ps_signed' => ($packingSheet->getSigned() === true) ? 1 : 0,
    			'ps_printed' => ($packingSheet->getPrinted() === true) ? 1 : 0,
    			'ps_memo' => $packingSheet->getMemo(),
-   			'ps_signingUser' => $packingSheet->getSigningUser(),
    			'ps_Weight' => ($packingSheet->getWeight() === null) ? 0 : $packingSheet->getWeight(),
    			'ps_totalPrice' => ($packingSheet->getTotalPrice() === null) ? 0 : $packingSheet->getTotalPrice(),
    			'ps_nbrPieces' => ($packingSheet->getNbrPieces() === null) ? 0 : $packingSheet->getNbrPieces(),
@@ -460,9 +475,8 @@ class PackingSheetDAO extends DAO
         $packingSheet->setSigned($signed);
         $packingSheet->setPrinted($printed);
         $packingSheet->setMemo($row['ps_memo']);
-        $packingSheet->setSigningUser($row['ps_signingUser']);
         $packingSheet->setCollect($collect);
-        
+        $packingSheet->setAutority($row['ps_autority']);
 
         if (array_key_exists('consignedAddress_id', $row)) {
             // Find and set the associated consignedAddress
@@ -474,8 +488,13 @@ class PackingSheetDAO extends DAO
         if (array_key_exists('deliveryAddress_id', $row)) {
             // Find and set the associated deliveryAddress
             $deliveryAddressId = $row['deliveryAddress_id'];
-            $deliveryAddress = $this->deliveryAddressDAO->find($deliveryAddressId);
-            $packingSheet->setDeliveryAddressId($deliveryAddress);
+            if($deliveryAddressId !== null){
+            	$deliveryAddress = $this->deliveryAddressDAO->find($deliveryAddressId);
+            	$packingSheet->setDeliveryAddressId($deliveryAddress);
+            }
+            else{
+            	$packingSheet->setDeliveryAddressId(null);
+            }
         }
         
         if (array_key_exists('consignedContact_id', $row)) {
@@ -488,8 +507,13 @@ class PackingSheetDAO extends DAO
         if (array_key_exists('deliveryContact_id', $row)) {
             // Find and set the associated deliveryContact
             $deliveryContactId = $row['deliveryContact_id'];
-            $deliveryContact = $this->deliveryContactDAO->find($deliveryContactId);
-            $packingSheet->setDeliveryContactId($deliveryContact);
+            if($deliveryContactId !== null){
+            	$deliveryContact = $this->deliveryContactDAO->find($deliveryContactId);
+            	$packingSheet->setDeliveryContactId($deliveryContact);
+            }
+            else{
+            	$packingSheet->setDeliveryContactId(null);
+            }
         }
 
         if (array_key_exists('service_id', $row)) {
@@ -520,12 +544,6 @@ class PackingSheetDAO extends DAO
             $packingSheet->setShipperId($shipper);
         }
 
-        if (array_key_exists('autority_id', $row)) {
-            // Find and set the associated autority
-            $autorityId = $row['autority_id'];
-            $autority = $this->autorityDAO->find($autorityId);
-            $packingSheet->setAutorityId($autority);
-        }
 
         if (array_key_exists('customStatus_id', $row)) {
             // Find and set the associated customStatus

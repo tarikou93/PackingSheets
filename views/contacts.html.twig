@@ -19,10 +19,29 @@
                     <small>Edition/Consultation</small></h2>
                 <div class="col-md-3 col-md-offset-9">
                     <a href="{{ path('contact_add') }}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add new contact</button></a>
-                    {% if searchTag == 1 %}
-                		<hr></hr>
-                		<a href="{{ path('contacts') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to contacts list </button></a>
-                    {% endif %}
+                    <hr/>
+            		<div class="form-group">
+                    	<select id="codesComplete" class="form-control">
+                        	{% for code in codesComplete %}
+                          		<option value="{{ code.id }}">{{ code.label }}</option>
+                          	{% endfor %}
+                		</select>
+                		<button type="button" class="btn btn-secondary" id="btnFilter"><span class="glyphicon glyphicon-zoom-in"></span> Filter Company</button>
+                		<script>
+                            var $btn = $('#btnFilter');
+                            $btn.click (function() {
+                           	var $selectedId = ($('#codesComplete').val());
+                           	var url = $(location).attr('href');
+
+                           	url = url.replace(/\d+/g,'');
+
+                           	if(url.slice(-1) !== "/"){
+                               	url += "/";
+                            }
+                           	window.location.href = url+$selectedId;
+							});
+                		</script> 
+                	</div>
                 </div>
             </div>
             <div id="exTab2" class="container">
@@ -33,7 +52,7 @@
                 <div class="tab-content ">
                     <div class="tab-pane active" id="1">
                         {% if (codes is empty) %}
-                            <div class="panel panel-danger">
+                            <div class="panel panel-warning">
                                 <div class="panel-heading">Search Results</div>
                                 <div class="panel-body">No matching entry found - Please edit filters</div>
                             </div>
@@ -52,6 +71,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                	{% if (codes|length) == 1 %}
+                                		{% set codeArray = codes|first %}
+                                	{% else %}
+                                		{% set codeArray = codes %}
+                                	{% endif %}     	
                                 	{% for code in codes %}
                                 		{% for address in code.addresses %}
                                             {% for contact in address.contacts %}
@@ -68,30 +92,30 @@
                                                         <span class="glyphicon glyphicon-remove"></span></button>
                                                 </td>
                                             </tr>
-                                        <div class="modal fade" id="deleteConfirm{{ contact.id }}" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <div class="panel panel-danger">
-                                                            <div class="panel-heading panel-height"><h4>Contact Deletion : <small>{{ contact.name }}</small></h4></div>
+                                            <div class="modal fade" id="deleteConfirm{{ contact.id }}" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <div class="panel panel-danger">
+                                                                <div class="panel-heading panel-height"><h4>Contact Deletion : <small>{{ contact.name }}</small></h4></div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to delete this contact ? <br/>
-                                                        It will be definitely removed from the database.
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                        <a href="{{ path('contact_delete', { 'id': contact.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ contact.id }}">
-                                                                Delete </button></a>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this contact ? <br/>
+                                                            It will be definitely removed from the database.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                            <a href="{{ path('contact_delete', { 'id': contact.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ contact.id }}">
+                                                                    Delete </button></a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
                                 </tbody>
                             </table>
                         {% endif %}
@@ -104,53 +128,59 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="container-fluid">
-                                        <form class="form-signin form-horizontal" role="form" action="#" method="post">
+                                    {{ form_start(contactSearchForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                                        <div class="form-group">
+                                            {{ form_label(contactSearchForm.name, null, {  'label': 'Name', 'label_attr':  {
+                                            	'class': 'col-sm-4 control-label'
+                                            }}) }}
+                                            <div class="col-sm-6">
+                                                {{ form_errors(contactSearchForm.name) }}
+                                                {{ form_widget(contactSearchForm.name, {'attr':  {
+                                                'class': 'form-control'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(contactSearchForm.mail, null, {  'label': 'Mail', 'label_attr':  {
+                                            	'class': 'col-sm-4 control-label'
+                                            }}) }}
+                                            <div class="col-sm-6">
+                                                {{ form_errors(contactSearchForm.mail) }}
+                                                {{ form_widget(contactSearchForm.mail, {'attr':  {
+                                                'class': 'form-control'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <div class="form-group">
-                                                <div class="col-lg-6">
-                                                    <label>Name</label>
-                                                    <input type="text" name="name" class="form-control" placeholder="Name">
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label>Mail</label>
-                                                    <input type="text" name="mail" class="form-control" placeholder="Mail">
+                                                {{ form_label(contactSearchForm.phoneNr, null, {  'label': 'Phone', 'label_attr':  {
+                                                	'class': 'col-sm-4 control-label'
+                                                }}) }}
+                                                <div class="col-sm-6">
+                                                    {{ form_errors(contactSearchForm.phoneNr) }}
+                                                    {{ form_widget(contactSearchForm.phoneNr, {'attr':  {
+                                                    'class': 'form-control'
+                                                    }}) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <div class="col-lg-6">
-                                                    <label>Phone Number</label>
-                                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number">
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label>Fax Number</label>
-                                                    <input type="text" name="fax" class="form-control" placeholder="Fax Number">
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="form-group">
-                                                <div class="col-lg-12">
-                                                    <label for="code">Company</label>
-                                                    <select onchange="getFilteredAddresses();" class="form-control" name="code" id="code">
-                                                        <option label=" "></option>
-                                                        {% for code in codes %}
-                                                            <option value="{{ code.id }}">{{ code.label }}</option>
-                                                        {% endfor%}
-                                                    </select>
+                                                {{ form_label(contactSearchForm.faxNr, null, {  'label': 'Fax', 'label_attr':  {
+                                                	'class': 'col-sm-4 control-label'
+                                                }}) }}
+                                                <div class="col-sm-6">
+                                                    {{ form_errors(contactSearchForm.faxNr) }}
+                                                    {{ form_widget(contactSearchForm.faxNr, {'attr':  {
+                                                    'class': 'form-control'
+                                                    }}) }}
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="col-lg-12">
-                                                    <label for="address">Address</label>
-                                                    <select class="form-control" name="addressId" id="addressId">
-                                                    </select>
-                                                </div>
+                                        </div>                             
+                                        <div class="form-group">
+                                            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                                                <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Search </button>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                                                    <button type="submit" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-search"></span> Search </button>
-                                                </div>
-                                            </div>
-                                            <script src="/scripts/dropdown_search_updates.js"></script> 
-                                        </form>
+                                        </div>
+                                   {{ form_end(contactSearchForm) }}
                                     </div>
                                 </div>
                             </div>

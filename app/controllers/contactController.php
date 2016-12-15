@@ -5,16 +5,10 @@ use PackingSheets\Form\Type\ContactTypeEdit;
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\Contact;
 use Symfony\Component\HttpFoundation\JsonResponse;
-//use PackingSheets\Form\Type\ContactSearchType;
+use PackingSheets\Form\Type\ContactSearchType;
+use PackingSheets\Domain\ContactSearch;
 
 // Contacts
-
-// Contacts list page
-$app->get('/contacts', function () use ($app) {
-	$codes = $app['dao.code']->findAll();
-	$searchTag = 0;
-	return $app['twig']->render('contacts.html.twig', array('codes' => $codes, 'searchTag' => $searchTag));
-})->bind('contacts');
 
 // Add a new contact
 $app->match('/contact/add', function(Request $request) use ($app) {
@@ -100,37 +94,30 @@ $app->get('/contact/{id}/delete', function($id, Request $request) use ($app) {
 	}
 })->bind('contact_delete');
 
-/*
+
  // Contacts list page
- $app->match('/contacts', function(Request $request) use ($app) {
-
- $searchTag = 0;
- $codes = $app['dao.code']->findAll();
-
- $addressDAO = $app['dao.address'];
- $codeDAO = $app['dao.code'];
-
- $contactForm = $app['form.factory']->create(ContactSearchType::class, array('codes' => $codes, 'codeDAO' => $codeDAO, 'addressDAO' => $addressDAO));
-
- if($request->isMethod('POST')){
- if($request->isXmlHttpRequest()){
- $id = $request->get('code');
- $addresses = $app['dao.address']->findByCode($id);
- return new JsonResponse(array('addresses' => $addresses));
- }
- else{
- $contactForm->handleRequest($request);
- if ($contactForm->isSubmitted() && $contactForm->isValid()) {
- $searchedContacts = $app['dao.contact']->findBySearch($request);
- return $app->redirect($app['url_generator']->generate('contacts', array('codes' => $searchedContacts, 'searchTag' => 1)));
- }
- }
+ $app->match('/contacts/{id}', function(Request $request, $id) use ($app) {
  	
- }
-
- return $app['twig']->render('/forms/contact_form.html.twig', array(
- 'title' => 'Contacts',
- 'codes' => $codes,
- 'searchTag = 0' => $searchTag,
- 'contactForm' => $contactForm->createView()));
- })->bind('contacts');*/
+ 	$codesComplete = $app['dao.code']->findAll();
+ 	
+	$contactSearch = new ContactSearch();
+	$contactSearchForm = $app['form.factory']->create(ContactSearchType::class, $contactSearch);	 	 
+		 
+ 	$contactSearchForm->handleRequest($request);
+ 	if ($contactSearchForm->isSubmitted() && $contactSearchForm->isValid()) {
+ 		$searchedCodes = $app['dao.code']->findBySearch($contactSearch);
+ 		//var_dump($searchedCodes);exit;
+ 		return $app['twig']->render('contacts.html.twig', array(
+ 			'title' => 'Contacts',
+ 			'codes' => $searchedCodes,
+ 			'codesComplete' => $codesComplete,
+ 			'contactSearchForm' => $contactSearchForm->createView()));	
+ 	}
+	
+	 return $app['twig']->render('contacts.html.twig', array(
+	 'title' => 'Contacts',
+	 'codes' => ($id === 0) ? array() : $app['dao.code']->findAllById($id),
+	 'codesComplete' => $codesComplete,
+	 'contactSearchForm' => $contactSearchForm->createView()));
+	 
+ })->value('id', 0)->bind('contacts');

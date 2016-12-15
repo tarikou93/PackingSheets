@@ -88,7 +88,7 @@ class PackingDAO extends DAO
      * @param \PackingSheets\Domain\Packing $pack The Packing to save
      */
     public function save(Packing $pack) {
-    	
+    	  	
     	$packData = array(
     			'ps_id' => $pack->getPSid(),
     			'pack_netWeight' => $pack->getNetWeight(),

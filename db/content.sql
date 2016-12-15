@@ -49,12 +49,6 @@ insert into t_memo values
 insert into t_memo values
 (2, 'testLabelMemoTable2');
 
-insert into t_autority values
-(1, 'testLabelAutority', '+32422521');
-
-insert into t_autority values
-(2, 'testLabelAutority2', '+32454238');
-
 insert into t_customStatus values
 (1, 'testLabelCustomStatus', 'This is a test text for custom Status table');
 
@@ -86,10 +80,10 @@ insert into t_imput values
 (2, 'testLabelImput2', 'This is test 2 text for imput table');
 
 insert into t_packingsheet values
-(1, '20160927/701', 1, 1, 2, 1, 2, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 'Test memo', '');
+(1, '20160927/701', 1, 1, 2, 1, 2, 1, 1, 1, 1, '2016', '4517842745', '2016-09-27', 1, '', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 'Test memo');
 
 insert into t_packingsheet values
-(2, '20161005/701', 2, 2, 2, 2, 3, 1, 1, 2, 1, '2016', '4517847854', '2016-10-05', 1, 2, 1, 2, 1, 2, 2, 0, 0, 0, 0, 0, 'Test memo 2', '');
+(2, '20161005/701', 2, 2, 2, 2, 3, 1, 1, 2, 1, '2016', '4517847854', '2016-10-05', 1, '', 1, 2, 1, 2, 2, 0, 0, 0, 0, 0, 'Test memo 2');
 
 insert into t_part values
 (1, '784-48172', '84584258457', 'This is a part', 152.56, 'HS4218465513');
