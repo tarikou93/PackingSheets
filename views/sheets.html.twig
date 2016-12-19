@@ -58,10 +58,34 @@
                                     {% for packingSheet in sheets %}
                                         <tr>
                                             <td>{{ packingSheet.ref }}</td>
-                                            <td>{{ packingSheet.AWB }}</td>
-                                            <td>{{ packingSheet.shipperId.label}}</td>
-                                            <td>{{ packingSheet.consignedAddressId.label}}</td>
-                                            <td>{{ packingSheet.serviceId.label }}</td>
+                                            <td>
+                                                {% if packingSheet.AWB is not null %}
+                                                    {{ packingSheet.AWB }}
+                                                {% else %}
+                                                	N/A
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                            	{% if packingSheet.shipperId is not null  %}
+                                                    {{ packingSheet.shipperId.label}}
+                                                {% else %}
+                                                	N/A
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                            	{% if packingSheet.consignedAddressId is not null  %}
+                                                    {{ packingSheet.consignedAddressId.label}}
+                                                {% else %}
+                                                	N/A
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                            	{% if packingSheet.serviceId is not null  %}
+                                                    {{ packingSheet.serviceId.label }}
+                                                {% else %}
+                                                	N/A
+                                                {% endif %}                                                
+                                            </td>
                                             <td>{{ packingSheet.autority }}</td>
                                             <td><a href="{{ path('sheetList', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-list btn-sm"><span class="glyphicon glyphicon-list-alt"></span></button></a></td>
                                             <td><a href="{{ path('packings', { 'id': packingSheet.id }) }}"><button type="button" class="btn btn-packings btn-sm"><span class="glyphicon glyphicon-inbox"></span></button></a></td>     
@@ -81,7 +105,7 @@
                                                   	<span class="caret"></span></button>
                                                   	<ul class="dropdown-menu">
                                                     	<li><a href="#">List</a></li>
-                                                    	<li><a href="#">Sheet</a></li>
+                                                    	<li><a href="{{ path('printOptions', { 'psId': packingSheet.id }) }}">Sheet</a></li>
                                                   	</ul>
                                                 </div>    
                                             </td>
@@ -230,40 +254,98 @@
                                                 </div>
                                             </div>
                                             <hr/>
+                                            {% set codeList = [] %}
+                                            {% set addressList = [] %}
+                                            {% set contactList = [] %}
+                                            
+                                            {% for code in codes %}
+                                                {% set codeList = codeList|merge([code.label])  %}
+                                            	{% for address in code.addresses %}
+                                            	    {% set addressList = addressList|merge([address.label])  %}
+                                            		{% for contact in address.contacts %}
+                                            		    {% set contactList = contactList|merge([contact.name])  %}
+                                            		{% endfor %}
+                                            	{% endfor %}
+                                            {%  endfor %}
                                             <h3><small>Consigned</small></h3>
-                                            <div class="form-group">
-                                                {{ form_label(psSearchForm.consignedCode, null, {  'label': 'Company', 'label_attr':  {
-                                                	'class': 'col-sm-2 col-sm-offset-1 control-label'
-                                                }}) }}
-                                                <div class="col-lg-8">
-                                                    {{ form_errors(psSearchForm.consignedCode) }}
-                                                    {{ form_widget(psSearchForm.consignedCode, {'attr':  {
-                                                    'class': 'form-control'
+                                            <div class="col-md-4">
+                                            	<div class="form-group">
+                                                    {{ form_label(psSearchForm.datalistCode, null, {  'label': 'Company', 'label_attr':  {
+                                                    	'class': 'col-sm-3 control-label'
                                                     }}) }}
+                                                    <div class="col-lg-9">
+                                                        {{ form_errors(psSearchForm.datalistCode) }}
+                                                        {{ form_widget(psSearchForm.datalistCode, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                {{ form_label(psSearchForm.consignedAddressId, null, {  'label': 'Address', 'label_attr':  {
-                                                	'class': 'col-sm-2 col-sm-offset-1 control-label'
-                                                }}) }}
-                                                <div class="col-lg-8">
-                                                    {{ form_errors(psSearchForm.consignedAddressId) }}
-                                                    {{ form_widget(psSearchForm.consignedAddressId, {'attr':  {
-                                                    'class': 'form-control'
+                                            <script>
+                                            $( function() {
+                                                var availableTags = [];
+
+                                                {% for code in codeList %}
+                                                	availableTags.push("{{code}}");
+                                                {% endfor %}
+                                                
+                                                $( "#packing_sheet_search_datalistCode" ).autocomplete({
+                                                  source: availableTags
+                                                });
+                                          	} );
+                                            </script>
+                                            <div class="col-md-4">
+                                            	<div class="form-group">
+                                                    {{ form_label(psSearchForm.datalistAddress, null, {  'label': 'Address', 'label_attr':  {
+                                                    	'class': 'col-sm-3 control-label'
                                                     }}) }}
+                                                    <div class="col-lg-9">
+                                                        {{ form_errors(psSearchForm.datalistAddress) }}
+                                                        {{ form_widget(psSearchForm.datalistAddress, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                {{ form_label(psSearchForm.consignedContactId, null, {  'label': 'Contact', 'label_attr':  {
-                                                	'class': 'col-sm-2 col-sm-offset-1 control-label'
-                                                }}) }}
-                                                <div class="col-lg-8">
-                                                    {{ form_errors(psSearchForm.consignedContactId) }}
-                                                    {{ form_widget(psSearchForm.consignedContactId, {'attr':  {
-                                                    'class': 'form-control'
+                                            <script>
+                                            $( function() {
+                                                var availableTags = [];
+
+                                                {% for address in addressList %}
+                                                	availableTags.push("{{address}}");
+                                                {% endfor %}
+                                                
+                                                $( "#packing_sheet_search_datalistAddress" ).autocomplete({
+                                                  source: availableTags
+                                                });
+                                          	} );
+                                            </script>
+                                            <div class="col-md-4">
+                                            	<div class="form-group">
+                                                    {{ form_label(psSearchForm.datalistContact, null, {  'label': 'Contact', 'label_attr':  {
+                                                    	'class': 'col-sm-3 control-label'
                                                     }}) }}
+                                                    <div class="col-lg-9">
+                                                        {{ form_errors(psSearchForm.datalistContact) }}
+                                                        {{ form_widget(psSearchForm.datalistContact, {'attr':  {
+                                                        'class': 'form-control'
+                                                        }}) }}
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <script>
+                                            $( function() {
+                                                var availableTags = [];
+
+                                                {% for contact in contactList %}
+                                                	availableTags.push("{{contact}}");
+                                                {% endfor %}
+                                                
+                                                $( "#packing_sheet_search_datalistContact" ).autocomplete({
+                                                  source: availableTags
+                                                });
+                                          	} );
+                                            </script>
                                             <hr/>
                                             <div class="col-md-3 col-md-offset-1">
                                             	<div class="form-group">
@@ -319,4 +401,6 @@
             </div>
         </div>
     </div>
+    <!-- <script src="/scripts/add_auto_complete.js"></script> -->
 {% endblock %}
+

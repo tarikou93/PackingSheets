@@ -33,16 +33,18 @@ class PackingSheetType extends AbstractType
 		->add('groupId', ChoiceType::class, array(
 				'choices' => $options['availableGroups'],
 				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'constraints' => array(new Assert\NotBlank()),
+				'required' => true
+		))
 				
 		->add('consignedCode', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'mapped' => false,
 				'choice_label' => 'label',
 				'choices' => $options['codes'],
 				'choice_value' => 'id',
 				'multiple' => false,
-				'data' => $options['consignedOldCode']
+				'data' => $options['consignedOldCode'],
+				'required' => false
 		))
 		
 		->add('deliveryCode', ChoiceType::class, array(
@@ -56,11 +58,11 @@ class PackingSheetType extends AbstractType
 		))
 		
 		->add('consignedAddressId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['consignedAddresses'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 		
 		->add('deliveryAddressId', ChoiceType::class, array(
@@ -72,11 +74,11 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('consignedContactId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'completeInfos',
 				'choices' => $options['contacts'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('deliveryContactId', ChoiceType::class, array(
@@ -88,48 +90,50 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('serviceId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['services'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('contentId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['contents'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('priorityId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['priorities'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('shipperId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['shippers'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('yrOrder', TextType::class, array(
 				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'required' => false	
+		))
 				
 		->add('dateIssue', TextType::class, array(
 				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'required' => false))
 				
 		->add('AWB', TextType::class, array(
 				'attr' => array('readonly' => $options['read_only']),
-				'constraints' => array(new Assert\NotBlank())))
+				'required' => false
+		))
 				
 		->add('collect', CheckboxType::class, array(
 				'required' => false,
@@ -139,43 +143,43 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('customStatusId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['customStatuses'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('incTypeId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['incTypes'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('incLocId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['incLocs'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('currencyId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['currencies'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('imputId', ChoiceType::class, array(
-				'constraints' => array(new Assert\NotBlank()),
 				'choice_label' => 'label',
 				'choices' => $options['imputs'],
 				'choice_value' => 'id',
 				'multiple' => false,
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
 				
@@ -197,6 +201,7 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('memo', TextareaType::class, array(
+				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))	
 
 		->add('packings', CollectionType::class, array(

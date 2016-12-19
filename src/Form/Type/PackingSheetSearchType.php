@@ -34,39 +34,7 @@ class PackingSheetSearchType extends AbstractType
 						'placeholder' => 'Group',
 						'required' => true),
 				'constraints' => array(new Assert\NotBlank())))
-
-		->add('consignedCode', ChoiceType::class, array(
-				'required' => false,
-				'mapped' => false,
-				'choice_label' => 'label',
-				'choices' => $options['codes'],
-				'choice_value' => 'id',
-				'multiple' => false,
-				'attr' => array('placeholder' => 'Company')
-		))
-	
-		->add('consignedAddressId', ChoiceType::class, array(
-				'required' => false,
-				'choice_label' => 'label',
-				'choice_value' => 'id',
-				'multiple' => false,
-				'attr' => array(
-						'readonly' => false,
-						'placeholder' => 'Address'
-				)))
-
-						
-		->add('consignedContactId', ChoiceType::class, array(
-				'required' => false,
-				'choice_label' => 'completeInfos',
-				'choice_value' => 'id',
-				'multiple' => false,
-				'attr' => array(
-						'readonly' => false,
-						'placeholder' => 'Contact'
-				)))
-
-										
+									
 		->add('serviceId', ChoiceType::class, array(
 				'required' => false,
 				'choice_label' => 'label',
@@ -134,7 +102,16 @@ class PackingSheetSearchType extends AbstractType
 				'required' => false,
 				'attr' => array(
 						'placeholder' => 'Part HSCode'	
-			)));
+			)))
+			
+		->add('datalistCode', TextType::class, array(
+				'required'=> false))
+		
+		->add('datalistAddress', TextType::class, array(
+				'required'=> false))
+		
+		->add('datalistContact', TextType::class, array(
+				'required'=> false));
 
 	}
 

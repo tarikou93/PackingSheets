@@ -145,6 +145,14 @@ $app['dao.currency'] = function ($app) {
     return new PackingSheets\DAO\CurrencyDAO($app['db']);
 };
 
+$app['dao.header'] = function ($app) {
+	return new PackingSheets\DAO\HeaderDAO($app['db']);
+};
+
+$app['dao.footer'] = function ($app) {
+	return new PackingSheets\DAO\FooterDAO($app['db']);
+};
+
 $app['dao.imput'] = function ($app) {
     return new PackingSheets\DAO\ImputDAO($app['db']);
 };

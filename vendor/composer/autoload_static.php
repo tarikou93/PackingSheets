@@ -231,6 +231,7 @@ class ComposerStaticInitb03668b62d12ec7d5a6ca2d629331f8e
         'Collator' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/Collator.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
         'IntlDateFormatter' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/IntlDateFormatter.php',
         'Locale' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/Locale.php',
         'NumberFormatter' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/NumberFormatter.php',

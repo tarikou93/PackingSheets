@@ -132,3 +132,15 @@ insert into t_packinglist_part values
 
 insert into t_packinglist_part values
 (3, 1, 3, 1);
+
+insert into t_header values
+(1, "This is sample text to test headers");
+
+insert into t_header values
+(2, "This is another sample text to test headers");
+
+insert into t_footer values
+(1, "This is sample text to test footers");
+
+insert into t_footer values
+(2, "This is another sample text to test footers");

@@ -6,7 +6,6 @@ use PackingSheets\Domain\PackingSheet;
 use PackingSheets\Domain\PackingSheetSearch;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Intl\Tests\Data\Provider\Json\JsonRegionDataProviderTest;
 
 
 // Sheets list page
@@ -20,21 +19,37 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	$psSearch = new PackingSheetSearch();
 	$psSearchForm = $app['form.factory']->create(PackingSheetSearchType::class, $psSearch, array('codes' => $codes, 'services' => $services, 'imputs' => $imputs,'availableGroups' => $groups));
 
+	
 	$psSearchForm->handleRequest($request);
+	
 	if ($psSearchForm->isSubmitted() && $psSearchForm->isValid()) {
+					
+		($psSearchForm->getData()->getDatalistCode() !== null) ? 
+			$psSearchForm->getData()->setDatalistCode($app['dao.code']->findIdByLabel($psSearchForm->getData()->getDatalistCode())) : $psSearchForm->getData()->setDatalistCode("");
+		
+		($psSearchForm->getData()->getDatalistAddress() !== null) ?
+			$psSearchForm->getData()->setDatalistAddress($app['dao.address']->findIdByLabel($psSearchForm->getData()->getDatalistAddress())) : $psSearchForm->getData()->setDatalistAddress("");
+		
+		($psSearchForm->getData()->getDatalistContact() !== null) ?
+			$psSearchForm->getData()->setDatalistContact($app['dao.contact']->findIdByLabel($psSearchForm->getData()->getDatalistContact())) : $psSearchForm->getData()->setDatalistContact("");
+		
+		//var_dump($psSearchForm->getData());exit;
+	
 		$searchedSheets = $app['dao.packingSheet']->findBySearch($psSearch);
-		//var_dump($searchedSheets);exit;
+		
 		return $app['twig']->render('sheets.html.twig', array(
 				'title' => 'Sheets',
 				'sheets' => $searchedSheets,
 				'searchTag' => 1,
+				'codes' => $codes,
 				'psSearchForm' => $psSearchForm->createView()));
-	}
-
+	}			
+	
 	return $app['twig']->render('sheets.html.twig', array(
 			'title' => 'Sheets',
 			'sheets' => $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']),
 			'searchTag' => 0,
+			'codes' => $codes,
 			'psSearchForm' => $psSearchForm->createView()));
 
 })->bind('sheets');
@@ -53,7 +68,12 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		$packingSheet = $app['dao.packingSheet']->find($id);
 		$read_only = ($status === "details") ? true : false;
 
-		$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId());
+		if($packingSheet->getConsignedAddressId() !== null){
+			$consignedOldCode = $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId());
+		}
+		else{
+			$consignedOldCode = null;
+		}
 		
 		if($packingSheet->getDeliveryAddressId() !== null){
 			$deliveryOldCode = $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId());		
@@ -135,7 +155,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		else{
 			$packingSheetForm->handleRequest($request);
 				
-			//var_dump($packingSheet);exit;
+			//var_dump($packingSheetForm->getData());exit;
 			if ($packingSheetForm->isSubmitted() && $packingSheetForm->isValid()) {
 				
 				$userName = $app['session']->get('user')['name'][0]." ".$app['session']->get('user')['firstName'][0];

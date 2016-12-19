@@ -11,6 +11,7 @@ return array(
     'Collator' => $vendorDir . '/symfony/intl/Resources/stubs/Collator.php',
     'DivisionByZeroError' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
     'Error' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+    'FPDF' => $vendorDir . '/setasign/fpdf/fpdf.php',
     'IntlDateFormatter' => $vendorDir . '/symfony/intl/Resources/stubs/IntlDateFormatter.php',
     'Locale' => $vendorDir . '/symfony/intl/Resources/stubs/Locale.php',
     'NumberFormatter' => $vendorDir . '/symfony/intl/Resources/stubs/NumberFormatter.php',

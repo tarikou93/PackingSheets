@@ -21,9 +21,6 @@
 	
 	function dropdownUpdate(elementId){
 
-		//console.log(elementId);
-		//console.log(elementId.attr('id'));
-
 		var $form = $(this).closest('form');
 		var $data = {};
 
@@ -46,13 +43,6 @@
     	    	childElement = 'deliveryContactId';
     	        break;
 		}
-
-		//console.log(childElement);
-		//console.log($(location).attr('href')+" "+$form.attr('method'));
-		
-		//alert(childElement);
-		//console.log($data);
-		//console.log($(location).attr('href'));
 		
 		$.ajax ({
 			url: $(location).attr('href'),
@@ -60,23 +50,18 @@
 			data: $data,
 			success: function(datas) {
 				
-				//console.log("Received Data");
-				//console.log(datas);
     			select = document.getElementById('packing_sheet_'.concat(childElement));
-    			
-    			//datastring = JSON.stringify(data.childElement);
-    			//alert(datastring);
-    			 			
+    					 			
     			$('#packing_sheet_'.concat(childElement)).empty();
     			
-    			console.log("ChildElements");
-    			console.log(datas);
+    			
+    			var optEmpty = document.createElement('option');
+				optEmpty.value = '';
+				optEmpty.innerHTML = '';
+				select.appendChild(optEmpty);
   			
     			$.each(datas['packing_sheet_'.concat(childElement)], function(index, element){
-
-    				//console.log("element");
-    				//console.log(element);
-        			
+    			
     				var opt = document.createElement('option');
                     opt.value = element.id;
                     if(childElement === 'consignedContactId' || childElement === 'deliveryContactId'){
@@ -90,6 +75,7 @@
 
     			if(datas['packing_sheet_'.concat(childElement)].lenght === 1){
     				dropdownUpdate($('#packing_sheet_'.concat(childElement)));
+    				alert('test');
         		}
 			}
 		});

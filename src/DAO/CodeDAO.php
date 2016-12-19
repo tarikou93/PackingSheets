@@ -52,6 +52,19 @@ class CodeDAO extends DAO
     	}
     	return $codes;
     }
+    
+    /**
+     * Return the Id of the code by label.
+     *
+     * @return a code Id by label.
+     */
+    public function findIdByLabel($label) {
+    	$sql = "select code_id from t_code where code_label like '%$label%'";
+    	$result = $this->getDb()->fetchAll($sql);
+    	
+    	$id = $result[0]['code_id'];   
+    	return $id;
+    }
 
     /**
     * Returns an Code matching the supplied id.

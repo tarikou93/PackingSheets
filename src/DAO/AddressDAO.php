@@ -51,6 +51,20 @@ class AddressDAO extends DAO
            throw new \Exception("No PackingSheet matching id " . $id);
    }
    
+   
+   /**
+    * Return the Id of the address by label.
+    *
+    * @return an address Id by label.
+    */
+   public function findIdByLabel($label) {
+   	$sql = "select address_id from t_address where address_label like '%$label%'";
+   	$result = $this->getDb()->fetchAll($sql);
+   	 
+   	$id = $result[0]['address_id'];
+   	return $id;
+   }
+   
    /**
     * Returns an Address matching the supplied code.
     *

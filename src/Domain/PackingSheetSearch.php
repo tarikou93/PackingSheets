@@ -111,6 +111,52 @@ class PackingSheetSearch
 	 * @var integer
 	 */
 	private $hscode;
+	
+	
+	/**
+	 * PackingSheet Code selection.
+	 *
+	 * @var String
+	 */
+	private $datalistCode;
+	
+	/**
+	 * PackingSheet Address selection.
+	 *
+	 * @var String
+	 */
+	private $datalistAddress;
+	
+	/**
+	 * PackingSheet Contact selection.
+	 *
+	 * @var String
+	 */
+	private $datalistContact;
+	
+	public function getDatalistCode() {
+		return $this->datalistCode;
+	}
+	
+	public function setDatalistCode($datalistCode) {
+		$this->datalistCode = $datalistCode;
+	}
+	
+	public function getDatalistAddress() {
+		return $this->datalistAddress;
+	}
+	
+	public function setDatalistAddress($datalistAddress) {
+		$this->datalistAddress = $datalistAddress;
+	}
+	
+	public function getDatalistContact() {
+		return $this->datalistContact;
+	}
+	
+	public function setDatalistContact($datalistContact) {
+		$this->datalistContact = $datalistContact;
+	}
 
 	public function getId() {
 		return $this->id;

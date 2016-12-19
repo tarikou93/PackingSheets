@@ -294,7 +294,12 @@
     </div>
 </div>
 
-<script src="/scripts/disable_imput_signed_collect.js"></script>
+{% if status is same as ('details') %}
+	<script src="/scripts/disable_all_fields_details.js"></script>
+{% else %}
+	<script src="/scripts/disable_imput_signed_collect.js"></script>
+{% endif %}
+
 
 
 

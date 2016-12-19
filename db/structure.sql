@@ -101,6 +101,32 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+-- -----------------------------------------------------
+-- Table `packingsheets`.`t_header`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets`.`t_header` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_header` (
+  `header_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `header_text` VARCHAR(2000) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (`header_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table `packingsheets`.`t_footer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets`.`t_footer` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_footer` (
+  `footer_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `footer_text` VARCHAR(2000) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (`footer_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
 
 -- -----------------------------------------------------
 -- Table `packingsheets`.`t_customstatus`
@@ -239,24 +265,24 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
   `ps_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ps_ref` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   `group_id` INT(11) NOT NULL,
-  `consignedAddress_id` INT(11) NOT NULL,
+  `consignedAddress_id` INT(11),
   `deliveryAddress_id` INT(11),
-  `consignedContact_id` INT(11) NOT NULL,
+  `consignedContact_id` INT(11),
   `deliveryContact_id` INT(11),
-  `service_id` INT(11) NOT NULL,
-  `content_id` INT(11) NOT NULL,
-  `priority_id` INT(11) NOT NULL,
-  `shipper_id` INT(11) NOT NULL,
-  `ps_yrOrder` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
-  `ps_AWB` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
-  `ps_dateIssue` DATE NOT NULL,
+  `service_id` INT(11),
+  `content_id` INT(11),
+  `priority_id` INT(11),
+  `shipper_id` INT(11),
+  `ps_yrOrder` VARCHAR(50) CHARACTER SET 'utf8',
+  `ps_AWB` VARCHAR(50) CHARACTER SET 'utf8',
+  `ps_dateIssue` DATE,
   `ps_collect` TINYINT(1) NULL DEFAULT NULL,
   `ps_autority` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
-  `customStatus_id` INT(11) NOT NULL,
-  `incType_id` INT(11) NOT NULL,
-  `incLoc_id` INT(11) NOT NULL,
-  `currency_id` INT(11) NOT NULL,
-  `imput_id` INT(11) NOT NULL,
+  `customStatus_id` INT(11),
+  `incType_id` INT(11),
+  `incLoc_id` INT(11),
+  `currency_id` INT(11),
+  `imput_id` INT(11),
   `ps_nbrPieces` INT(11) NOT NULL,
   `ps_weight` FLOAT NOT NULL,
   `ps_totalPrice` FLOAT NOT NULL,

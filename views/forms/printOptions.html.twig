@@ -1,0 +1,80 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    
+    {% if app.session.flashbag.peekAll|length > 0 %}
+        {% for type, messages in app.session.flashbag.all %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type ? type : '' }} fade-in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+	<div class="jumbotron vertical-center">
+        <div class="container-fluid">
+            <div class="container">
+            	<h2> Packing Sheet Printing <br/>
+                <small> PS {{ sheet.ref}} </small></h2>
+                <div class="col-md-4 col-md-offset-8 text-right">
+            		<a href="{{ path('sheet', { 'id': sheet.id, 'status': 'details' }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to sheet </button></a>		
+                </div>
+         	</div>
+         	<hr/>
+            <div class="container">
+        		<div class="panel panel-primary">
+          			<div class="panel-heading"><h4>Print Options</h4></div>
+        		</div>
+                <div class="well">
+                    {{ form_start(printOptionsForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                    <div class="form-group">
+                        {{ form_label(printOptionsForm.header, null, { 'label_attr':  {
+                        'class': 'col-sm-2 control-label'
+                        }}) }}
+                        <div class="col-sm-8">
+                            {{ form_errors(printOptionsForm.header) }}
+                            {{ form_widget(printOptionsForm.header, { 'attr':  {
+                            'class': 'form-control'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(printOptionsForm.footer, null, { 'label_attr':  {
+                        'class': 'col-sm-2 control-label'
+                        }}) }}
+                        <div class="col-sm-8">
+                            {{ form_errors(printOptionsForm.footer) }}
+                            {{ form_widget(printOptionsForm.footer, { 'attr':  {
+                            'class': 'form-control'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(printOptionsForm.hscodesStatus, null, { 'label': 'Display HSCodes', 'label_attr':  {
+                        'class': 'col-sm-3 control-label'
+                        }}) }}
+                        <div class="col-sm-6">
+                            {{ form_errors(printOptionsForm.hscodesStatus) }}
+                            {{ form_widget(printOptionsForm.hscodesStatus, { 'attr':  {
+                            'class': 'col-sm-1 form-control'
+                            }}) }}
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            {{ form_widget(printOptionsForm.save, {'attr':  {
+                            'class': 'btn btn-primary outline'
+                            }}) }}
+                        </div>
+                    </div>
+                    {{ form_end(printOptionsForm) }}
+                </div>
+           	</div>
+   		</div>
+   	</div>
+{% endblock %}

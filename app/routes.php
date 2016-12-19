@@ -25,6 +25,9 @@ require '/controllers/partController.php';
 // Ajax Responses
 require '/controllers/ajaxResponseController.php';
 
+// Printing
+require '/controllers/printController.php';
+
 
 
 

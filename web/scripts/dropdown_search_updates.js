@@ -1,108 +1,67 @@
-function getFilteredAddresses() {
-                
-	if( !$('#code').val() ) {
-	    $('#addressId').empty();
-	    $('#contact').empty();       
-	}
+
+	var consignedCode = $('#packing_sheet_search_consignedCode');
+	consignedCode.change (function(){
+		dropdownUpdate(consignedCode)
+	});
+
+	var consignedAddress = $('#packing_sheet_search_consignedAddressId');
+	consignedAddress.change (function () {
+		dropdownUpdate(consignedAddress)
+	});
+
 	
-	var codeVar = $("#code").val();
-	//alert(codeVar);
-	
-	//var route = "{{ path('sheets', { 'id': "PLACEHOLDER" }) }}";
-	//window.location = route.replace("PLACEHOLDER", codeVar);
-	//alert(route);
-	
-	$.get("{{ path('sheets_ajax_address') }}", {code: codeVar}, function (data) {
+	function dropdownUpdate(elementId){
+
+		var $form = $(this).closest('form');
+		var $data = {};
+
+		$data[elementId.attr('id')] = elementId.val();
+		$data['flag'] = elementId.attr('id');
 		
-	    //var addresses = data.addresses[0].address_label;
-	    //alert(addresses);
-	
-	    select = document.getElementById('addressId');
-	
-	    var cpt = 0;
-	    for (address in data.addresses) {
-	        cpt++;
-	    }
-	
-	
-	    $('#addressId')
-	            .empty()
-	            ;
-	
-	    //alert(cpt);
-	    var i;
-	    for (i = 0; i <= (cpt - 1); i++) {
-	        var opt = document.createElement('option');
-	            opt.value = data.addresses[i].address_id;
-	            opt.innerHTML = data.addresses[i].address_label;
-	            select.appendChild(opt);
-	        }
-	
-	        if (cpt === 1) {
-	            getFilteredContacts();
-	        }
-    	});
-}
+		childElement = "";
+		
+		switch (elementId.attr('id')) {
+    	    case "packing_sheet_search_consignedCode":
+    	    	childElement = 'consignedAddressId';
+    	        break;
+    	    case "packing_sheet_search_consignedAddressId" :
+    	    	childElement = 'consignedContactId';
+    	        break;
+		}
+		
+		$.ajax ({
+			url: $(location).attr('href'),
+			type: 'POST',
+			data: $data,
+			success: function(datas) {
+				
+    			select = document.getElementById('packing_sheet_search_'.concat(childElement));
+    					 			
+    			$('#packing_sheet_search_'.concat(childElement)).empty();
+    			
+    			
+    			var optEmpty = document.createElement('option');
+				optEmpty.value = '';
+				optEmpty.innerHTML = '';
+				select.appendChild(optEmpty);
+  			
+    			$.each(datas['packing_sheet_search_'.concat(childElement)], function(index, element){
+    			
+    				var opt = document.createElement('option');
+                    opt.value = element.id;
+                    if(childElement === 'consignedContactId'){
+                    	opt.innerHTML = element.name;
+                    }
+                    else{
+                    	opt.innerHTML = element.label;
+                    }
+                    select.appendChild(opt);
+    			});
 
-function getFilteredContacts() {
-	    var addressVar = $("#addressId").val();
+    			if(datas['packing_sheet_search_'.concat(childElement)].lenght === 1){
+    				dropdownUpdate($('#packing_sheet_search_'.concat(childElement)));
+        		}
+			}
+		});
+	};
 	
-	//var route = "{{ path('sheets', { 'id': "PLACEHOLDER" }) }}";
-	//window.location = route.replace("PLACEHOLDER", codeVar);
-	//alert(route);
-	
-	$.get("{{ path('sheets_ajax_contact') }}", {address: addressVar}, function (data) {
-	
-	    //var addresses = data.addresses[0].address_label;
-	    //alert(addresses);
-	
-	    select = document.getElementById('contact');
-	
-	    var cpt = 0;
-	    for (contact in data.contacts) {
-	        cpt++;
-	    }
-	
-	    $('#contact')
-	            .empty()
-	            ;
-	
-	    //alert(cpt);
-	    var i;
-	    for (i = 0; i <= (cpt - 1); i++) {
-	        var opt = document.createElement('option');
-	            opt.value = data.contacts[i].contact_id;
-	            opt.innerHTML = data.contacts[i].contact_name;
-	            select.appendChild(opt);
-	        }
-    });
-}
-
-function getFilteredAddressesAdd() {
-	    
-    if( !$('#code').val() ) {
-	    $('#addressId').empty();   
-	}
-	
-	var codeVar = $("#code").val();
-	
-	$.get("{{ path('sheets_ajax_address') }}", {code: codeVar}, function (data) {
-	
-	    select = document.getElementById('addressId');
-	
-	    var cpt = 0;
-	    for (address in data.addresses) {
-	        cpt++;
-	    }
-	
-	    $('#addressId').empty();
-	
-	    var i;
-	    for (i = 0; i <= (cpt - 1); i++) {
-	        var opt = document.createElement('option');
-	            opt.value = data.addresses[i].addressId;
-	            opt.innerHTML = data.addresses[i].address_label;
-	            select.appendChild(opt);
-        }
-    });
-}

@@ -43,6 +43,19 @@ class ContactDAO extends DAO
    }
    
    /**
+    * Return the Id of the contact by label.
+    *
+    * @return a contact Id by label.
+    */
+   public function findIdByLabel($label) {
+   	$sql = "select contact_id from t_contact where contact_name like '%$label%'";
+   	$result = $this->getDb()->fetchAll($sql);
+   	 
+   	$id = $result[0]['contact_id'];
+   	return $id;
+   }
+   
+   /**
     * Returns a contact matching the supplied address.
     *
     * @param integer $address
