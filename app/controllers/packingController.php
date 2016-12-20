@@ -27,16 +27,16 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 	if($status === "create"){
 		$packing = new Packing();
 		$packing->setPSid($id);
-		$packing->setImg(new File('H:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png'));
+		$packing->setImg(new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png'));
 	}
 	else{
 		
 		$packing = $app['dao.packing']->find($packingid);
 		
-		if(file_exists('H:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg())){
-			$file = new File('H:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg());
+		if(file_exists('C:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg())){
+			$file = new File('C:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg());
 		}
-		else{ $file = new File('H:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png');}
+		else{ $file = new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png');}
 		
 		$packing->setImg($file);	
 		
@@ -58,7 +58,7 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 		$fileName = md5(uniqid()).'.'.$file->guessExtension();
 		
 		// Move the file to the directory where brochures are stored
-		$file->move('H:/xampp/htdocs/PackingSheets/web/img',$fileName);
+		$file->move('C:/xampp/htdocs/PackingSheets/web/img',$fileName);
 		
 		// Update the 'brochure' property to store the PDF file name
 		// instead of its contents

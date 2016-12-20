@@ -45,10 +45,6 @@ class packingSheetChecker
 			$isValid = false;
 		}
 		
-		if($packingSheet->get === null){
-			$isValid = false;
-		}
-		
 		if($packingSheet->getCustomStatusId() === null){
 			$isValid = false;
 		}

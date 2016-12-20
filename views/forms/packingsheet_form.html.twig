@@ -21,20 +21,26 @@
             	{% if packingSheet is defined %}
                     <small> PS {{ packingSheet.ref}} </small></h2>
                     <div class="col-md-4 col-md-offset-8 text-right">
-                    	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-list"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
-                        <a href="{{ path('packings', { 'id': id }) }}"><button type="button" class="btn btn-packings"><span class="glyphicon glyphicon-inbox"></span> Packings</button></a>
-                        <hr/>
+                    	{% if status is not same as ('create') %}
+	                    	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-list"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>
+                        	<a href="{{ path('packings', { 'id': id }) }}"><button type="button" class="btn btn-packings"><span class="glyphicon glyphicon-inbox"></span> Packings</button></a>
+                        	<hr/>
+                    	{% endif %}
                         {% if status is same as ('create') %}
                     		<a href="{{ path('sheets') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Cancel </button></a>		
                     	{% endif %}
-                        <a href="{{ path('printOptions', { 'psId': packingSheet.id }) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Print</button></a>
+                    	{% if status is not same as ('create') %}
+                        	<a href="{{ path('printOptions', { 'psId': id }) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Print</button></a>
+                    	{% endif %}
                         {% if status is same as ("details") %}
                         	<a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'edit' }) }}"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button></a>
                         {% endif %}
                         {% if status is same as ("edit") %}
                         	<a href="{{ path('sheet', { 'id': packingSheet.id, 'status': 'details' }) }}"><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-zoom-in"></span> Details</button></a>
                         {% endif %}
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm{{ packingSheet.id }}"><span class="glyphicon glyphicon-remove"></span> Delete</button> 
+                        {% if status is not same as ('create') %}
+                        	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm{{ packingSheet.id }}"><span class="glyphicon glyphicon-remove"></span> Delete</button> 
+                    	{% endif %}
                     </div>
                     <div class="modal fade" id="deleteConfirm{{ packingSheet.id }}" role="dialog">
                     	<div class="modal-dialog">

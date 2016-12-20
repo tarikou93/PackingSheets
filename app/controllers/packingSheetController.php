@@ -82,6 +82,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			$deliveryOldCode = null;
 		}
 	}
+	
 
 	$parts = $app['dao.part']->findAll();
 	//$codes = $app['dao.code']->findAll();
@@ -106,16 +107,18 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	//var_dump($app['session']->get('user')['username']);exit;
 	$availableGroups = $app['session']->get('auth')['packingSheetsSeries'];
 
-
 	$images = array();
-	$packings = $packingSheet->getPackings();
-
-	if($packings !== null){
-		foreach($packings as $pack){
-			$images[$pack->getId()] = $pack->getImg();
+	
+	if($status !== 'create'){
+		$packings = $packingSheet->getPackings();
+		
+		if($packings !== null){
+			foreach($packings as $pack){
+				$images[$pack->getId()] = $pack->getImg();
+			}
 		}
 	}
-
+	
 	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
 			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address, 'availableGroups' => $availableGroups,
 			'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses,'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
@@ -168,17 +171,13 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 		}
 	}
 
-	//var_dump($packingSheetForm);exit;
-
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
 			'parts' => $parts,
 			'packTypes' => $packTypes,
 			'read_only' => $read_only,
 			'availableGroups' => $availableGroups,
-			'codes' => $codes, 'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses, 'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
-			'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs,
-			'id' => isset($id) ? $id : null,
+			'id' => isset($id) ? $id : 0,
 			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null,
 			'packingSheet' => $packingSheet,
