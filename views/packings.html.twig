@@ -101,7 +101,7 @@
                                                       <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
                                                 	</div>
                                                     <div class="modal-body">
-                                                        <img src="/img/{{pack.img}}" style="width:304px;height:228px;">
+                                                        <img src="{{ asset( pack.img, 'images') }}" style="width:304px;height:228px;">
                                                     </div>
                                                     <div class="modal-footer">
                                                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

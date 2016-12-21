@@ -104,7 +104,7 @@
                                                   	<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-print"></span>
                                                   	<span class="caret"></span></button>
                                                   	<ul class="dropdown-menu">
-                                                    	<li><a href="#">List</a></li>
+                                                    	<li><a target="_blank" href="{{ path('printList', { 'id': packingSheet.id }) }}">List</a></li>
                                                     	<li><a href="{{ path('printOptions', { 'psId': packingSheet.id }) }}">Sheet</a></li>
                                                   	</ul>
                                                 </div>    

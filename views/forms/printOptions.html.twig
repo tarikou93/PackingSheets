@@ -67,8 +67,9 @@
                     <hr/>
                     <div class="form-group">
                         <div class="col-sm-4">
-                            {{ form_widget(printOptionsForm.save, {'attr':  {
-                            'class': 'btn btn-primary outline'
+                            {{ form_widget(printOptionsForm.print, {'attr':  {
+                            'class': 'btn btn-primary outline',
+                            'onclick': "$('form').attr('target', '_blank');"
                             }}) }}
                         </div>
                     </div>

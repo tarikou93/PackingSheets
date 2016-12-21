@@ -8,6 +8,7 @@ class PackingSheetPDF extends \FPDF
 	private $ps;
 	private $footer;
 	private $hscodeStatus;
+	private $logo;
 	
 	// En-tête
 	function Header()
@@ -16,6 +17,7 @@ class PackingSheetPDF extends \FPDF
 		$this->SetFont('Arial','B',9);
 		
 		$this->Cell(45,5,' ','LTR',0,'L',0);
+		$this->Image($this->logo,19,12,30);
 		$this->Cell(100,5,$this->header->getText(),'LTR',0,'C',0);
 		$this->Cell(45,5,'AWB','LTR',0,'C',0);
 		
@@ -147,10 +149,7 @@ class PackingSheetPDF extends \FPDF
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
 		
-		$this->Cell(95,5,'ACCOUNTING INFOS','LRTB',0,'C',1);
-		$this->Cell(50,5,'ORDER NR','LRTB',0,'C',1);
-		$this->SetFont('Arial','',8);
-		$this->Cell(45,5,'','RLTB',0,'C',0);
+		$this->Cell(190,5,'ACCOUNTING INFOS','LRTB',0,'C',1);
 		
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
@@ -236,19 +235,25 @@ class PackingSheetPDF extends \FPDF
 				
 				$this->Cell(190,5,'ITEM '.$cptDetails,'LRTB',0,'L',1);
 				$this->Ln();
-				
-				$this->Cell(10);
-				$this->Cell(20,5,'QUANTITY','LRTB',0,'C',1);
-				$this->Cell(20,5,'ORIGIN','LRTB',0,'C',1);
-				$this->Cell(30,5,'PART NUMBER','LRTB',0,'C',1);
-				$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
-				
+								
 				if($this->hscodeStatus){
+					
+					$this->Cell(10);
+					$this->Cell(20,5,'QUANTITY','LRTB',0,'C',1);
+					$this->Cell(20,5,'ORIGIN','LRTB',0,'C',1);
+					$this->Cell(30,5,'PART NUMBER','LRTB',0,'C',1);
+					$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
 					$this->Cell(40,5,'NOMENCLATURE','LRTB',0,'C',1);
 					$this->Cell(30,5,'PRICE','LRTB',0,'C',1);
 				}
 				else{
-					$this->Cell(70,5,'PRICE','LRTB',0,'C',1);
+					
+					$this->Cell(30);
+					$this->Cell(20,5,'QUANTITY','LRTB',0,'C',1);
+					$this->Cell(30,5,'ORIGIN','LRTB',0,'C',1);
+					$this->Cell(40,5,'PART NUMBER','LRTB',0,'C',1);
+					$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
+					$this->Cell(30,5,'PRICE','LRTB',0,'C',1);
 				}
 				
 				$this->Ln();
@@ -259,18 +264,26 @@ class PackingSheetPDF extends \FPDF
 						
 						$this->SetFont('Arial','',8);
 						
-						$this->Cell(10);
-						$this->Cell(20,5,$part->getQuantity(),'LRTB',0,'C',0);
-						$this->Cell(20,5,$part->getOrigin(),'LRTB',0,'C',0);
-						$this->Cell(30,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
-						$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
 						
+												
 						if($this->hscodeStatus){
+							
+							$this->Cell(10);
+							$this->Cell(20,5,$part->getQuantity(),'LRTB',0,'C',0);
+							$this->Cell(20,5,$part->getOrigin(),'LRTB',0,'C',0);
+							$this->Cell(30,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
+							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getHSCode(),'LRTB',0,'C',0);
 							$this->Cell(30,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
 						}
 						else{
-							$this->Cell(70,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
+							
+							$this->Cell(30);
+							$this->Cell(20,5,$part->getQuantity(),'LRTB',0,'C',0);
+							$this->Cell(30,5,$part->getOrigin(),'LRTB',0,'C',0);
+							$this->Cell(40,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
+							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
+							$this->Cell(30,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
 						}
 						$this->Ln();
 						
@@ -289,10 +302,10 @@ class PackingSheetPDF extends \FPDF
 	
 	function Totals(){
 		
-		$this->Cell(160,5,'TOTAL PRICE','LRTB',0,'R',0);
-		$this->Cell(30,5,$this->ps->getTotalPrice(),'LRTB',0,'R',0);
+		$this->Cell(145,5,'TOTAL PRICE','LRTB',0,'R',0);
+		$this->Cell(45,5,$this->ps->getCurrencyId()->getLabel().' '.$this->ps->getTotalPrice(),'LRTB',0,'R',0);
 		$this->Ln();
-		$this->Cell(160,5,'Value for Customs Purpose','LRTB',0,'R',0);
+		$this->Cell(145,5,'Value for Customs Purpose','LRTB',0,'R',0);
 		$this->Ln();
 	}
 	
@@ -338,5 +351,9 @@ class PackingSheetPDF extends \FPDF
 	
 	function setHsCodesStatus($hsStatus){
 		$this->hscodeStatus = $hsStatus;
+	}
+	
+	function setLogo($logo){
+		$this->logo = $_SERVER['DOCUMENT_ROOT'].'/img/'.$logo;
 	}
 }

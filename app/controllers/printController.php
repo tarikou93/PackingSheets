@@ -4,6 +4,7 @@ use PackingSheets\Form\Type\PrintOptionsType;
 use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\PrintOptions;
 use PackingSheets\Domain\PackingSheetPDF;
+use PackingSheets\Domain\PackingListPDF;
 use PackingSheets\Domain\packingSheetChecker;
 
 
@@ -42,6 +43,7 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 		$pdf->setHeader($printOptions->getHeader());
 		$pdf->setFooter($printOptions->getFooter());
 		$pdf->setHsCodesStatus($printOptions->getHscodesStatus());
+		$pdf->setLogo('logo.png');
 		
 		$pdf->AddPage();
 		$pdf->build();
@@ -49,11 +51,6 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 	
 		exit;
 			
-		return $app['twig']->render('sheets.html.twig', array(
-				'title' => 'Sheets',
-				'sheet' => $packingSheet,
-				'printOptionsForm' => $printOptionsForm->createView()));
-		
 	}
 
 	return $app['twig']->render('/forms/printOptions.html.twig', array(
@@ -63,3 +60,23 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 	
 
 })->bind('printOptions');
+
+// Print List
+$app->match('/print/list/{id}', function($id) use ($app) {
+
+	$packingSheet = $app['dao.packingSheet']->find($id);
+	
+	//var_dump($printOptionsForm->getdata());exit;
+
+	$pdf = new PackingListPDF();
+	$pdf->setPl($packingSheet->getPackingList());
+	$pdf->setRef($packingSheet->getRef());
+	$pdf->setLogo('logo.png');
+
+	$pdf->AddPage();
+	$pdf->build();
+	$pdf->Output();
+
+	exit;
+	
+})->bind('printList');

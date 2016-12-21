@@ -202,7 +202,16 @@ class PackingSheetType extends AbstractType
 				
 		->add('memo', TextareaType::class, array(
 				'required' => false,
-				'attr' => array('readonly' => $options['read_only'])))	
+				'attr' => array('readonly' => $options['read_only'])))
+				
+		->add('usualMemos', ChoiceType::class, array(
+				'choice_label' => 'label',
+				'choices' => $options['memos'],
+				'choice_value' => 'id',
+				'multiple' => false,
+				'mapped' => false,
+				'required' => false,
+				'attr' => array('readonly' => $options['read_only'])))
 
 		->add('packings', CollectionType::class, array(
 				'entry_type' => PackingType::class,
@@ -223,42 +232,6 @@ class PackingSheetType extends AbstractType
 			$builder->add('save', SubmitType::class);
 		}
 		
-		
-		/*
-		$formModifierConsigned = function (FormInterface $form, Code $code, AddressDAO $adr) {
-		
-			$consignedAddresses = null === $code ? array() : $adr->findByCode($code->getId());
-				
-			$form->add('consignedAddressId', ChoiceType::class, array(
-					'constraints' => array(new Assert\NotBlank()),
-					'choice_label' => 'label',
-					'choice_value' => 'id',
-					'choices' => $consignedAddresses,
-					'placeholder' => '',
-					'multiple' => false,
-						
-			));
-		};
-		
-		$builder->addEventListener(
-				FormEvents::PRE_SET_DATA,
-				function (FormEvent $event) use ($formModifierConsigned, $options) {
-					$data = $event->getData();
-		
-					$formModifierConsigned($event->getForm(), $data->getConsignedAddressId()->getCodeId(), $options['address']);
-						
-				}
-		);
-		
-		
-		$builder->get('consignedCode')->addEventListener(
-				FormEvents::POST_SUBMIT,
-				function (FormEvent $event) use ($formModifierConsigned, $options) {
-					$code = $event->getForm()->getData();
-					$formModifierConsigned($event->getForm()->getParent(), $code, $options['address']);
-				}
-		);*/
-		
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
@@ -266,7 +239,7 @@ class PackingSheetType extends AbstractType
 		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null, 'read_only' => null, 'address' => null, 'status' => null,
 				'codes' => null,'consignedAddresses' => null, 'deliveryAddresses' => null, 'contacts' => null, 'services' => null, 'contents' => null, 'priorities' => null, 'shippers' => null,
 				'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
-				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null, 'images' => null
+				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null, 'images' => null, 'memos' => null
 		))
 		->setRequired('address')
 		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')

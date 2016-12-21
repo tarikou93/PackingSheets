@@ -29,7 +29,7 @@
                         {% if status is same as ('create') %}
                     		<a href="{{ path('sheets') }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Cancel </button></a>		
                     	{% endif %}
-                    	{% if status is not same as ('create') %}
+                    	{% if status is same as ('details') %}
                         	<a href="{{ path('printOptions', { 'psId': id }) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Print</button></a>
                     	{% endif %}
                         {% if status is same as ("details") %}

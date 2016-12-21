@@ -102,6 +102,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	$incLocs = $app['dao.incotermsLocation']->findAll();
 	$currencies = $app['dao.currency']->findAll();
 	$imputs = $app['dao.imput']->findAll();
+	$memos = $app['dao.memo']->findAll();
 
 	$address = $app['dao.address'];
 	//var_dump($app['session']->get('user')['username']);exit;
@@ -122,7 +123,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 	$packingSheetForm = $app['form.factory']->create(PackingSheetType::class, $packingSheet, array(
 			'parts' => $parts, 'packTypes' => $packTypes, 'read_only' => $read_only, 'status' => $status, 'codes' => $codes, 'address' => $address, 'availableGroups' => $availableGroups,
 			'consignedAddresses' => $consignedAddresses, 'deliveryAddresses' => $deliveryAddresses,'contacts' => $contacts, 'services' => $services, 'contents' => $contents, 'priorities' => $priorities, 'shippers' => $shippers,
-			'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs, 'images' => $images,
+			'customStatuses' => $customStatuses, 'incTypes' => $incTypes, 'incLocs' => $incLocs, 'currencies' => $currencies, 'imputs' => $imputs, 'images' => $images, 'memos' => $memos,
 			'consignedOldCode' => isset($consignedOldCode) ? $consignedOldCode : null,
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null
 	));
@@ -170,7 +171,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			}
 		}
 	}
-
+	
 	return $app['twig']->render('/forms/packingSheet_form.html.twig', array(
 			'title' => 'Packing Sheet Edition',
 			'parts' => $parts,

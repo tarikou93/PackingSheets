@@ -1,3 +1,4 @@
+
 $( document ).ready(
     collectImput
 );
@@ -5,6 +6,8 @@ $( document ).ready(
 $( document ).ready(
     applyReadonly
 );
+
+$('#packing_sheet_usualMemos').change(copyMemo);
 
 $('#packing_sheet_collect').change(collectImput);
 
@@ -70,6 +73,10 @@ function disableAll(){
     //CheckBox
     
     $("#packing_sheet_collect").attr("onclick", 'return false;');
+    
+    //Textarea
+    
+    $("#packing_sheet_memo").attr("readonly", 'readonly');
 };
 
 
@@ -106,6 +113,10 @@ function enableAll(){
     
     $("#packing_sheet_collect").removeAttr("onclick");
     
+    //Textarea
+    
+    $("#packing_sheet_memo").removeAttr("readonly");
+    
     //Unchangeable fields
     
     $("#packing_sheet_ref").attr("readonly", 'readonly');
@@ -118,3 +129,10 @@ function enableAll(){
     $("#packing_sheet_nbrPieces").attr("readonly", 'readonly');
     
 };
+
+function copyMemo(){
+	
+	var elt = document.getElementById("packing_sheet_usualMemos");
+	$("#packing_sheet_memo").val(elt.options[elt.selectedIndex].text);
+
+}

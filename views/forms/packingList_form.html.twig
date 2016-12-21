@@ -25,7 +25,7 @@
                     </div>
                     <hr></hr>
                     <a href="{{ path('sheet', { 'id': id, 'status': 'details' }) }}"><button class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to Sheet </button></a>
-                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Print </button></a>
+                    <a target="_blank" href="{{ path('printList', { 'id': id }) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Print </button></a>
                 </div>
             </div>
             <hr></hr>
@@ -33,10 +33,11 @@
             	<div class="well">
                     {{ form_start(packingListForm, { 'attr': {'class': 'form-horizontal'} }) }}
                     	<ul class="parts" data-prototype="{{ form_widget(packingListForm.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
+                    		{% set cpt = 1 %}
                         	{% for psPart in packingListForm.parts %}
                         		<p>
                             		<li style="list-style-type: none;">
-                            			<div class="col-md-2"><h4>Part</h4></div>
+                            			<div class="col-md-2"><h4>Part {{ cpt }}</h4></div>
                                 		<div class="form-group">
                                             {{ form_label(psPart.part_id, null, { 'label': ' ', 'label_attr':  {
                                             'class': 'col-sm-4 control-label'
@@ -62,6 +63,7 @@
                                     </li>
                                 </p>
                                 <hr></hr>
+                                {% set cpt = cpt + 1 %}
                             {% endfor %}
                         </ul>
                         <div class="form-group">

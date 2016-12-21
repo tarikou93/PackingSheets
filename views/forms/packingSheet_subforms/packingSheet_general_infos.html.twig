@@ -282,15 +282,16 @@
         'rows': '5'
         }}) }}
     </div>
-    <div class="form-group">
-    	<div class="col-md-10 col-md-offset-1">
-    		<br/>
-    		<h2><small>Predefined Memos</small></h2>
-          	<select class="form-control" id="usualMemos">
-            	<option>TestMemo1</option>
-            	<option>Testmemo2</option>
-          	</select>
-      	</div>
+</div>
+<div class="form-group">
+    {{ form_label(packingSheetForm.usualMemos, null, {  'label': 'Usual Memos', 'label_attr':  {
+    'class': 'col-sm-3 control-label'
+    }}) }}
+    <div class="col-sm-10 col-md-offset-1">
+        {{ form_errors(packingSheetForm.usualMemos) }}
+        {{ form_widget(packingSheetForm.usualMemos, {'attr':  {
+        'class': 'form-control'
+        }}) }}
     </div>
 </div>
 

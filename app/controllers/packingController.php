@@ -23,20 +23,22 @@ $app->get('/sheets/{id}/packings', function ($id) use ($app) {
 
 //Packing Page
 $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $request, $id, $packingid, $status) use ($app) {
-
+	
 	if($status === "create"){
 		$packing = new Packing();
 		$packing->setPSid($id);
-		$packing->setImg(new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png'));
+		
+		$packing->setImg(new File($_SERVER['DOCUMENT_ROOT'].'/img/imgNotFound.png'));
+		//$packing->setImg(new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png'));
 	}
 	else{
 		
 		$packing = $app['dao.packing']->find($packingid);
 		
-		if(file_exists('C:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg())){
-			$file = new File('C:/xampp/htdocs/PackingSheets/web/img/'.$packing->getImg());
+		if(file_exists($_SERVER['DOCUMENT_ROOT'].'/img/'.$packing->getImg())){
+			$file = new File($_SERVER['DOCUMENT_ROOT'].'/img/'.$packing->getImg());
 		}
-		else{ $file = new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png');}
+		else{ $file = new File($_SERVER['DOCUMENT_ROOT'].'/img/imgNotFound.png');}
 		
 		$packing->setImg($file);	
 		

@@ -33,7 +33,7 @@
                     {% if searchTag == 1 %}
                     	<a href="{{ path('sheetList', { 'id': Psid }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Return to list </button></a>
                     {% endif %}
-                    <a href="#"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print List </button></a>
+                    <a href="{{ path('printList', { 'id': Psid }) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>  Print List </button></a>
                 </div>
                 <div class="modal fade" id="selectExistingPart" role="dialog">
                     <div class="modal-dialog">

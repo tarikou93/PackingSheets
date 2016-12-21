@@ -32,6 +32,15 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
       'translator.messages' => array()
 )) ;
 
+$app->register(new Silex\Provider\AssetServiceProvider(), array(
+		'assets.version' => 'v1',
+		'assets.version_format' => '%s?version=%s',
+		'assets.named_packages' => array(
+				'css' => array('version' => 'css2', 'base_path' => '/css/'),
+				'images' => array('base_path' => '/img/'),
+		),
+));
+
 $app['auth.ldap.options'] =
           array(
             'host'                  => '172.30.40.190',
@@ -127,6 +136,10 @@ $app['dao.contact'] = function($app) {
 
 $app['dao.content'] = function ($app) {
     return new PackingSheets\DAO\ContentDAO($app['db']);
+};
+
+$app['dao.memo'] = function ($app) {
+	return new PackingSheets\DAO\MemoDAO($app['db']);
 };
 
 $app['dao.priority'] = function ($app) {

@@ -669,7 +669,7 @@ class PackingSheetDAO extends DAO
         foreach($packingSheet->getPackings() as $pack){
         	$totWeight += $pack->getGrossWeight();
         	foreach($pack->getParts() as $part){
-        		$totPrice += $part->getPartid()->getPrice();
+        		$totPrice += $part->getPartid()->getPrice() * $part->getQuantity();
         	}
         }
         
