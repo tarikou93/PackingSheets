@@ -2,7 +2,7 @@
 
 namespace PackingSheets\Domain;
 
-class packingSheetChecker
+class PackingSheetChecker
 {
 	
 	public function checkPackingSheetCompletion(PackingSheet $packingSheet) {

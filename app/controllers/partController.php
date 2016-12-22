@@ -5,7 +5,7 @@ use PackingSheets\Form\Type\PartType;
 use PackingSheets\Form\Type\PartSearchType;
 use PackingSheets\Domain\Part;
 
-// Contacts list page
+// Parts list page
 $app->match('/parts', function(Request $request) use ($app) {
 
 	$partSearch = new Part();

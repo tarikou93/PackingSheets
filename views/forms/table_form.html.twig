@@ -1,0 +1,124 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+	{% if selectedTable is same as ('code') %}
+		{% set selectedTableDisplay = 'Company' %}
+	{% endif %}
+	
+    {% if status is same as ('edit')%}
+        <div class="panel panel-warning">
+            <div class="panel-heading panel-height"><h4>{{ selectedTableDisplay }} - Edition</h4></div>
+        </div>
+    {% elseif status is same as ('create') %}
+        <div class="panel panel-success">
+            <div class="panel-heading panel-height"><h4>{{ selectedTableDisplay }} - Creation</h4></div>
+        </div>
+    {% endif %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    
+    <div class="well">
+    	<div class="col-md-3 col-md-offset-9">
+            <a href="{{ path('tables', {'selectedTable': selectedTable }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to  {{ selectedTableDisplay }} List</button></a>
+            <hr/>
+        </div>
+        {{ form_start(tableForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        	{% if selectedTable is same as ('address') %}
+                <div class="form-group">
+                    {{ form_label(tableForm.codeId, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.codeId) }}
+                        {{ form_widget(tableForm.codeId, { 'attr':  {
+                        'class': 'form-control'
+                        }}) }}
+                    </div>
+                </div>
+        	{% else %}
+        		<div class="form-group">
+                    {{ form_label(tableForm.codeId, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label',
+                    'style': 'display: none'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.codeId) }}
+                        {{ form_widget(tableForm.codeId, { 'attr':  {
+                        'style': 'display: none'
+                        }}) }}
+                    </div>
+                </div>
+        	{% endif %}
+        	{% if (selectedTable is not same as ('header')) and (selectedTable is not same as ('footer')) %}
+                <div class="form-group">
+                    {{ form_label(tableForm.label, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.label) }}
+                        {{ form_widget(tableForm.label, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '4'
+                        }}) }}
+                    </div>
+                </div>
+            {% else %}
+            	<div class="form-group">
+                    {{ form_label(tableForm.label, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label',
+                    'style': 'display: none' 
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.label) }}
+                        {{ form_widget(tableForm.label, { 'attr':  {
+                        'class': 'form-control',
+                        'style': 'display: none'
+                        }}) }}
+                    </div>
+                </div>
+            {% endif %}
+            {% if (selectedTable is same as ('customStatus')) or (selectedTable is same as ('header')) or (selectedTable is same as ('footer')) %}
+                <div class="form-group">
+                    {{ form_label(tableForm.text, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.text) }}
+                        {{ form_widget(tableForm.text, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+        	{% else %}
+        		<div class="form-group">
+                    {{ form_label(tableForm.text, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label',
+                    'style': 'display: none'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(tableForm.text) }}
+                        {{ form_widget(tableForm.text, { 'attr':  {
+                        'style': 'display: none'
+                        }}) }}
+                    </div>
+                </div>
+        	{% endif %}
+            <hr/>
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_widget(tableForm.save, {'attr':  {
+                    'class': 'btn btn-primary outline',
+                    'style':'display: block; margin: 0 auto;'
+                    }}) }}
+                </div>
+            </div>
+        {{ form_end(tableForm) }}
+    </div>
+{% endblock %}

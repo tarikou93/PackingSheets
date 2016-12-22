@@ -15,7 +15,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	$codes = $app['dao.code']->findAll();
 	$services = $app['dao.service']->findAll();
 	$imputs = $app['dao.imput']->findAll();
-	
+		
 	$psSearch = new PackingSheetSearch();
 	$psSearchForm = $app['form.factory']->create(PackingSheetSearchType::class, $psSearch, array('codes' => $codes, 'services' => $services, 'imputs' => $imputs,'availableGroups' => $groups));
 

@@ -41,6 +41,39 @@ class ContentDAO extends DAO
        else
            throw new \Exception("No Content matching id " . $id);
    }
+   
+   /**
+    * Saves a content into the database.
+    *
+    * @param \PackingSheets\Domain\Content $content The content to save
+    */
+   public function save(Content $content) {
+   	
+	   	$contentData = array(
+	   			'cont_label' => $content->getLabel()
+	   	);
+	   
+	   	if ($content->getId()) {
+	   		// The content has already been saved : update it
+	   		$this->getDb()->update('t_content', $contentData, array('cont_id' => $content->getId()));
+	   	} else {
+	   		// The article has never been saved : insert it
+	   		$this->getDb()->insert('t_content', $contentData);
+	   		// Get the id of the newly created content and set it on the entity.
+	   		$id = $this->getDb()->lastInsertId();
+	   		$content->setId($id);
+   		}
+   }
+   
+   /**
+    * Removes a content from the database.
+    *
+    * @param integer $id The content id.
+    */
+   public function delete($id) {
+   		//Delete the content
+   		$this->getDb()->delete('t_content', array('content_id' => $id));
+   }
 
     /**
      * Creates a Content object based on a DB row.

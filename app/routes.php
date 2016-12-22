@@ -28,8 +28,8 @@ require '/controllers/ajaxResponseController.php';
 // Printing
 require '/controllers/printController.php';
 
-
-
+// Tables
+require '/controllers/tableController.php';
 
 
 

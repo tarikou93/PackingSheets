@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use PackingSheets\Domain\PrintOptions;
 use PackingSheets\Domain\PackingSheetPDF;
 use PackingSheets\Domain\PackingListPDF;
-use PackingSheets\Domain\packingSheetChecker;
+use PackingSheets\Domain\PackingSheetChecker;
 
 
 // Print Options page
@@ -15,7 +15,7 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 	$packingSheet = $app['dao.packingSheet']->find($psId);
 	$headers = $app['dao.header']->findAll();
 	$footers = $app['dao.footer']->findAll();
-	$psChecker = new packingSheetChecker();
+	$psChecker = new PackingSheetChecker();
 	
 	if(count($packingSheet->getPackingList()->getParts()) !== 0){
 		$app['session']->getFlashBag()->add('danger', 'This Packing Sheet cannot be printed due to remaining parts in its Packing List. Please assign these ones to Packings.');
