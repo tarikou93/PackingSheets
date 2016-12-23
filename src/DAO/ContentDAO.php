@@ -72,7 +72,7 @@ class ContentDAO extends DAO
     */
    public function delete($id) {
    		//Delete the content
-   		$this->getDb()->delete('t_content', array('content_id' => $id));
+   		$this->getDb()->delete('t_content', array('cont_id' => $id));
    }
 
     /**

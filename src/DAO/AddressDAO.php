@@ -85,6 +85,40 @@ class AddressDAO extends DAO
         }
         return $addresses;
    }
+   
+   /**
+    * Saves a address into the database.
+    *
+    * @param \PackingSheets\Domain\Address $address The address to save, $codeId the Id of the Code object it belongs to
+    */
+   public function save(Address $address, $codeId) {
+   	 
+   	$addressData = array(
+   			'address_label' => $address->getLabel(),
+   			'address_codeId' => $codeId
+   	);
+   	 
+   	if ($address->getId()) {
+   		// The address has already been saved : update it
+   		$this->getDb()->update('t_address', $addressData, array('address_id' => $address->getId()));
+   	} else {
+   		// The article has never been saved : insert it
+   		$this->getDb()->insert('t_address', $addressData);
+   		// Get the id of the newly created address and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$address->setId($id);
+   	}
+   }
+    
+   /**
+    * Removes a address from the database.
+    *
+    * @param integer $id The address id.
+    */
+   public function delete($id) {
+   	//Delete the address
+   	$this->getDb()->delete('t_address', array('address_id' => $id));
+   }
 
     /**
      * Creates a Address object based on a DB row.

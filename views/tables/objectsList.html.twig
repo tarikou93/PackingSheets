@@ -6,95 +6,76 @@
     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
-                {% if selectedTable is same as ('address') %}
-            		<th>Company</th>
-            	{% endif %}
-            	{% if (selectedTable is not same as ('header')) and (selectedTable is not same as ('footer')) %}
+            	{% if labelField is not empty %}
                 	<th>Label</th>
                 {% endif %}
-                {% if (selectedTable is same as ('customStatus')) or (selectedTable is same as ('header')) or (selectedTable is same as ('footer')) %}
+                {% if textField is not empty %}
                 	<th>Text</th>
+                {% endif %}
+                {% if selectedTable is same as ('code') %}
+                	<th>Addresses</th>
                 {% endif %}
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            {% if selectedTable is same as ('address') %}
-                {% for item in selectedItems %}
-                	{% for adr in item.addresses %}        	
-                        <tr>
-                            <td>{{ item.label }}</td>
-                            <td>{{ adr.label }}</td>
-                            <td><a href="#"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
-                                        </span></button></a>
-                            </td>
-                            <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ item.id }}">
-                                    <span class="glyphicon glyphicon-remove"></span></button>
-                            </td>
-                        </tr>
-                        <div class="modal fade" id="deleteConfirm{{ item.id }}" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <div class="panel panel-danger">
-                                            <div class="panel-heading panel-height"><h4>{{ selectedTableDisplay }} Deletion : <small>{{ item.label }}</small></h4></div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this entry from the {{ selectedTableDisplay }} table ? <br/>
-                                        It will be definitely removed from the database.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                        <a href="{{ path( 'deleteInTable', { 'selectedTable': selectedTable ,'id': item.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ item.id }}">
-                                                Delete </button></a>
-                                    </div>
+    		 {% for item in selectedItems %}            	
+                <tr>
+                	{% if labelField is not empty %}
+                    	<td>{{ item.label }}</td>
+                    {% endif %}
+                    {% if textField is not empty %}
+                    	<td>{{ item.text }}</td>
+                    {% endif %}
+                    {% if selectedTable is same as ('code') %}
+                    	<td><a href="{{ path('companyAddresses', {'codeId': item.id}) }}"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-book">
+                                </span></button></a>
+                    	</td>
+                    {% endif %}
+                    {% if selectedTable is same as ('address')  %}
+                    	<td><a href="{{ path('companyAddress', {'codeId': codeId, 'addressId': item.id, 'status': 'edit'}) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
+                                </span></button></a>
+                    	</td>
+                    {% else %}
+                    	<td><a href="{{ path('table', {'selectedTable': selectedTable, 'status': "edit", 'itemId': item.id}) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
+                                </span></button></a>
+                    	</td>
+                    {% endif %}
+                    <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ item.id }}">
+                            <span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                </tr>
+                <div class="modal fade" id="deleteConfirm{{ item.id }}" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="panel panel-danger">
+                                    <div class="panel-heading panel-height"><h4>{{ selectedTableDisplay }} Deletion </h4></div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-        	{% else %}
-        		 {% for item in selectedItems %}            	
-                    <tr>
-                    	{% if (selectedTable is not same as ('header')) and (selectedTable is not same as ('footer')) %}
-                        	<td>{{ item.label }}</td>
-                        {% endif %}
-                        {% if (selectedTable is same as ('customStatus')) or (selectedTable is same as ('header')) or (selectedTable is same as ('footer')) %}
-                        	<td>{{ item.text }}</td>
-                        {% endif %}
-                        <td><a href="#"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
-                                    </span></button></a>
-                        </td>
-                        <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirm{{ item.id }}">
-                                <span class="glyphicon glyphicon-remove"></span></button>
-                        </td>
-                    </tr>
-                    <div class="modal fade" id="deleteConfirm{{ item.id }}" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading panel-height"><h4>{{ selectedTableDisplay }} Deletion </h4></div>
-                                    </div>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete this entry from the {{ selectedTableDisplay }} table ? <br/>
-                                    It will be definitely removed from the database.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <a href="{{ path( 'deleteInTable', { 'selectedTable': selectedTable ,'id': item.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ item.id }}">
-                                            Delete </button></a>
-                                </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this entry from the {{ selectedTableDisplay }} table ? <br/>
+                                It will be definitely removed from the database.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                {% if selectedTable is same as ('code') %}
+                                	<a href="{{ path( 'deleteCode', { 'codeId': item.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ item.id }}">
+                                        Delete </button></a>
+                                {% elseif selectedTable is same as ('address') %}
+                                	<a href="{{ path( 'deleteAddress', { 'codeId': codeId, 'addressId': item.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ item.id }}">
+                                        Delete </button></a>
+                                {% else %}
+                                	<a href="{{ path( 'deleteEntry', { 'selectedTable': selectedTable ,'itemId': item.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ item.id }}">
+                                        Delete </button></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-        	{% endif %}
+                </div>
+            {% endfor %}
         </tbody>
     </table>
 {% endif %}

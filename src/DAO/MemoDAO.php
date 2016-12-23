@@ -41,6 +41,39 @@ class MemoDAO extends DAO
 			else
 				throw new \Exception("No Memo matching id " . $id);
 	}
+	
+	/**
+	 * Saves a memo into the database.
+	 *
+	 * @param \PackingSheets\Domain\Memo $memo The memo to save
+	 */
+	public function save(Memo $memo) {
+			
+		$memoData = array(
+				'memo_label' => $memo->getLabel()
+		);
+			
+		if ($memo->getId()) {
+			// The memo has already been saved : update it
+			$this->getDb()->update('t_memo', $memoData, array('memo_id' => $memo->getId()));
+		} else {
+			// The article has never been saved : insert it
+			$this->getDb()->insert('t_memo', $memoData);
+			// Get the id of the newly created memo and set it on the entity.
+			$id = $this->getDb()->lastInsertId();
+			$memo->setId($id);
+		}
+	}
+	
+	/**
+	 * Removes a memo from the database.
+	 *
+	 * @param integer $id The memo id.
+	 */
+	public function delete($id) {
+		//Delete the memo
+		$this->getDb()->delete('t_memo', array('memo_id' => $id));
+	}
 
 	/**
 	 * Creates a Memo object based on a DB row.

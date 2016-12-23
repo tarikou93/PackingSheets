@@ -162,6 +162,39 @@ class CodeDAO extends DAO
    	//var_dump($codes);exit;
    	return $codes;
    }
+   
+   /**
+    * Saves a code into the database.
+    *
+    * @param \PackingSheets\Domain\Code $code The code to save
+    */
+   public function save(Code $code) {
+   		
+   	$codeData = array(
+   			'code_label' => $code->getLabel()
+   	);
+   		
+   	if ($code->getId()) {
+   		// The code has already been saved : update it
+   		$this->getDb()->update('t_code', $codeData, array('code_id' => $code->getId()));
+   	} else {
+   		// The article has never been saved : insert it
+   		$this->getDb()->insert('t_code', $codeData);
+   		// Get the id of the newly created code and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$code->setId($id);
+   	}
+   }
+   
+   /**
+    * Removes a code from the database.
+    *
+    * @param integer $id The code id.
+    */
+   public function delete($id) {
+   	//Delete the code
+   	$this->getDb()->delete('t_code', array('code_id' => $id));
+   }
 
     /**
      * Creates a Code object based on a DB row.

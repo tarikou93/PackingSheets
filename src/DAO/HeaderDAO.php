@@ -41,6 +41,39 @@ class HeaderDAO extends DAO
 			else
 				throw new \Exception("No header matching id " . $id);
 	}
+	
+	/**
+	 * Saves a header into the database.
+	 *
+	 * @param \PackingSheets\Domain\Header $header The header to save
+	 */
+	public function save(Header $header) {
+		 
+		$headerData = array(
+				'header_text' => $header->getText()
+		);
+		 
+		if ($header->getId()) {
+			// The header has already been saved : update it
+			$this->getDb()->update('t_header', $headerData, array('header_id' => $header->getId()));
+		} else {
+			// The article has never been saved : insert it
+			$this->getDb()->insert('t_header', $headerData);
+			// Get the id of the newly created header and set it on the entity.
+			$id = $this->getDb()->lastInsertId();
+			$header->setId($id);
+		}
+	}
+	
+	/**
+	 * Removes a header from the database.
+	 *
+	 * @param integer $id The header id.
+	 */
+	public function delete($id) {
+		//Delete the header
+		$this->getDb()->delete('t_header', array('header_id' => $id));
+	}
 
 	/**
 	 * Creates a header object based on a DB row.

@@ -25,37 +25,15 @@
     
     <div class="well">
     	<div class="col-md-3 col-md-offset-9">
-            <a href="{{ path('tables', {'selectedTable': selectedTable }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to  {{ selectedTableDisplay }} List</button></a>
+    		{% if selectedTable is same as ('address') %}
+    			<a href="{{ path('companyAddresses', {'codeId': codeId }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to  {{ selectedTableDisplay }} List</button></a>
+    		{% else %}
+    			<a href="{{ path('tables', {'selectedTable': selectedTable }) }}"><button type="button" class="btn btn-secondary"><span class="glyphicon glyphicon-arrow-left"></span> Back to  {{ selectedTableDisplay }} List</button></a>
+    		{% endif %}
             <hr/>
         </div>
         {{ form_start(tableForm, { 'attr': {'class': 'form-horizontal'} }) }}
-        	{% if selectedTable is same as ('address') %}
-                <div class="form-group">
-                    {{ form_label(tableForm.codeId, null, { 'label_attr':  {
-                    'class': 'col-sm-4 control-label'
-                    }}) }}
-                    <div class="col-sm-6">
-                        {{ form_errors(tableForm.codeId) }}
-                        {{ form_widget(tableForm.codeId, { 'attr':  {
-                        'class': 'form-control'
-                        }}) }}
-                    </div>
-                </div>
-        	{% else %}
-        		<div class="form-group">
-                    {{ form_label(tableForm.codeId, null, { 'label_attr':  {
-                    'class': 'col-sm-4 control-label',
-                    'style': 'display: none'
-                    }}) }}
-                    <div class="col-sm-6">
-                        {{ form_errors(tableForm.codeId) }}
-                        {{ form_widget(tableForm.codeId, { 'attr':  {
-                        'style': 'display: none'
-                        }}) }}
-                    </div>
-                </div>
-        	{% endif %}
-        	{% if (selectedTable is not same as ('header')) and (selectedTable is not same as ('footer')) %}
+        	{% if labelField is not empty %}
                 <div class="form-group">
                     {{ form_label(tableForm.label, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -83,7 +61,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if (selectedTable is same as ('customStatus')) or (selectedTable is same as ('header')) or (selectedTable is same as ('footer')) %}
+            {% if textField is not empty %}
                 <div class="form-group">
                     {{ form_label(tableForm.text, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -114,7 +92,7 @@
             <div class="form-group">
                 <div class="col-sm-4">
                     {{ form_widget(tableForm.save, {'attr':  {
-                    'class': 'btn btn-primary outline',
+                    'class': 'btn btn-success outline',
                     'style':'display: block; margin: 0 auto;'
                     }}) }}
                 </div>

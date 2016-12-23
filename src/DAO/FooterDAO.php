@@ -41,6 +41,39 @@ class FooterDAO extends DAO
 			else
 				throw new \Exception("No footer matching id " . $id);
 	}
+	
+	/**
+	 * Saves a footer into the database.
+	 *
+	 * @param \PackingSheets\Domain\Footer $footer The footer to save
+	 */
+	public function save(Footer $footer) {
+		 
+		$footerData = array(
+				'footer_text' => $footer->getText()
+		);
+		 
+		if ($footer->getId()) {
+			// The footer has already been saved : update it
+			$this->getDb()->update('t_footer', $footerData, array('footer_id' => $footer->getId()));
+		} else {
+			// The article has never been saved : insert it
+			$this->getDb()->insert('t_footer', $footerData);
+			// Get the id of the newly created footer and set it on the entity.
+			$id = $this->getDb()->lastInsertId();
+			$footer->setId($id);
+		}
+	}
+	
+	/**
+	 * Removes a footer from the database.
+	 *
+	 * @param integer $id The footer id.
+	 */
+	public function delete($id) {
+		//Delete the footer
+		$this->getDb()->delete('t_footer', array('footer_id' => $id));
+	}
 
 	/**
 	 * Creates a footer object based on a DB row.

@@ -41,6 +41,39 @@ class PackTypeDAO extends DAO
        else
            throw new \Exception("No PackType matching id " . $id);
    }
+   
+   /**
+    * Saves a packType into the database.
+    *
+    * @param \PackingSheets\Domain\PackType $packType The packType to save
+    */
+   public function save(PackType $packType) {
+   		
+   	$packTypeData = array(
+   			'packType_label' => $packType->getLabel()
+   	);
+   		
+   	if ($packType->getId()) {
+   		// The packType has already been saved : update it
+   		$this->getDb()->update('t_packtype', $packTypeData, array('packType_id' => $packType->getId()));
+   	} else {
+   		// The article has never been saved : insert it
+   		$this->getDb()->insert('t_packtype', $packTypeData);
+   		// Get the id of the newly created packType and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$packType->setId($id);
+   	}
+   }
+   
+   /**
+    * Removes a packType from the database.
+    *
+    * @param integer $id The packType id.
+    */
+   public function delete($id) {
+   	//Delete the packType
+   	$this->getDb()->delete('t_packtype', array('packType_id' => $id));
+   }
 
     /**
      * Creates a PackType object based on a DB row.

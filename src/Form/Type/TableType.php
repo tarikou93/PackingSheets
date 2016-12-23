@@ -15,20 +15,14 @@ class TableType extends AbstractType
 	{
 		$builder
 				
-		->add('codeId', ChoiceType::class, array(
-				'choice_label' => 'label',
-				'choices' => $options['codes'],
-				'choice_value' => 'id',
-				'multiple' => false,
-				'mapped' => $options['mapped']
-		))
-				
 		->add('label', TextareaType::class, array(
-				'mapped' => $options['labelField']
+				'mapped' => $options['labelField'],
+				'required' => $options['labelField']
 		))
 		
 		->add('text', TextareaType::class, array(
-				'mapped' => $options['textField']
+				'mapped' => $options['textField'],
+				'required' => $options['textField']
 		))
 			
 		->add('save', SubmitType::class, array(
@@ -41,7 +35,7 @@ class TableType extends AbstractType
 	 */
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array('codes' => null, 'mapped' => null, 'selectedTable' => null, 'textField' => null, 'labelField' => null));
+		$resolver->setDefaults(array('selectedTable' => null, 'textField' => null, 'labelField' => null));
 	}
 
 	public function getName()

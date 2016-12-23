@@ -41,6 +41,39 @@ class IncotermsLocationDAO extends DAO
        else
            throw new \Exception("No IncotermsLocation matching id " . $id);
    }
+   
+   /**
+    * Saves a incotermsLocation into the database.
+    *
+    * @param \PackingSheets\Domain\IncotermsLocation $incotermsLocation The incotermsLocation to save
+    */
+   public function save(IncotermsLocation $incotermsLocation) {
+   		
+   	$incotermsLocationData = array(
+   			'incLoc_label' => $incotermsLocation->getLabel()
+   	);
+   		
+   	if ($incotermsLocation->getId()) {
+   		// The incotermsLocation has already been saved : update it
+   		$this->getDb()->update('t_incotermsLocation', $incotermsLocationData, array('incLoc_id' => $incotermsLocation->getId()));
+   	} else {
+   		// The article has never been saved : insert it
+   		$this->getDb()->insert('t_incotermsLocation', $incotermsLocationData);
+   		// Get the id of the newly created incotermsLocation and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$incotermsLocation->setId($id);
+   	}
+   }
+   
+   /**
+    * Removes a incotermsLocation from the database.
+    *
+    * @param integer $id The incotermsLocation id.
+    */
+   public function delete($id) {
+   	//Delete the incotermsLocation
+   	$this->getDb()->delete('t_incotermsLocation', array('incLoc_id' => $id));
+   }
 
     /**
      * Creates a IncotermsLocation object based on a DB row.

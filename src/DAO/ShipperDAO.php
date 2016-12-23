@@ -41,6 +41,39 @@ class ShipperDAO extends DAO
        else
            throw new \Exception("No Shipper matching id " . $id);
    }
+   
+   /**
+    * Saves a shipper into the database.
+    *
+    * @param \PackingSheets\Domain\Shipper $shipper The shipper to save
+    */
+   public function save(Shipper $shipper) {
+   		
+   	$shipperData = array(
+   			'ship_label' => $shipper->getLabel()
+   	);
+   		
+   	if ($shipper->getId()) {
+   		// The shipper has already been saved : update it
+   		$this->getDb()->update('t_shipper', $shipperData, array('ship_id' => $shipper->getId()));
+   	} else {
+   		// The article has never been saved : insert it
+   		$this->getDb()->insert('t_shipper', $shipperData);
+   		// Get the id of the newly created shipper and set it on the entity.
+   		$id = $this->getDb()->lastInsertId();
+   		$shipper->setId($id);
+   	}
+   }
+   
+   /**
+    * Removes a shipper from the database.
+    *
+    * @param integer $id The shipper id.
+    */
+   public function delete($id) {
+   	//Delete the shipper
+   	$this->getDb()->delete('t_shipper', array('ship_id' => $id));
+   }
 
     /**
      * Creates a Shipper object based on a DB row.
