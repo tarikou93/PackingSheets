@@ -27,21 +27,9 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 	if($status === "create"){
 		$packing = new Packing();
 		$packing->setPSid($id);
-		
-		$packing->setImg(new File($_SERVER['DOCUMENT_ROOT'].'/img/imgNotFound.png'));
-		//$packing->setImg(new File('C:/xampp/htdocs/PackingSheets/web/img/imgNotFound.png'));
 	}
-	else{
-		
+	else{		
 		$packing = $app['dao.packing']->find($packingid);
-		
-		if(file_exists($_SERVER['DOCUMENT_ROOT'].'/img/'.$packing->getImg())){
-			$file = new File($_SERVER['DOCUMENT_ROOT'].'/img/'.$packing->getImg());
-		}
-		else{ $file = new File($_SERVER['DOCUMENT_ROOT'].'/img/imgNotFound.png');}
-		
-		$packing->setImg($file);	
-		
 	}
 
 	$packingSheet = $app['dao.packingSheet']->find($id);
@@ -52,32 +40,15 @@ $app->match('/sheets/{id}/packings/{packingid}/{status}', function(Request $requ
 
 
 	if ($packingForm->isSubmitted() && $packingForm->isValid()) {
-		//$selectedParts = $packingListForm->get('parts')->getData();
-		
-		$file = $packing->getImg();
-		
-		// Generate a unique name for the file before saving it
-		$fileName = md5(uniqid()).'.'.$file->guessExtension();
-		
-		// Move the file to the directory where brochures are stored
-		$file->move('C:/xampp/htdocs/PackingSheets/web/img',$fileName);
-		
-		// Update the 'brochure' property to store the PDF file name
-		// instead of its contents
-		$packing->setImg($fileName);
-
-		$app['dao.packing']->save($packing);
-			
+		$app['dao.packing']->save($packing);			
 		$app['session']->getFlashBag()->add('success', 'Packing succesfully updated.');
 		//var_dump($packingList);
 		return $app->redirect($app['url_generator']->generate('packings', array('id' => $id)));
 	}
 	
-	//var_dump($packing->getImg());exit;
 	return $app['twig']->render('/forms/packing_form.html.twig', array(
 			'title' => 'Packing',
 			'id' => $id,
-			'image' => ($packing->getImg() === null) ? 'imgNotFound.png' : $packing->getImg()->getFilename(),
 			'psRef' => $packingSheet->getRef(),
 			'status' => $status,
 			'packingid' => $packingid,

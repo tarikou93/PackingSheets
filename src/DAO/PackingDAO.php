@@ -23,6 +23,15 @@ class PackingDAO extends DAO
 	public function setPackTypeDAO(PackTypeDAO $packTypeDAO) {
 		$this->packTypeDAO = $packTypeDAO;
 	}
+	
+	/**
+	 * @var \PackingSheets\DAO\ImageDAO
+	 */
+	private $imageDAO;
+	
+	public function setImageDAO(ImageDAO $imageDAO) {
+		$this->imageDAO = $imageDAO;
+	}
 
     /**
      * Return a list of all Packings, sorted by date (most recent first).
@@ -96,7 +105,6 @@ class PackingDAO extends DAO
     			'pack_M1' => $pack->getM1(),
     			'pack_M2' => $pack->getM2(),
     			'pack_M3' => $pack->getM3(),
-    			'pack_img' => $pack->getImg(),
     			'packType_id' => $pack->getPackTypeid()->getId(),
     	);
     	
@@ -166,6 +174,7 @@ class PackingDAO extends DAO
     public function delete($id) {
     	//Delete the packing
     	$this->packingPartDAO->deleteAll($id);
+    	$this->imageDAO->deleteAllByPacking($id);
     	$this->getDb()->delete('t_packing', array('pack_id' => $id));
     }
     
@@ -190,7 +199,6 @@ class PackingDAO extends DAO
         $packing->setM1($row['pack_M1']);
         $packing->setM2($row['pack_M2']);
         $packing->setM3($row['pack_M3']);
-        $packing->setImg($row['pack_img']);
 
         //PackType
         if (array_key_exists('packType_id', $row)) {
@@ -202,6 +210,9 @@ class PackingDAO extends DAO
         
         //Parts
         $packing->setParts($this->packingPartDAO->findAllByPacking($row['pack_id']));
+        
+        //Images
+        $packing->setImages($this->imageDAO->findAllByPacking($row['pack_id']));
 
         return $packing;
     }

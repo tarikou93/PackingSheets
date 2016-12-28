@@ -105,18 +105,6 @@
                                     }}) }}
                                 </div>
                             </div>
-                            <div class="form-group">
-                                {{ form_label(packingForm.img, null, { 'label': 'Image', 'label_attr':  {
-                                'class': 'col-sm-4 control-label'
-                                }}) }}
-                                <div class="col-sm-6">
-                                	<div claa="col-md-10"><img src="/img/{{ image }}" width="200" length="200" style="border:2px solid grey"></div>
-                                    {{ form_errors(packingForm.img) }}
-                                    {{ form_widget(packingForm.img, {'attr':  {
-                                    }}) }}
-                                    <h3><small>Select a picture to replace the current one.</small></h3>
-                                </div>
-                            </div>
                         </div>
                     	<ul class="parts" data-prototype="{{ form_widget(packingForm.parts.vars.prototype)|e('html_attr') }}" style="list-style-type: none;">
                     		{% set cptPart = 1 %}

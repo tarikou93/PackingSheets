@@ -308,11 +308,10 @@
                                                 </div>
                                             </div>
                                             <script>
-                                            $( function() {
+                                            $( function() {                                               
                                                 var availableTags = [];
-
                                                 {% for address in addressList %}
-                                                	availableTags.push("{{address}}");
+                                                	availableTags.push("{{address|e('js')}}");
                                                 {% endfor %}
                                                 
                                                 $( "#packing_sheet_search_datalistAddress" ).autocomplete({

@@ -1,0 +1,84 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    
+    <div class="panel panel-success">
+        <div class="panel-heading panel-height"><h4>Images - Upload</h4></div>
+    </div>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="well">
+        {{ form_start(imageForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="form-group">
+            {{ form_label(imageForm.img1, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(imageForm.img1) }}
+                {{ form_widget(imageForm.img1, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(imageForm.img2, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(imageForm.img2) }}
+                {{ form_widget(imageForm.img2, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(imageForm.img3, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(imageForm.img3) }}
+                {{ form_widget(imageForm.img3, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(imageForm.img4, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(imageForm.img4) }}
+                {{ form_widget(imageForm.img4, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(imageForm.img5, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+            }}) }}
+            <div class="col-sm-6">
+                {{ form_errors(imageForm.img5) }}
+                {{ form_widget(imageForm.img5, { 'attr':  {
+                'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <div class="col-sm-4">
+                {{ form_widget(imageForm.save, {'attr':  {
+                'class': 'btn btn-primary outline',
+                'style':'display: block; margin: 0 auto;'
+                }}) }}
+            </div>
+        </div>
+        {{ form_end(imageForm) }}
+    </div>
+{% endblock %}

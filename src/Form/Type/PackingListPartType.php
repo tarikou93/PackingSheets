@@ -25,7 +25,7 @@ class PackingListPartType extends AbstractType
 				'attr' => array('class' => 'form-control'),
 				'label' => false
 		))
-										
+												
 		->add('quantity', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank(), 
 					new Assert\Regex(array(

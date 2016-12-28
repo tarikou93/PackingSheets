@@ -192,8 +192,9 @@ class PackingSheetDAO extends DAO
      * @return array A list of resulting PackingSheets.
      */
     public function findBySearch(PackingSheetSearch $psSearch) {
-    	
-    	//var_dump($psSearch);exit;
+    		
+    	$flag_emptyForm = true;
+    	$flag_emptySearch = true;
     	
         $by_ref = (null !== $psSearch->getRef()) ? $psSearch->getRef() : "";
         $by_awb = (null !== $psSearch->getAWB()) ? $psSearch->getAWB() : "";
@@ -202,15 +203,15 @@ class PackingSheetDAO extends DAO
         $by_sn = (null !== $psSearch->getSerial()) ? $psSearch->getSerial() : "";
         $by_desc = (null !== $psSearch->getDesc()) ? $psSearch->getDesc() : "";
         $by_hscode = (null !== $psSearch->getHSCode()) ? $psSearch->getHSCode() : "";
-        $by_input = (null !== $psSearch->getImputId()) ? $psSearch->getImputId()->getId() : "";
+        $by_input = (null !== $psSearch->getImputId()) ? $psSearch->getImputId()->getId() : ""; 
         $by_service = (null !== $psSearch->getServiceId()) ? $psSearch->getServiceId()->getId() : "";
-        $by_address = (null !== $psSearch->getDatalistAddress()) ? $psSearch->getDatalistAddress() : "";
-        $by_contact = (null !== $psSearch->getDatalistContact()) ? $psSearch->getDatalistContact() : "";
+         
         $signed = $psSearch->getSigned();
         $printed = $psSearch->getPrinted();
         $by_group = (null !== $psSearch->getGroupId()) ? $psSearch->getGroupId() : "";
-        $by_code = (null !== $psSearch->getDatalistCode()) ? $psSearch->getDatalistCode() : "";
-              
+               
+        //Groups List
+        
         $selectedGroups = "";
         $groupsLength = count($by_group);
         
@@ -222,8 +223,9 @@ class PackingSheetDAO extends DAO
         		$selectedGroups .= $by_group[$i].",";
         	}
         }
-            
-        //Do real escaping here
+              
+
+        //SQL Base query construction
 
         $query = "SELECT ps.*
                 FROM t_packingsheet ps
@@ -244,82 +246,170 @@ class PackingSheetDAO extends DAO
         $conditions = array();
 
         if ($by_ref != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "ps_ref LIKE '%$by_ref%'";
         }
         
         if ($by_awb != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "ps_AWB LIKE '%$by_awb%'";
         }
         
         if ($by_date != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "ps_dateIssue LIKE '%$by_date%'";
         }
         
         if ($by_pn != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "part_pn LIKE '%$by_pn%'";
         }
         
         if ($by_sn != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "part_serial LIKE '%$by_sn%'";
         }
         
         if ($by_desc != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "part_desc LIKE '%$by_desc%'";
         }
         
         if ($by_hscode != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "part_HSCode LIKE '%$by_hscode%'";
         }
         
         if ($by_input != "") {
+        	$flag_emptyForm = false;
             $conditions[] = "imput_id LIKE '%$by_input%'";
         }
         
         if ($by_service != "") {
+        	$flag_emptyForm = false;
         	$conditions[] = "service_id LIKE '%$by_service%'";
         }
         
         if ($signed) {
+        	//$flag_emptyForm = false;
             $conditions[] = "ps_signed = 1";
         }
         
         if ($printed) {
+        	//$flag_emptyForm = false;
             $conditions[] = "ps_printed = 1";
-        }
-
-        if ($by_code != "") {
-        	$conditions[] = "code_id LIKE '%$by_code%'";
-        }
-        
-        if ($by_address != "") {
-            $conditions[] = "consignedAddress_id LIKE '%$by_address%'";
-        }
-        
-        if ($by_contact != "") {
-            $conditions[] = "consignedContact_id LIKE '%$by_contact%'";
         }
         
         if ($selectedGroups != "") {
         	$conditions[] = "group_id IN ($selectedGroups)";
         }
         
+        //Codes
+        
+        if (null !== $psSearch->getDatalistCode()) {
+        
+        	if(is_array($psSearch->getDatalistCode()) && !empty($psSearch->getDatalistCode())){
+        
+        		$flag_emptySearch = false;
+        		//Code List
+        		$selectedCodes = "";
+        		$codesLength = count($psSearch->getDatalistCode());
+        
+        		for ($i = 0; $i < $codesLength; $i++) {
+        			if($i === $codesLength-1){
+        				$selectedCodes .= $psSearch->getDatalistCode()[$i];
+        			}
+        			else{
+        				$selectedCodes .= $psSearch->getDatalistCode()[$i].",";
+        			}
+        		}
+        		 
+        
+        		$conditions[] = "code_id IN ($selectedCodes)";
+        	}
+        }
+        
+        //Addresses
+            
+        if (null !== $psSearch->getDatalistAddress()) {
+        	 	      	
+        	if(is_array($psSearch->getDatalistAddress()) && !empty($psSearch->getDatalistAddress())){
+        		
+        		$flag_emptySearch = false;
+        		//Address List
+        		$selectedAddresses = "";
+        		$addressesLength = count($psSearch->getDatalistAddress());
+        			 
+        		for ($i = 0; $i < $addressesLength; $i++) {
+        			if($i === $addressesLength-1){
+        					$selectedAddresses .= $psSearch->getDatalistAddress()[$i];
+        			}
+        			else{
+        					$selectedAddresses .= $psSearch->getDatalistAddress()[$i].",";
+        			}
+        		}
+       
+        		
+            	$conditions[] = "consignedAddress_id IN ($selectedAddresses)";
+        	}
+        }
+        
+        //Contacts
+        
+        if (null !== $psSearch->getDatalistContact()) {
+
+        	if(is_array($psSearch->getDatalistContact()) && !empty($psSearch->getDatalistContact())){
+        
+        		$flag_emptySearch = false;
+        		//Contact List
+        		$selectedContacts = "";
+        		$contactsLength = count($psSearch->getDatalistContact());
+        
+        		for ($i = 0; $i < $contactsLength; $i++) {
+        			if($i === $contactsLength-1){
+        				$selectedContacts .= $psSearch->getDatalistContact()[$i];
+        			}
+        			else{
+        				$selectedContacts .= $psSearch->getDatalistContact()[$i].",";
+        			}
+        		}
+        		 
+        
+        		$conditions[] = "consignedContact_id IN ($selectedContacts)";
+        	}
+        }
+        
+        // SQL Querry 
+        
         $sql = $query;
         if (count($conditions) > 0) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
+        	$sql .= " WHERE " . implode(' AND ', $conditions);
         }
-                  
+        
         //print_r($sql);exit;
         
         $result = $this->getDb()->fetchAll($sql);
-
+        
         // Convert query result to an array of domain objects
         $packingSheets = array();
         foreach ($result as $row) {
-            $packingSheetId = $row['ps_id'];
-            $packingSheets[$packingSheetId] = $this->buildDomainObject($row);
+        	$packingSheetId = $row['ps_id'];
+        	$packingSheets[$packingSheetId] = $this->buildDomainObject($row);
         }
-        
-        return $packingSheets;
+              
+        //Outputs
+        if($flag_emptyForm && $flag_emptySearch){
+        	return array();
+        }
+        if($flag_emptyForm && !$flag_emptySearch){
+        	return $packingSheets;
+        }
+        if(!$flag_emptyForm && $flag_emptySearch){
+        	return $packingSheets;
+        }
+        if(!$flag_emptyForm && !$flag_emptySearch){
+        	return $packingSheets;
+        }
     }
 
     /**

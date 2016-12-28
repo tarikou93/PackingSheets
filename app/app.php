@@ -78,6 +78,7 @@ $app['dao.packing'] = function($app) {
   $packingDAO = new PackingSheets\DAO\PackingDAO($app['db']);
   $packingDAO->setPackingPartDAO($app['dao.packingPart']);
   $packingDAO->setPackTypeDAO($app['dao.packType']);
+  $packingDAO->setImageDAO($app['dao.image']);
   return $packingDAO;
 };
 
@@ -176,4 +177,8 @@ $app['dao.incotermsType'] = function ($app) {
 
 $app['dao.incotermsLocation'] = function ($app) {
     return new PackingSheets\DAO\IncotermsLocationDAO($app['db']);
+};
+
+$app['dao.image'] = function($app) {
+	return new PackingSheets\DAO\ImageDAO($app['db']);
 };

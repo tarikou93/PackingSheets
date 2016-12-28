@@ -31,6 +31,9 @@ require '/controllers/printController.php';
 // Tables
 require '/controllers/tableController.php';
 
+// Images
+require '/controllers/imageController.php';
+
 
 
  

@@ -369,7 +369,6 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packing` (
   `pack_M2` FLOAT NOT NULL,
   `pack_M3` FLOAT NOT NULL,
   `packType_id` INT(11) NOT NULL,
-  `pack_img` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
   PRIMARY KEY (`pack_id`),
   INDEX `fk_pack_ps` (`ps_id` ASC),
   INDEX `fk_pack_packType` (`packType_id` ASC),
@@ -466,6 +465,23 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+-- -----------------------------------------------------
+-- Table `packingsheets`.`t_image`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets`.`t_image` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_image` (
+  `image_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `image_packingId` INT(11) NOT NULL,
+  `image_name` VARCHAR(200) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (`image_id`),
+  INDEX `fk_img_pack` (`image_packingId` ASC),
+  CONSTRAINT `fk_img_pack`
+    FOREIGN KEY (`image_packingId`)
+    REFERENCES `packingsheets`.`t_packing` (`pack_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

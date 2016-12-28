@@ -1,3 +1,7 @@
+$(document).ready(function() {
+	addSelect2();	
+});
+
 var $collectionHolder;
 
  	// setup an "add a part" link
@@ -30,6 +34,7 @@ var $collectionHolder;
     
              // add a new part form (see next code block)
              addPartForm($collectionHolder, $newLinkLi);
+             addSelect2();
          });
      });
 
@@ -66,5 +71,13 @@ var $collectionHolder;
 	        // remove the li for the part form
 	        $partFormLi.remove();
 	    });
+	}
+	
+	function addSelect2(){
+		var selects = $('*[id*="_part_id"]');
+    	console.log(selects);
+    	$.each(selects, function(index, element){
+			$(element).select2();
+		});
 	}
  	

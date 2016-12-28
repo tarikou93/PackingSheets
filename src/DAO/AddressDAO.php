@@ -55,14 +55,18 @@ class AddressDAO extends DAO
    /**
     * Return the Id of the address by label.
     *
-    * @return an address Id by label.
+    * @return an array of address Id by label.
     */
    public function findIdByLabel($label) {
    	$sql = "select address_id from t_address where address_label like '%$label%'";
    	$result = $this->getDb()->fetchAll($sql);
    	 
-   	$id = $result[0]['address_id'];
-   	return $id;
+   	$ids = array();
+   	foreach($result as $res){
+   		array_push($ids, $res['address_id']);
+   	}
+   	
+   	return $ids;
    }
    
    /**

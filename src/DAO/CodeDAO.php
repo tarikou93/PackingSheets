@@ -62,8 +62,12 @@ class CodeDAO extends DAO
     	$sql = "select code_id from t_code where code_label like '%$label%'";
     	$result = $this->getDb()->fetchAll($sql);
     	
-    	$id = $result[0]['code_id'];   
-    	return $id;
+    	$ids = array();
+    	foreach($result as $res){
+    		array_push($ids, $res['code_id']);
+    	}
+    	
+    	return $ids;
     }
 
     /**

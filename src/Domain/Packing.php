@@ -61,11 +61,11 @@ class Packing
     private $packType_id;
     
     /**
-     * Associated Packing image.
+     * Associated Array of image names.
      *
-     * @var integer
+     * @var array(String)
      */
-    private $img;
+    private $images;
     
     /**
      * Associated PackingParts array.
@@ -138,12 +138,12 @@ class Packing
         $this->packType_id = $packType_id;
     }
     
-    public function getImg() {
-        return $this->img;
+    public function getImages() {
+        return $this->images;
     }
 
-    public function setImg($img) {
-        $this->img = $img;
+    public function setImages($images) {
+        $this->images = $images;
     }
     
     public function getParts() {

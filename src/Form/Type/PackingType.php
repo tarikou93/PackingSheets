@@ -9,20 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\HttpFoundation\File\File;
 
 class PackingType extends AbstractType
 {
 
 	public function buildform(FormBuilderInterface $builder, array $options)
 	{
-		$file = null;
-		if($options['context'] === 'packingForm'){
-			$file = $builder->getData()->getImg();
-		}
 		
 		$builder
 
@@ -79,36 +71,18 @@ class PackingType extends AbstractType
 				//'attr' => array('readonly' => $options['read_only'])
 				
 		))
-		
-		->add('img', FileType::class, array(
-				'label' => 'Image (.jpg/.png file)',
-				'required' => false,
-				'data_class' => null
-		))
-		
+			
 		->add('save', SubmitType::class, array(
 				'label' => false,
 				//'attr' => array('readonly' => $options['read_only'])
 				
 		));
-		
-		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use($options, $file){
-			if($event->getData()->getImg() === null){
-				if($options['context'] === 'packingForm'){
-					$event->getForm()->getData()->setImg($file);
-				}
-				else{
-					$event->getForm()->getData()->setImg($options['images'][$event->getForm()->getData()->getId()]);
-				}
-			}
-		});
-		
-
+				
 	}
 
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver
-		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null, 'read_only' => null, 'readonly' => null, 'images' => null, 'context' => null))
+		->setDefaults(array('data_class' => 'PackingSheets\Domain\Packing', 'parts_list' => null, 'packing_types' => null, 'read_only' => null, 'readonly' => null,'context' => null))
 		;
 	}
 

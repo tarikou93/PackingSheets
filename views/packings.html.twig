@@ -48,7 +48,7 @@
                                         <th>M2</th>
                                         <th>M3</th>
                                         <th>Type</th>
-                                        <th>Image</th>
+                                        <th>Images</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -63,8 +63,9 @@
                                             <td>{{ pack.M2 }}</td>
                                             <td>{{ pack.M3 }}</td>
                                             <td>{{ pack.packTypeId.label }}</td>
-                                            <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#imgModal{{ cpt }}">
-                                                                <span class="glyphicon glyphicon-picture"></span></button></td>
+                                            <td><a href="{{ path('images', { 'id': idSheet, 'packingId': pack.id }) }}"><button type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-picture">
+                                                        </span></button></a>
+                                            </td>
                                             <td><a href="{{ path('packing', { 'id': idSheet, 'packingid': pack.id, 'status': 'edit' }) }}"><button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">
                                                         </span></button></a>
                                             </td>
@@ -89,22 +90,6 @@
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                                         <a href="{{ path('packing_delete', { 'id': idSheet, 'packingid': pack.id }) }}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfim{{ pack.id }}">
                                                                 Delete </button></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="imgModal{{ cpt }}" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                      <h4 class="modal-title">Packing {{ cpt }} - Picture</h4>
-                                                	</div>
-                                                    <div class="modal-body">
-                                                        <img src="{{ asset( pack.img, 'images') }}" style="width:304px;height:228px;">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>

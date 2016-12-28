@@ -25,13 +25,13 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	if ($psSearchForm->isSubmitted() && $psSearchForm->isValid()) {
 					
 		($psSearchForm->getData()->getDatalistCode() !== null) ? 
-			$psSearchForm->getData()->setDatalistCode($app['dao.code']->findIdByLabel($psSearchForm->getData()->getDatalistCode())) : $psSearchForm->getData()->setDatalistCode("");
-		
+			$psSearchForm->getData()->setDatalistCode($app['dao.code']->findIdByLabel($psSearchForm->getData()->getDatalistCode())) : $psSearchForm->getData()->setDatalistCode(null);
+				
 		($psSearchForm->getData()->getDatalistAddress() !== null) ?
-			$psSearchForm->getData()->setDatalistAddress($app['dao.address']->findIdByLabel($psSearchForm->getData()->getDatalistAddress())) : $psSearchForm->getData()->setDatalistAddress("");
+			$psSearchForm->getData()->setDatalistAddress($app['dao.address']->findIdByLabel($psSearchForm->getData()->getDatalistAddress())) : $psSearchForm->getData()->setDatalistAddress(null);
 		
 		($psSearchForm->getData()->getDatalistContact() !== null) ?
-			$psSearchForm->getData()->setDatalistContact($app['dao.contact']->findIdByLabel($psSearchForm->getData()->getDatalistContact())) : $psSearchForm->getData()->setDatalistContact("");
+			$psSearchForm->getData()->setDatalistContact($app['dao.contact']->findIdByLabel($psSearchForm->getData()->getDatalistContact())) : $psSearchForm->getData()->setDatalistContact(null);
 		
 		//var_dump($psSearchForm->getData());exit;
 	
