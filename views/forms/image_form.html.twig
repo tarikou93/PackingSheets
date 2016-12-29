@@ -5,7 +5,9 @@
 {% block content %}
     
     <div class="panel panel-success">
-        <div class="panel-heading panel-height"><h4>Images - Upload</h4></div>
+        <div class="panel-heading panel-height">
+        	<h4>Images - Upload</h4>
+        </div>
     </div>
     {% for flashMessage in app.session.flashbag.get('success') %}
         <div class="alert alert-success">
@@ -77,6 +79,9 @@
                 'class': 'btn btn-primary outline',
                 'style':'display: block; margin: 0 auto;'
                 }}) }}
+            </div>
+            <div class="col-md-1 col-md-offset-6">
+            	<a href="{{ path('packings', { 'id': idSheet }) }}"><button type="button" class="btn btn-danger outline"> Cancel </button></a>
             </div>
         </div>
         {{ form_end(imageForm) }}

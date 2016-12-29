@@ -218,7 +218,6 @@ class PackingSheetType extends AbstractType
 				'entry_options'  => array(
 						'parts_list'  => $options['parts'],
 						'packing_types' => $options['packTypes'],
-						'images' => $options['images'],
 						//'read_only' => $options['read_only'],
 						'label' => false
 				),
@@ -239,7 +238,7 @@ class PackingSheetType extends AbstractType
 		->setDefaults(array('data_class' => 'PackingSheets\Domain\PackingSheet', 'parts' => null, 'packTypes' => null, 'read_only' => null, 'address' => null, 'status' => null,
 				'codes' => null,'consignedAddresses' => null, 'deliveryAddresses' => null, 'contacts' => null, 'services' => null, 'contents' => null, 'priorities' => null, 'shippers' => null,
 				'customStatuses' => null, 'incTypes' => null, 'incLocs' => null, 'currencies' => null, 'imputs' => null,
-				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null, 'images' => null, 'memos' => null
+				'deliveryOldCode' =>  null, 'consignedOldCode' => null, 'availableGroups' => null, 'memos' => null
 		))
 		->setRequired('address')
 		->setAllowedTypes('address', 'PackingSheets\DAO\AddressDAO')

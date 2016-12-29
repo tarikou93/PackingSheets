@@ -43,6 +43,7 @@ $app->match('images/add/sheets/{id}/packing/{packingId}', function(Request $requ
 	
 	return $app['twig']->render('/forms/image_form.html.twig', array(
 			'title' => 'New Images',
+			'idSheet' => $id,
 			'imageForm' => $imageForm->createView()));
 	
 })->bind('images_add');

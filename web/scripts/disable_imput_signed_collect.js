@@ -77,6 +77,9 @@ function disableAll(){
     //Textarea
     
     $("#packing_sheet_memo").attr("readonly", 'readonly');
+    
+    //Date
+    $("#packing_sheet_dateIssue").datepicker("destroy");
 };
 
 
@@ -116,6 +119,11 @@ function enableAll(){
     //Textarea
     
     $("#packing_sheet_memo").removeAttr("readonly");
+    
+    //Date
+    $("#packing_sheet_dateIssue").datepicker({
+		  dateFormat: "yy-mm-dd"
+	});
     
     //Unchangeable fields
     

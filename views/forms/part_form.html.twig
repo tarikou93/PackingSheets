@@ -75,9 +75,13 @@
                 }}) }}
             </div>
         </div>
+        <hr/>
         <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-3">
-                <input type="submit" class="btn btn-primary" value="Save" />
+            <div class="col-sm-offset-1 col-sm-4">
+                <input type="submit" class="btn btn-primary outline" value="Save" />
+            </div>
+            <div class="col-md-1 col-md-offset-5">
+            	<a href="{{ path('parts') }}"><button type="button" class="btn btn-danger outline"> Cancel </button></a>
             </div>
         </div>
         {{ form_end(partForm) }}
