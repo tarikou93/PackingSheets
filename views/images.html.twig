@@ -37,12 +37,13 @@
                         	{% set cpt = 1 %}
                             {% for image in images %}
                             	<div class="col-md-7">
-                            		<img src="{{ asset( image.name , 'images') }}" alt="{{ image.name }}" height="250" width="350">
+                            		<img src="{{ asset( image.name , 'images') }}" alt="{{ image.name }}" height="150">
                             	</div>
 								<div class="col-md-1">
 									<br/><br/><br/>
 									<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm{{ image.id }}"><span class="glyphicon glyphicon-remove"></span> Delete Image</button>
 								</div>
+								<br/>
                                 <div class="modal fade" id="deleteConfirm{{ image.id }}" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

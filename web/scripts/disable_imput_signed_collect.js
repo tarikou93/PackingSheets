@@ -129,8 +129,12 @@ function enableAll(){
     
     $("#packing_sheet_ref").attr("readonly", 'readonly');
     $("#packing_sheet_autority").attr("readonly", 'readonly');
-    $("#packing_sheet_groupId").attr("readonly", 'readonly');
-    $("#packing_sheet_groupId option:not(:selected)").prop("disabled", true);
+    
+    //console.log(status);
+    if (status !== 'create'){
+    	$("#packing_sheet_groupId").attr("readonly", 'readonly');
+        $("#packing_sheet_groupId option:not(:selected)").prop("disabled", true);
+    }
     
     $("#packing_sheet_weight").attr("readonly", 'readonly');
     $("#packing_sheet_totalPrice").attr("readonly", 'readonly');

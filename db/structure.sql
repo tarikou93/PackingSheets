@@ -129,11 +129,11 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `packingsheets`.`t_customstatus`
+-- Table `packingsheets`.`t_customStatus`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `packingsheets`.`t_customstatus` ;
+DROP TABLE IF EXISTS `packingsheets`.`t_customStatus` ;
 
-CREATE TABLE IF NOT EXISTS `packingsheets`.`t_customstatus` (
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_customStatus` (
   `custStat_id` INT(11) NOT NULL AUTO_INCREMENT,
   `custStat_label` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   `custStat_text` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
@@ -159,11 +159,11 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `packingsheets`.`t_incotermslocation`
+-- Table `packingsheets`.`t_incotermsLocation`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `packingsheets`.`t_incotermslocation` ;
+DROP TABLE IF EXISTS `packingsheets`.`t_incotermsLocation` ;
 
-CREATE TABLE IF NOT EXISTS `packingsheets`.`t_incotermslocation` (
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_incotermsLocation` (
   `incLoc_id` INT(11) NOT NULL AUTO_INCREMENT,
   `incLoc_label` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
   PRIMARY KEY (`incLoc_id`))
@@ -173,11 +173,11 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `packingsheets`.`t_incotermstype`
+-- Table `packingsheets`.`t_incotermsType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `packingsheets`.`t_incotermstype` ;
+DROP TABLE IF EXISTS `packingsheets`.`t_incotermsType` ;
 
-CREATE TABLE IF NOT EXISTS `packingsheets`.`t_incotermstype` (
+CREATE TABLE IF NOT EXISTS `packingsheets`.`t_incotermsType` (
   `incType_id` INT(11) NOT NULL AUTO_INCREMENT,
   `incType_label` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
   PRIMARY KEY (`incType_id`))
@@ -206,9 +206,9 @@ COLLATE = utf8_unicode_ci;
 DROP TABLE IF EXISTS `packingsheets`.`t_packtype` ;
 
 CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packtype` (
-  `packType_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `packType_label` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
-  PRIMARY KEY (`packType_id`))
+  `packtype_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `packtype_label` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (`packtype_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
     REFERENCES `packingsheets`.`t_currency` (`curr_id`),
   CONSTRAINT `fk_ps_customStatus`
     FOREIGN KEY (`customStatus_id`)
-    REFERENCES `packingsheets`.`t_customstatus` (`custStat_id`),
+    REFERENCES `packingsheets`.`t_customStatus` (`custStat_id`),
   CONSTRAINT `fk_ps_deliveryAddress`
     FOREIGN KEY (`deliveryAddress_id`)
     REFERENCES `packingsheets`.`t_address` (`address_id`)
@@ -337,10 +337,10 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packingsheet` (
     REFERENCES `packingsheets`.`t_imput` (`imp_id`),
   CONSTRAINT `fk_ps_incLoc`
     FOREIGN KEY (`incLoc_id`)
-    REFERENCES `packingsheets`.`t_incotermslocation` (`incLoc_id`),
+    REFERENCES `packingsheets`.`t_incotermsLocation` (`incLoc_id`),
   CONSTRAINT `fk_ps_incType`
     FOREIGN KEY (`incType_id`)
-    REFERENCES `packingsheets`.`t_incotermstype` (`incType_id`),
+    REFERENCES `packingsheets`.`t_incotermsType` (`incType_id`),
   CONSTRAINT `fk_ps_priority`
     FOREIGN KEY (`priority_id`)
     REFERENCES `packingsheets`.`t_priority` (`prior_id`),
@@ -371,10 +371,10 @@ CREATE TABLE IF NOT EXISTS `packingsheets`.`t_packing` (
   `packType_id` INT(11) NOT NULL,
   PRIMARY KEY (`pack_id`),
   INDEX `fk_pack_ps` (`ps_id` ASC),
-  INDEX `fk_pack_packType` (`packType_id` ASC),
-  CONSTRAINT `fk_pack_packType`
+  INDEX `fk_pack_packtype` (`packType_id` ASC),
+  CONSTRAINT `fk_pack_packtype`
     FOREIGN KEY (`packType_id`)
-    REFERENCES `packingsheets`.`t_packtype` (`packType_id`),
+    REFERENCES `packingsheets`.`t_packtype` (`packtype_id`),
   CONSTRAINT `fk_pack_ps`
     FOREIGN KEY (`ps_id`)
     REFERENCES `packingsheets`.`t_packingsheet` (`ps_id`))

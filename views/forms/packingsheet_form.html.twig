@@ -19,7 +19,9 @@
             <div class="container">
             	<h2> Packing Sheet <br/>
             	{% if packingSheet is defined %}
-                    <small> PS {{ packingSheet.ref}} </small></h2>
+            		{% if status is not same as ('create') %}
+            			<small> PS {{ packingSheet.ref}} </small></h2>
+            		{% endif %}
                     <div class="col-md-4 col-md-offset-8 text-right">
                     	{% if status is not same as ('create') %}
 	                    	<a href="{{ path('sheetList', { 'id': id }) }}"><button type="button" class="btn btn-list"><span class="glyphicon glyphicon-list-alt"></span> List </button></a>

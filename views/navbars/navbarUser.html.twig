@@ -6,24 +6,31 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ path('home') }}">PackingSheets</a>
+            </button>	
+        	<div class="navbar-brand"><img src="{{ asset( 'logo.png' , 'images') }}" alt="logo.png" height="50"></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+            	<li><a href="{{ path('home') }}">Home</a></li>
                 <li><a href="{{ path('sheets') }}">Sheets</a></li>
+                <li><a href="{{ path('parts') }}">Parts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-user"></span> {{ app.session.get('user')['name'][0] }}, {{ app.session.get('user')['firstName'][0] }}
+                        {{ app.session.get('user')['name'][0] }}, {{ app.session.get('user')['firstName'][0] }}
                         ({{ app.session.get('user')['username'] }}) <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header">
                             Accreditation level 1 : User
                         </li>
                         <li class="dropdown-header">
-                            Displayed Packing Sheets : {{ app.session.get('auth')['packingSheetsSeries'] }}   
+                        	Displayed Packing Sheets :
+                        	{% if app.session.get('auth')['packingSheetsSeries'][1] is defined %}
+                    	        {{ app.session.get('auth')['packingSheetsSeries'][1] }} 
+                            {% elseif app.session.get('auth')['packingSheetsSeries'][2] is defined %} 
+                    	        {{ app.session.get('auth')['packingSheetsSeries'][2] }}
+                            {% endif %}  
                         </li>
                         <li><a href="{{ path('logout') }}">Log out</a></li>
                     </ul>

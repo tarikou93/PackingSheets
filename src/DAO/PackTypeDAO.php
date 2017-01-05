@@ -13,13 +13,13 @@ class PackTypeDAO extends DAO
      * @return array A list of all PackTypes.
      */
     public function findAll() {
-        $sql = "select * from t_packType order by packType_id desc";
+        $sql = "select * from t_packtype order by packtype_id desc";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
         $packTypes = array();
         foreach ($result as $row) {
-            $packTypeId = $row['packType_id'];
+            $packTypeId = $row['packtype_id'];
             $packTypes[$packTypeId] = $this->buildDomainObject($row);
         }
         return $packTypes;
@@ -33,7 +33,7 @@ class PackTypeDAO extends DAO
     * @return \PackingSheets\Domain\PackType|throws an exception if no matching PackType is found
     */
    public function find($id) {
-       $sql = "select * from t_packType where packType_id=?";
+       $sql = "select * from t_packtype where packtype_id=?";
        $row = $this->getDb()->fetchAssoc($sql, array($id));
 
        if ($row)
@@ -50,12 +50,12 @@ class PackTypeDAO extends DAO
    public function save(PackType $packType) {
    		
    	$packTypeData = array(
-   			'packType_label' => $packType->getLabel()
+   			'packtype_label' => $packType->getLabel()
    	);
    		
    	if ($packType->getId()) {
    		// The packType has already been saved : update it
-   		$this->getDb()->update('t_packtype', $packTypeData, array('packType_id' => $packType->getId()));
+   		$this->getDb()->update('t_packtype', $packTypeData, array('packtype_id' => $packType->getId()));
    	} else {
    		// The article has never been saved : insert it
    		$this->getDb()->insert('t_packtype', $packTypeData);
@@ -72,7 +72,7 @@ class PackTypeDAO extends DAO
     */
    public function delete($id) {
    	//Delete the packType
-   	$this->getDb()->delete('t_packtype', array('packType_id' => $id));
+   	$this->getDb()->delete('t_packtype', array('packtype_id' => $id));
    }
 
     /**
@@ -83,8 +83,8 @@ class PackTypeDAO extends DAO
      */
     protected function buildDomainObject($row) {
         $packType = new PackType();
-        $packType->setId($row['packType_id']);
-        $packType->setLabel($row['packType_label']);
+        $packType->setId($row['packtype_id']);
+        $packType->setLabel($row['packtype_label']);
         return $packType;
     }
 }

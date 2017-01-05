@@ -23,7 +23,7 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 	}
 	if(!$psChecker->checkPackingSheetCompletion($packingSheet)){
 		$app['session']->getFlashBag()->add('danger', 'This Packing Sheet cannot be printed due to missing informations.');
-		return $app->redirect($app['url_generator']->generate('sheets'));
+		return $app->redirect($app['url_generator']->generate('sheet', array('id' => $psId, 'status' => 'details')));
 	}
 
 	$printOptions = new PrintOptions();
@@ -35,8 +35,9 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 	if ($printOptionsForm->isSubmitted() && $printOptionsForm->isValid()) {
 		
 		//var_dump($printOptionsForm->getdata());exit;
-		
-		// Instanciation de la classe dérivée
+		$packingSheet->setPrinted(true);
+		$userName = $app['session']->get('user')['name'][0]." ".$app['session']->get('user')['firstName'][0];
+		$app['dao.packingSheet']->save($packingSheet, $userName);
 		
 		$pdf = new PackingSheetPDF();
 		$pdf->setPs($packingSheet);
@@ -44,6 +45,9 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 		$pdf->setFooter($printOptions->getFooter());
 		$pdf->setHsCodesStatus($printOptions->getHscodesStatus());
 		$pdf->setLogo('logo.png');
+		
+		$pdf->setConsignedCode(($packingSheet->getConsignedAddressId() === null) ? '' : $app['dao.code']->find($packingSheet->getConsignedAddressId()->getCodeId())->getLabel());
+		$pdf->setDeliveryCode(($packingSheet->getDeliveryAddressId() === null) ? '' : $app['dao.code']->find($packingSheet->getDeliveryAddressId()->getCodeId())->getLabel());
 		
 		$pdf->AddPage();
 		$pdf->build();

@@ -9,6 +9,13 @@ class PackingSheetPDF extends \FPDF
 	private $footer;
 	private $hscodeStatus;
 	private $logo;
+	private $consignedCode;
+	private $deliveryCode;
+	
+	public function __construct(){
+		parent::__construct('P','mm','A4');
+		
+	}
 	
 	// En-tête
 	function Header()
@@ -47,15 +54,67 @@ class PackingSheetPDF extends \FPDF
 
 	// Pied de page
 	function Footer()
-	{
-		$secondaryFooter = 'Page '.$this->PageNo()." - ".'Printed on : '.date('Y-m-d');
+	{	
+		$this->SetY(-50);
 		
-		$this->Cell(140,20,$this->footer->getText(),'',0,'L',0);
-		$this->Cell(50, 20, $secondaryFooter, '', 0, 'R', 0);
+		$secondaryFooter = 'Page '.$this->PageNo()." - ".'Printed on : '.date('Y-m-d');
+		$footerParts = explode("\n", $this->footer->getText(), 2);
+		
+		$this->SetFont('Arial','B',8);
+		$this->Cell(140, 5, $footerParts[0], '', 0, 'L', 0);
+		$this->Ln();
+		
+		$this->SetFont('Arial','',8);
+		
+		$x=$this->GetX();
+		
+		$this->MultiCell(140,5,$footerParts[1],'','L',0);
+		
+		$y=$this->GetY();
+		
+		$this->SetXY($x+140, $y);
+		
+		$this->SetFont('Arial','B',8);
+		$this->Cell(50, 5, $this->ps->getRef(), '', 0, 'R', 0);
+		
+		$this->SetXY($x+140, $y+5);
+		
+		$this->SetFont('Arial','',8);
+		$this->Cell(50, 5, $secondaryFooter, '', 0, 'R', 0);
 	}
 	
 	function AddressesContacts(){
 		
+		//Consigned
+		
+		$consignedAddress = $this->ps->getConsignedAddressId()->getLabel()."\n\n";
+		$consignedContact = ($this->ps->getConsignedContactId() === null) ? "" : $this->ps->getConsignedContactId()->getName()."\n".$this->ps->getConsignedContactId()->getMail()."\nPhone: ".$this->ps->getConsignedContactId()->getPhoneNr();
+		$consignedBlock = $consignedAddress.$consignedContact;
+		
+		$nbrLinesConsigned = substr_count($consignedBlock, "\n");
+		
+		//var_dump($nbrLinesConsigned);
+				
+		//Delivery
+		
+		$deliveryAddress = ($this->ps->getDeliveryAddressId() === null) ? "" : $this->ps->getDeliveryAddressId()->getLabel()."\n\n";
+		$deliveryContact = ($this->ps->getDeliveryContactId() === null) ? "" : $this->ps->getDeliveryContactId()->getName()."\n".$this->ps->getDeliveryContactId()->getMail()."\nPhone: ".$this->ps->getDeliveryContactId()->getPhoneNr();;
+		$deliveryBlock = $deliveryAddress.$deliveryContact;
+		
+		$nbrLinesDelivery = substr_count($deliveryBlock, "\n");
+		
+		$longestLines = ($nbrLinesConsigned > $nbrLinesDelivery) ? $nbrLinesConsigned : $nbrLinesDelivery;
+		
+		//var_dump($nbrLinesDelivery);exit;
+		
+		for ($i = 1; $i <= ($longestLines - $nbrLinesDelivery)+1; $i++) {
+			$deliveryBlock .= "\n";
+		}
+		
+		for ($i = 1; $i <= ($longestLines - $nbrLinesConsigned)+1; $i++) {
+			$consignedBlock .= "\n";
+		}
+				
 		$this->SetFillColor(205, 208, 209);
 		$this->SetFont('Arial','B',8);
 		
@@ -64,36 +123,22 @@ class PackingSheetPDF extends \FPDF
 		
 		$this->Ln();
 		
+		$this->Cell(95,5,$this->consignedCode,'LT',0,'L',0);
+		$this->Cell(95,5,$this->deliveryCode,'LRT',0,'L',0);
+		
+		$this->Ln();
+		
+		$this->SetFillColor(205, 208, 209);
 		$this->SetFont('Arial','',8);
 		
-		$this->Cell(95,10,$this->ps->getConsignedAddressId()->getLabel(),'LRT',0,'L',0);
-		$this->Cell(95,10,($this->ps->getDeliveryAddressId() === null) ? '' : $this->ps->getDeliveryAddressId()->getLabel() ,'TRL',0,'L',0);
+		$x=$this->GetX();
+		$y=$this->GetY();
+				
+		$this->MultiCell(190,5,$consignedBlock,'LR','L',0);
+			
+		$this->SetXY($x+95,$y);
 		
-		$this->Ln();
-		
-		$this->Cell(95,5,'','LR',0,'L',0);
-		$this->Cell(95,5,'','RL',0,'L',0);
-		
-		$this->Ln();
-		
-		$this->Cell(95,5,$this->ps->getConsignedContactId()->getName(),'LR',0,'L',0);
-		$this->Cell(95,5,($this->ps->getDeliveryContactId() === null) ? '' : $this->ps->getDeliveryContactId()->getName(),'RL',0,'L',0);
-		
-		$this->Ln();
-		
-		$this->Cell(95,5,$this->ps->getConsignedContactId()->getMail(),'LR',0,'L',0);
-		$this->Cell(95,5,($this->ps->getDeliveryContactId() === null) ? '' : $this->ps->getDeliveryContactId()->getMail(),'RL',0,'L',0);
-		
-		$this->Ln();
-		
-		$this->Cell(95,5,'Phone : '.$this->ps->getConsignedContactId()->getPhoneNr().' Fax : '.$this->ps->getConsignedContactId()->getFaxNr(),'LRB',0,'L',0);
-		
-		$deliveryFax = ($this->ps->getDeliveryContactId() === null) ? '' : 'Phone : '.$this->ps->getDeliveryContactId()->getFaxNr();
-		$deliveryPhone = ($this->ps->getDeliveryContactId() === null) ? '' : ' Fax : '.$this->ps->getDeliveryContactId()->getPhoneNr();
-		
-		$this->Cell(95,5,$deliveryPhone.$deliveryFax,'RLB',0,'L',0);
-		
-		$this->Ln();
+		$this->MultiCell(95,5,$deliveryBlock,'LR', 'L',0);		
 	}
 	
 	function PackingSheetInfos(){
@@ -116,21 +161,15 @@ class PackingSheetPDF extends \FPDF
 		
 		$this->Cell(45,5,'','LR',0,'C',0);
 		$this->Cell(80,5,$this->ps->getAutority(),'RL',0,'C',0);
-		$this->Cell(65,5,'','LR',0,'C',0);
-		
-		$this->Ln();
-		
-		$this->Cell(45,5,'','LR',0,'C',0);
-		$this->Cell(80,5,'','RL',0,'C',0);
 		$this->SetFont('Arial','B',8);
 		$this->Cell(65,5,'INCOTERMS','TBLR',0,'C',1);
-		
+			
 		$this->Ln();
 		
 		$this->Cell(45,5,'','LRB',0,'C',0);
 		$this->Cell(80,5,'','RLB',0,'C',0);
 		$this->SetFont('Arial','',8);
-		$this->Cell(65,5,$this->ps->getIncTypeId()->getLabel().' - '.$this->ps->getIncLocId()->getLabel(),'TBLR',0,'C',0);
+		$this->Cell(65,5,($this->ps->getIncTypeId() !== null && $this->ps->getIncLocId() !== null) ? $this->ps->getIncTypeId()->getLabel().' - '.$this->ps->getIncLocId()->getLabel() : '','TBLR',0,'C',0);
 		
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
@@ -311,8 +350,10 @@ class PackingSheetPDF extends \FPDF
 	
 	function Memo(){
 		
+		$this->Ln();
+		
 		$this->SetFont('Arial','',8);
-		$this->Cell(190,20,$this->ps->getMemo(),'',0,'L',0);
+		$this->MultiCell(190,5,$this->ps->getMemo(),'','L',0);
 		$this->Ln();
 	}
 	
@@ -355,5 +396,13 @@ class PackingSheetPDF extends \FPDF
 	
 	function setLogo($logo){
 		$this->logo = $_SERVER['DOCUMENT_ROOT'].'/img/'.$logo;
+	}
+	
+	function setConsignedCode($code){
+		$this->consignedCode = $code;
+	}
+	
+	function setDeliveryCode($code){
+		$this->deliveryCode = $code;
 	}
 }

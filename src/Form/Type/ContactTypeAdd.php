@@ -34,9 +34,9 @@ class ContactTypeAdd extends AbstractType
 		->add('name', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank())))
 		->add('mail', EmailType::class, array(
-				'constraints' => array(new Assert\NotBlank())))
+				'required' => false))
 		->add('phoneNr', TextType::class, array(
-				'constraints' => array(new Assert\NotBlank())))
+				'required' => false))
 		->add('faxNr', TextType::class, array(
 				'required' => false));
 		;

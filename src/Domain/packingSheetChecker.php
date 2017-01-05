@@ -12,10 +12,6 @@ class PackingSheetChecker
 		if($packingSheet->getConsignedAddressId() === null){
 			$isValid = false;
 		}
-
-		if($packingSheet->getConsignedContactId() === null){
-			$isValid = false;
-		}
 		
 		if($packingSheet->getServiceId() === null){
 			$isValid = false;
@@ -49,14 +45,6 @@ class PackingSheetChecker
 			$isValid = false;
 		}
 		
-		if($packingSheet->getIncTypeId() === null){
-			$isValid = false;
-		}
-		
-		if($packingSheet->getIncLocId() === null){
-			$isValid = false;
-		}
-
 		if($packingSheet->getCurrencyId() === null){
 			$isValid = false;
 		}

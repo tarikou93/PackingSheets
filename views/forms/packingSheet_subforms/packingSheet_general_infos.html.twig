@@ -294,7 +294,9 @@
         }}) }}
     </div>
 </div>
-
+<script>
+	var status = "{{ status }}";
+</script>
 {% if status is same as ('details') %}
 	<script src="/scripts/disable_all_fields_details.js"></script>
 {% else %}

@@ -155,7 +155,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 				$app['dao.packingSheet']->save($packingSheet, $userName);
 
 				$app['session']->getFlashBag()->add('success', 'Packing Sheet succesfully updated.');
-				return $app->redirect($app['url_generator']->generate('sheets'));
+				return $app->redirect($app['url_generator']->generate('sheet', array('id' => $packingSheet->getId(), 'status' => 'details')));
 			}
 		}
 	}

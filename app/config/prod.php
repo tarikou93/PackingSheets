@@ -4,9 +4,9 @@
 $app['db.options'] = array(
     'driver'   => 'pdo_mysql',
     'charset'  => 'utf8',
-    'host'     => 'localhost',
+    'host'     => '172.30.40.55',
     'port'     => '3306',
     'dbname'   => 'packingsheets',
-    'user'     => 'packingsheets_user',
+    'user'     => 'packingsheets',
     'password' => 'secret',
 );
