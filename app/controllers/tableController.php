@@ -50,7 +50,7 @@ $app->match('/tables/edit/{selectedTable}/{itemId}/{status}', function(Request $
 	}
 	
 	$labelField = ($selectedTable !== 'header' && $selectedTable !== 'footer') ? true : false;
-	$textField = ($selectedTable === 'customStatus' || $selectedTable === 'header' || $selectedTable === 'footer' || $selectedTable === 'imput') ? true : false;
+	$textField = ($selectedTable === 'customStatus' || $selectedTable === 'header' || $selectedTable === 'footer' || $selectedTable === 'imput' || $selectedTable === 'memo') ? true : false;
 			
 	$tableForm = $app['form.factory']->create(TableType::class, $tableObject, array(
 			'selectedTable' => $selectedTable,

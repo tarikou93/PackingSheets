@@ -17,6 +17,13 @@ class Memo
 	 * @var string
 	 */
 	private $label;
+	
+	/**
+	 * Memo text.
+	 *
+	 * @var string
+	 */
+	private $text;
 
 
 	public function getId() {
@@ -33,6 +40,14 @@ class Memo
 
 	public function setLabel($label) {
 		$this->label = $label;
+	}
+	
+	public function getText() {
+		return $this->text;
+	}
+	
+	public function setText($text) {
+		$this->text = $text;
 	}
 
 }

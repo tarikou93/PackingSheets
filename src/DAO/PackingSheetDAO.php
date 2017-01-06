@@ -437,7 +437,9 @@ class PackingSheetDAO extends DAO
     * @return int
     */
    public function getGroupLastId($id) {
-	   	$sql = "select count(group_id) from t_packingsheet where group_id=".$id;
+   		
+   		$date = date('Y-m-d');
+	   	$sql = "select count(group_id) from t_packingsheet where group_id=".$id." and ps_dateIssue like '%$date%'";
 	   	$row = $this->getDb()->fetchAssoc($sql);
 	   
 	   	if($row){
@@ -464,7 +466,7 @@ class PackingSheetDAO extends DAO
    			'content_id' => ($packingSheet->getContentId() === null) ? null : $packingSheet->getContentId()->getId(),
    			'priority_id' => ($packingSheet->getPriorityId() === null) ? null : $packingSheet->getPriorityId()->getId(),
    			'shipper_id' => ($packingSheet->getShipperId() === null) ? null : $packingSheet->getShipperId()->getId(),
-   			'ps_yrOrder' => $packingSheet->getYROrder(),
+   			'ps_orderNr' => $packingSheet->getOrderNr(),
    			'ps_AWB' => $packingSheet->getAWB(),
    			'ps_dateIssue' => $packingSheet->getDateIssue(),
    			'ps_collect' => ($packingSheet->getCollect() === true) ? 1 : 0,
@@ -579,7 +581,7 @@ class PackingSheetDAO extends DAO
         $packingSheet->setId($row['ps_id']);
         $packingSheet->setRef($row['ps_ref']);
         $packingSheet->setGroupId($row['group_id']);
-        $packingSheet->setYROrder($row['ps_yrOrder']);
+        $packingSheet->setOrderNr($row['ps_orderNr']);
         $packingSheet->setAWB($row['ps_AWB']);
         $packingSheet->setDateIssue($row['ps_dateIssue']);
         $packingSheet->setNbrPieces($row['ps_nbrPieces']);
@@ -759,7 +761,7 @@ class PackingSheetDAO extends DAO
         foreach($packingSheet->getPackings() as $pack){
         	$totWeight += $pack->getGrossWeight();
         	foreach($pack->getParts() as $part){
-        		$totPrice += $part->getPartid()->getPrice() * $part->getQuantity();
+        		$totPrice += $part->getPrice() * $part->getQuantity();
         	}
         }
         

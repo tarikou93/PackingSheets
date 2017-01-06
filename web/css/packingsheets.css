@@ -249,3 +249,13 @@ select[readonly]{
     background: #eee;
     cursor:no-drop;
 }
+
+input[readonly]{
+    background: #eee;
+    cursor:no-drop;
+}
+
+textarea[readonly]{
+    background: #eee;
+    cursor:no-drop;
+}

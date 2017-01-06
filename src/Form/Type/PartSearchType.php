@@ -24,11 +24,6 @@ class PartSearchType extends AbstractType
 				
 		->add('desc', TextareaType::class, array(
 				'required' => false))
-		
-		->add('price', TextType::class, array(
-				'constraints' => array(new Assert\Regex(array (
-						'pattern' => '/(?:\d*\.)?\d+/'))),
-				'required' => false))
 				
 		->add('hscode', TextType::class, array(
 				'required' => false));

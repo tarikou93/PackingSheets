@@ -62,6 +62,10 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 
 	if($status === "create"){
 		$packingSheet = new PackingSheet();
+		
+		$packingSheet->setDateIssue(date('Y-m-d'));
+		$packingSheet->setAutority($app['session']->get('user')['name'][0]." ".$app['session']->get('user')['firstName'][0]);
+				
 		$read_only = false;
 	}
 	else{

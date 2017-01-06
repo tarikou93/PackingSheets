@@ -39,6 +39,10 @@ class PackingAssignationType extends AbstractType
 		->add('origin', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank())
 		))
+		
+		->add('price', TextType::class, array(
+				'constraints' => array(new Assert\NotBlank())
+		))
 
 		->add('save', SubmitType::class, array(
 				'label' => false

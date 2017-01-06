@@ -7,12 +7,13 @@
 <div class="modal-body row">
   	<div class="col-md-6">
     	<div class="form-group">
-            {{ form_label(packingSheetForm.ref, null, {  'label': 'Reference', 'label_attr':  {
+            {{ form_label(packingSheetForm.ref, null, {  'label': 'Reference *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
                 {{ form_errors(packingSheetForm.ref) }}
                 {{ form_widget(packingSheetForm.ref, {'attr':  {
+                'placeholder': 'Automatically Generated',
                 'class': 'form-control',
                 'readonly': 'readonly'
                 }}) }}
@@ -30,7 +31,7 @@
             </div>
         </div>
         <div class="form-group">
-            {{ form_label(packingSheetForm.dateIssue, null, {  'label': 'Date', 'label_attr':  {
+            {{ form_label(packingSheetForm.dateIssue, null, {  'label': 'Date *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
@@ -43,7 +44,7 @@
     </div>
   	<div class="col-md-6">
   		<div class="form-group">
-            {{ form_label(packingSheetForm.autority, null, {  'label': 'Autority', 'label_attr':  {
+            {{ form_label(packingSheetForm.autority, null, {  'label': 'Autority *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
@@ -55,7 +56,7 @@
             </div>
         </div>
         <div class="form-group">
-            {{ form_label(packingSheetForm.groupId, null, {  'label': 'Group', 'label_attr':  {
+            {{ form_label(packingSheetForm.groupId, null, {  'label': 'Group *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
@@ -107,7 +108,7 @@
 <div class="col-md-offset-3" align="left"><h2><small>Order - Specifications</small></h2></div>
 <br/>
 <div class="form-group">
-    {{ form_label(packingSheetForm.contentId, null, {  'label': 'Content', 'label_attr':  {
+    {{ form_label(packingSheetForm.contentId, null, {  'label': 'Content *', 'label_attr':  {
     'class': 'col-sm-4 control-label'
     }}) }}
     <div class="col-sm-4">
@@ -118,7 +119,7 @@
     </div>
 </div>
 <div class="form-group">
-    {{ form_label(packingSheetForm.priorityId, null, {  'label': 'Priority', 'label_attr':  {
+    {{ form_label(packingSheetForm.priorityId, null, {  'label': 'Priority *', 'label_attr':  {
     'class': 'col-sm-4 control-label'
     }}) }}
     <div class="col-sm-4">
@@ -129,7 +130,7 @@
     </div>
 </div>
 <div class="form-group">
-    {{ form_label(packingSheetForm.shipperId, null, {  'label': 'Shipper', 'label_attr':  {
+    {{ form_label(packingSheetForm.shipperId, null, {  'label': 'Shipper *', 'label_attr':  {
     'class': 'col-sm-4 control-label'
     }}) }}
     <div class="col-sm-4">
@@ -140,7 +141,7 @@
     </div>
 </div>
 <div class="form-group">
-    {{ form_label(packingSheetForm.customStatusId, null, {  'label': 'Custom Status', 'label_attr':  {
+    {{ form_label(packingSheetForm.customStatusId, null, {  'label': 'Custom Status *', 'label_attr':  {
     'class': 'col-sm-4 control-label'
     }}) }}
     <div class="col-sm-4">
@@ -157,12 +158,12 @@
 <div class="modal-body row">
   	<div class="col-md-6">
     	<div class="form-group">
-            {{ form_label(packingSheetForm.yrOrder, null, {  'label': 'Year', 'label_attr':  {
+            {{ form_label(packingSheetForm.orderNr, null, {  'label': 'Order Number *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
-            <div class="col-sm-4">
-                {{ form_errors(packingSheetForm.yrOrder) }}
-                {{ form_widget(packingSheetForm.yrOrder, {'attr':  {
+            <div class="col-sm-6">
+                {{ form_errors(packingSheetForm.orderNr) }}
+                {{ form_widget(packingSheetForm.orderNr, {'attr':  {
                 'class': 'form-control'
                 }}) }}
             </div>
@@ -190,7 +191,7 @@
             </div>
     	</div>
     	<div class="form-group">
-            {{ form_label(packingSheetForm.currencyId, null, {  'label': 'Currency', 'label_attr':  {
+            {{ form_label(packingSheetForm.currencyId, null, {  'label': 'Currency *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-6">
@@ -203,7 +204,7 @@
     </div>
   	<div class="col-md-6">
     	<div class="form-group">
-            {{ form_label(packingSheetForm.serviceId, null, {  'label': 'Service', 'label_attr':  {
+            {{ form_label(packingSheetForm.serviceId, null, {  'label': 'Service *', 'label_attr':  {
             'class': 'col-sm-4 control-label'
             }}) }}
             <div class="col-sm-8">
@@ -267,6 +268,7 @@
     	{% endif %}
   	</div>
 </div>
+<h3><small> Fields followed by * are required in order to complete this Packing Sheet </small></h3>
 <div class="col-md-6 col-md-offset-3"><hr/></div>
 <br/>
 <div class="col-md-offset-1" align="left"><h2><small>Memo</small></h2></div>

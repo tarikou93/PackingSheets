@@ -1,6 +1,22 @@
 $( document ).ready(
+    collectImput
+);
+
+$( document ).ready(
     disableAll
 );
+
+function collectImput() {
+
+    var isChecked = document.getElementById("packing_sheet_collect").checked;
+
+    if(isChecked) {
+        $("#packing_sheet_imputId").attr("style", 'visibility:hidden'); 
+    } else {
+        $("#packing_sheet_imputId").removeAttr("style");
+    }
+
+};
 
 
 function disableAll(){

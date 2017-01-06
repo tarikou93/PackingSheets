@@ -70,7 +70,6 @@ class PartDAO extends DAO
         $by_sn = $searchPart->getSerial();
         $by_desc = $searchPart->getDesc();
         $by_hscode = $searchPart->getHSCode();
-        $by_price = $searchPart->getPrice();
         
         //Do real escaping here
 
@@ -89,9 +88,6 @@ class PartDAO extends DAO
         }
         if ($by_hscode != "") {
             $conditions[] = "part_HSCode LIKE '%$by_hscode%'";
-        }
-        if ($by_price != "") {
-        	$conditions[] = "part_price LIKE '%$by_price%'";
         }
         
         
@@ -122,7 +118,6 @@ class PartDAO extends DAO
             'part_pn' => $part->getPN(),
             'part_serial' => $part->getSerial(),
             'part_desc' => $part->getDesc(),
-            'part_price' => $part->getPrice(),
             'part_HSCode' => $part->getHSCode(),
             );
 
@@ -160,7 +155,6 @@ class PartDAO extends DAO
         $part->setPN($row['part_pn']);
         $part->setSerial($row['part_serial']);
         $part->setDesc($row['part_desc']);
-        $part->setPrice($row['part_price']);
         $part->setHSCode($row['part_HSCode']);
         return $part;
     }

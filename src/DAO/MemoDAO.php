@@ -50,7 +50,8 @@ class MemoDAO extends DAO
 	public function save(Memo $memo) {
 			
 		$memoData = array(
-				'memo_label' => $memo->getLabel()
+				'memo_label' => $memo->getLabel(),
+				'memo_text' => $memo->getText()
 		);
 			
 		if ($memo->getId()) {
@@ -85,6 +86,7 @@ class MemoDAO extends DAO
 		$memo = new Memo();
 		$memo->setId($row['memo_id']);
 		$memo->setLabel($row['memo_label']);
+		$memo->setText($row['memo_text']);
 		return $memo;
 	}
 }

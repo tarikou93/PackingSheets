@@ -25,6 +25,13 @@ class PackingAssignation
      * @var string
      */
     private $origin;
+    
+    /**
+     * Packing Assignation price.
+     *
+     * @var float
+     */
+    private $price;
 
     public function getPackingListPart() {
         return $this->packingListPart;
@@ -48,6 +55,14 @@ class PackingAssignation
     
     public function setOrigin($origin) {
     	$this->origin = $origin;
+    }
+    
+    public function getPrice() {
+    	return $this->price;
+    }
+    
+    public function setPrice($price) {
+    	$this->price = $price;
     }
 
 }

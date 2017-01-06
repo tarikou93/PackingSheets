@@ -29,11 +29,7 @@ class PackingSheetChecker
 			$isValid = false;
 		}
 		
-		if($packingSheet->getYROrder() === null){
-			$isValid = false;
-		}
-		
-		if($packingSheet->getAWB() === null){
+		if($packingSheet->getOrderNr() === null){
 			$isValid = false;
 		}
 		

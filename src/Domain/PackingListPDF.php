@@ -42,7 +42,7 @@ class PackingListPDF extends \FPDF
 			$this->Cell(25,5,'QUANTITY','LRTB',0,'C',1);
 			$this->Cell(40,5,'PART NUMBER','LRTB',0,'C',1);
 			$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
-			$this->Cell(40,5,'NOMENCLATURE','LRTB',0,'C',1);
+			$this->Cell(40,5,'HS TARIF CODE','LRTB',0,'C',1);
 			$this->Cell(30,5,'PRICE','LRTB',0,'C',1);
 			
 			$this->Ln();

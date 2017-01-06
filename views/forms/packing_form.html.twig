@@ -151,6 +151,17 @@
                                                     }}) }}
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                {{ form_label(psPart.price, null, { 'label_attr':  {
+                                                'class': 'col-sm-4 control-label'
+                                                }}) }}
+                                                <div class="col-sm-6">
+                                                    {{ form_errors(psPart.price) }}
+                                                    {{ form_widget(psPart.price, {'attr':  {
+                                                    'class': 'form-control'
+                                                    }}) }}
+                                                </div>
+                                            </div>
                                         </li>
                                     </p>
                                     <hr></hr>

@@ -82,11 +82,11 @@ class PackingSheet
     private $shipperId;
 
     /**
-     * PackingSheet yrOrder.
+     * PackingSheet orderNr.
      *
      * @var string
      */
-    private $yrOrder;
+    private $orderNr;
 
     /**
      * PackingSheet AWB.
@@ -295,12 +295,12 @@ class PackingSheet
         $this->shipperId = $shipperId;
     }
 
-    public function getYROrder() {
-        return $this->yrOrder;
+    public function getOrderNr() {
+        return $this->orderNr;
     }
 
-    public function setYROrder($yrOrder) {
-        $this->yrOrder = $yrOrder;
+    public function setOrderNr($orderNr) {
+        $this->orderNr = $orderNr;
     }
 
     public function getAWB() {

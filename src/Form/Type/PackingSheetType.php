@@ -121,7 +121,7 @@ class PackingSheetType extends AbstractType
 				'required' => false,
 				'attr' => array('readonly' => $options['read_only'])))
 				
-		->add('yrOrder', TextType::class, array(
+		->add('orderNr', TextType::class, array(
 				'attr' => array('readonly' => $options['read_only']),
 				'required' => false	
 		))

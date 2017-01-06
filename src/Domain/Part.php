@@ -33,13 +33,6 @@ class Part
     private $desc;
 
     /**
-     * Part price.
-     *
-     * @var float
-     */
-    private $price;
-
-    /**
      * Part HSCode.
      *
      * @var string
@@ -78,14 +71,6 @@ class Part
         $this->desc = $desc;
     }
 
-    public function getPrice() {
-        return $this->price;
-    }
-
-    public function setPrice($price) {
-        $this->price = $price;
-    }
-
     public function getHSCode() {
         return $this->hscode;
     }
@@ -95,6 +80,6 @@ class Part
     }
     
     public function getCompleteInfos(){
-    	return sprintf('Pn : %s | Sn : %s | Desc : %s | Price : %s | HScode : %s', $this->pn, $this->serial, $this->desc, $this->price, $this->hscode);
+    	return sprintf('Pn : %s | Sn : %s | Desc : %s | HScode : %s', $this->pn, $this->serial, $this->desc, $this->hscode);
     }
 }

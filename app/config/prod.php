@@ -6,7 +6,7 @@ $app['db.options'] = array(
     'charset'  => 'utf8',
     'host'     => '172.30.40.55',
     'port'     => '3306',
-    'dbname'   => 'packingsheets',
+    'dbname'   => 'packingsheets_dev',
     'user'     => 'packingsheets',
     'password' => 'secret',
 );

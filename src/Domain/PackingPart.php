@@ -38,6 +38,13 @@ class PackingPart
      * @var string
      */
     private $origin;
+    
+    /**
+     * PackingPart price.
+     *
+     * @var float
+     */
+    private $price;
 
     public function getId() {
         return $this->id;
@@ -77,6 +84,14 @@ class PackingPart
 
     public function setOrigin($origin) {
         $this->origin = $origin;
+    }
+    
+    public function getPrice() {
+    	return $this->price;
+    }
+    
+    public function setPrice($price) {
+    	$this->price = $price;
     }
 
 }

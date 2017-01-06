@@ -21,9 +21,6 @@ class PartType extends AbstractType
                     'required' => false))
                 ->add('desc', TextareaType::class, array(
         'constraints' => array(new Assert\NotBlank())))
-                ->add('price', TextType::class, array(
-        'constraints' => array(new Assert\NotBlank(), new Assert\Regex(array (
-            'pattern' => '/(?:\d*\.)?\d+/')))))
                 ->add('hscode', TextType::class, array(
                     'required' => false));
     }

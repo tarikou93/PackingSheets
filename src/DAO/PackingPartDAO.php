@@ -107,12 +107,13 @@ class PackingPartDAO extends DAO
       * @param \PackingSheets\Domain\PackingPart $pkPart The PackingPart to save
       */
      public function save(PackingPart $pkPart) {
-     		
+     	   		
      	$pkPartData = array(
      			'pack_id' => $pkPart->getPackid(),
      			'part_id' => $pkPart->getPartid()->getId(),
      			'pkp_quantity' => $pkPart->getQuantity(),
      			'pkp_origin' => $pkPart->getOrigin(),
+     			'pkp_price' => $pkPart->getPrice() 
      	);
      
      	if ($pkPart->getId()) {
@@ -153,6 +154,7 @@ class PackingPartDAO extends DAO
         $packingPart->setQuantity($row['pkp_quantity']);
         $packingPart->setOrigin($row['pkp_origin']);
         $packingPart->setPackid($row['pack_id']);
+        $packingPart->setPrice($row['pkp_price']);
 
         if (array_key_exists('part_id', $row)) {
             // Find and set the associated packingSheet

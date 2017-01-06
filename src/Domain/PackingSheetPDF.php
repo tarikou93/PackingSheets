@@ -188,7 +188,9 @@ class PackingSheetPDF extends \FPDF
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
 		
-		$this->Cell(190,5,'ACCOUNTING INFOS','LRTB',0,'C',1);
+		$this->Cell(95,5,'ACCOUNTING INFOS','LRTB',0,'C',1);
+		$this->Cell(50,5,'ORDER NUMBER','LRTB',0,'C',1);
+		$this->Cell(45,5,$this->ps->getOrderNr(),'RLTB',0,'C',0);
 		
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
@@ -282,7 +284,7 @@ class PackingSheetPDF extends \FPDF
 					$this->Cell(20,5,'ORIGIN','LRTB',0,'C',1);
 					$this->Cell(30,5,'PART NUMBER','LRTB',0,'C',1);
 					$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
-					$this->Cell(40,5,'NOMENCLATURE','LRTB',0,'C',1);
+					$this->Cell(40,5,'HS TARIF CODE','LRTB',0,'C',1);
 					$this->Cell(30,5,'PRICE','LRTB',0,'C',1);
 				}
 				else{
@@ -313,7 +315,7 @@ class PackingSheetPDF extends \FPDF
 							$this->Cell(30,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getHSCode(),'LRTB',0,'C',0);
-							$this->Cell(30,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
+							$this->Cell(30,5,($part->getPrice() * $part->getQuantity()),'LRTB',0,'C',0);
 						}
 						else{
 							
@@ -322,7 +324,7 @@ class PackingSheetPDF extends \FPDF
 							$this->Cell(30,5,$part->getOrigin(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
-							$this->Cell(30,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
+							$this->Cell(30,5,($part->getPrice() * $part->getQuantity()),'LRTB',0,'C',0);
 						}
 						$this->Ln();
 						

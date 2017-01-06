@@ -32,9 +32,13 @@ class PackingPartType extends AbstractType
 								'pattern' => '/(?:\d*\.)?\d+/'))),
 				'attr' => array('class' => 'form-control')
 		))
-								
+		
 		->add('origin', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank()),
+				'attr' => array('class' => 'form-control')
+		))
+		
+		->add('price', TextType::class, array(
 				'attr' => array('class' => 'form-control')
 		));
 

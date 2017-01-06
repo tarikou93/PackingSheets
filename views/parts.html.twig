@@ -44,7 +44,6 @@
                                         <th>Part Number</th>
                                         <th>Serial Number</th>
                                         <th>Description</th>
-                                        <th>Price</th>
                                         <th>HSCode</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
@@ -62,7 +61,6 @@
                                                 {% endif %}
                                             </td>
                                             <td>{{ part.desc }}</td>
-                                            <td>{{ part.price }}</td>
                                             <td>
                                                 {% if part.hscode == "" %}
                                                     N/A
@@ -154,17 +152,6 @@
                                                     <div class="col-sm-6">
                                                         {{ form_errors(partSearchForm.desc) }}
                                                         {{ form_widget(partSearchForm.desc, {'attr':  {
-                                                        'class': 'form-control'
-                                                        }}) }}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    {{ form_label(partSearchForm.price, null, {  'label': 'Price', 'label_attr':  {
-                                                        	'class': 'col-sm-4 control-label'
-                                                    }}) }}
-                                                    <div class="col-sm-4">
-                                                        {{ form_errors(partSearchForm.price) }}
-                                                        {{ form_widget(partSearchForm.price, {'attr':  {
                                                         'class': 'form-control'
                                                         }}) }}
                                                     </div>

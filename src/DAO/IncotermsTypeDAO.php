@@ -55,10 +55,10 @@ class IncotermsTypeDAO extends DAO
    		
    	if ($incotermsType->getId()) {
    		// The incotermsType has already been saved : update it
-   		$this->getDb()->update('t_incotermstype', $incotermsTypeData, array('incType_id' => $incotermsType->getId()));
+   		$this->getDb()->update('t_incotermsType', $incotermsTypeData, array('incType_id' => $incotermsType->getId()));
    	} else {
    		// The article has never been saved : insert it
-   		$this->getDb()->insert('t_incotermstype', $incotermsTypeData);
+   		$this->getDb()->insert('t_incotermsType', $incotermsTypeData);
    		// Get the id of the newly created incotermsType and set it on the entity.
    		$id = $this->getDb()->lastInsertId();
    		$incotermsType->setId($id);
@@ -72,7 +72,7 @@ class IncotermsTypeDAO extends DAO
     */
    public function delete($id) {
    	//Delete the incotermsType
-   	$this->getDb()->delete('t_incotermstype', array('incType_id' => $id));
+   	$this->getDb()->delete('t_incotermsType', array('incType_id' => $id));
    }
 
     /**
