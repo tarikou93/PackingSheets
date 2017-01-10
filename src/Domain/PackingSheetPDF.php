@@ -29,7 +29,7 @@ class PackingSheetPDF extends \FPDF
 		$this->Cell(45,5,'AWB','LTR',0,'C',0);
 		
 		$this->Ln();
-		$this->SetFont('Arial','',9);
+		$this->SetFont('Arial','',11);
 		
 		$this->Cell(45,5,' ','LR',0,'L',0);
 		$this->Cell(100,5,'','LR',0,'C',0);
@@ -68,7 +68,9 @@ class PackingSheetPDF extends \FPDF
 		
 		$x=$this->GetX();
 		
-		$this->MultiCell(140,5,$footerParts[1],'','L',0);
+		if(count($footerParts) > 1){
+			$this->MultiCell(140,5,$footerParts[1],'','L',0);
+		}
 		
 		$y=$this->GetY();
 		
@@ -88,7 +90,7 @@ class PackingSheetPDF extends \FPDF
 		//Consigned
 		
 		$consignedAddress = $this->ps->getConsignedAddressId()->getLabel()."\n\n";
-		$consignedContact = ($this->ps->getConsignedContactId() === null) ? "" : $this->ps->getConsignedContactId()->getName()."\n".$this->ps->getConsignedContactId()->getMail()."\nPhone: ".$this->ps->getConsignedContactId()->getPhoneNr();
+		$consignedContact = ($this->ps->getConsignedContactId() === null) ? "" : $this->ps->getConsignedContactId()->getName()."\nPhone: ".$this->ps->getConsignedContactId()->getPhoneNr()."\n".$this->ps->getConsignedContactId()->getMail()."\n";
 		$consignedBlock = $consignedAddress.$consignedContact;
 		
 		$nbrLinesConsigned = substr_count($consignedBlock, "\n");
@@ -98,7 +100,7 @@ class PackingSheetPDF extends \FPDF
 		//Delivery
 		
 		$deliveryAddress = ($this->ps->getDeliveryAddressId() === null) ? "" : $this->ps->getDeliveryAddressId()->getLabel()."\n\n";
-		$deliveryContact = ($this->ps->getDeliveryContactId() === null) ? "" : $this->ps->getDeliveryContactId()->getName()."\n".$this->ps->getDeliveryContactId()->getMail()."\nPhone: ".$this->ps->getDeliveryContactId()->getPhoneNr();;
+		$deliveryContact = ($this->ps->getDeliveryContactId() === null) ? "" : $this->ps->getDeliveryContactId()->getName()."\nPhone: ".$this->ps->getDeliveryContactId()->getPhoneNr()."\n".$this->ps->getDeliveryContactId()->getMail();
 		$deliveryBlock = $deliveryAddress.$deliveryContact;
 		
 		$nbrLinesDelivery = substr_count($deliveryBlock, "\n");
@@ -190,6 +192,8 @@ class PackingSheetPDF extends \FPDF
 		
 		$this->Cell(95,5,'ACCOUNTING INFOS','LRTB',0,'C',1);
 		$this->Cell(50,5,'ORDER NUMBER','LRTB',0,'C',1);
+		
+		$this->SetFont('Arial','',8);
 		$this->Cell(45,5,$this->ps->getOrderNr(),'RLTB',0,'C',0);
 		
 		$this->Ln();
@@ -203,7 +207,7 @@ class PackingSheetPDF extends \FPDF
 		
 		$this->Ln();
 		
-		if($this->ps->getCollect() === 1){
+		if($this->ps->getCollect() === true){
 			$this->Cell(45,5,'','LRTB',0,'C',0);
 			$this->Cell(50,5,'Yes','LRTB',0,'C',0);
 		}
@@ -250,9 +254,9 @@ class PackingSheetPDF extends \FPDF
 				$this->Cell(23,5,$cptPackings,'LRTB',0,'C',1);
 				$this->Cell(22,5,1,'LRTB',0,'C',0);
 				$this->Cell(50,5,$pack->getPackTypeid()->getLabel(),'LRTB',0,'C',0);
-				$this->Cell(25,5,$pack->getNetWeight(),'LRTB',0,'C',0);
-				$this->Cell(25,5,$pack->getGrossWeight(),'LRTB',0,'C',0);
-				$this->Cell(45,5,$pack->getM1().'/'.$pack->getM2().'/'.$pack->getM3(),'LRTB',0,'C',0);
+				$this->Cell(25,5,number_format($pack->getNetWeight(), 2),'LRTB',0,'C',0);
+				$this->Cell(25,5,number_format($pack->getGrossWeight(), 2),'LRTB',0,'C',0);
+				$this->Cell(45,5,number_format($pack->getM1(), 2).' / '.number_format($pack->getM2(), 2).' / '.number_format($pack->getM3(), 2),'LRTB',0,'C',0);
 				$cptPackings++;
 				$this->Ln();
 			}
@@ -313,9 +317,9 @@ class PackingSheetPDF extends \FPDF
 							$this->Cell(20,5,$part->getQuantity(),'LRTB',0,'C',0);
 							$this->Cell(20,5,$part->getOrigin(),'LRTB',0,'C',0);
 							$this->Cell(30,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
-							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
+							$this->Cell(40,5,$part->getSerial(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getHSCode(),'LRTB',0,'C',0);
-							$this->Cell(30,5,($part->getPrice() * $part->getQuantity()),'LRTB',0,'C',0);
+							$this->Cell(30,5,number_format($part->getPrice() * $part->getQuantity(), 2),'LRTB',0,'C',0);
 						}
 						else{
 							
@@ -323,8 +327,8 @@ class PackingSheetPDF extends \FPDF
 							$this->Cell(20,5,$part->getQuantity(),'LRTB',0,'C',0);
 							$this->Cell(30,5,$part->getOrigin(),'LRTB',0,'C',0);
 							$this->Cell(40,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
-							$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
-							$this->Cell(30,5,($part->getPrice() * $part->getQuantity()),'LRTB',0,'C',0);
+							$this->Cell(40,5,$part->getSerial(),'LRTB',0,'C',0);
+							$this->Cell(30,5,number_format($part->getPrice() * $part->getQuantity(), 2),'LRTB',0,'C',0);
 						}
 						$this->Ln();
 						
@@ -344,7 +348,7 @@ class PackingSheetPDF extends \FPDF
 	function Totals(){
 		
 		$this->Cell(145,5,'TOTAL PRICE','LRTB',0,'R',0);
-		$this->Cell(45,5,$this->ps->getCurrencyId()->getLabel().' '.$this->ps->getTotalPrice(),'LRTB',0,'R',0);
+		$this->Cell(45,5,$this->ps->getCurrencyId()->getLabel().' '.number_format($this->ps->getTotalPrice(), 2),'LRTB',0,'R',0);
 		$this->Ln();
 		$this->Cell(145,5,'Value for Customs Purpose','LRTB',0,'R',0);
 		$this->Ln();

@@ -1,4 +1,3 @@
-
 $( document ).ready(
     collectImput
 );
@@ -58,6 +57,7 @@ function disableAll(){
         	
         	$(elementCompleteOptions).prop("disabled", true);
         	$(elementComplete).attr("readonly", 'readonly');
+        	
     	}
     	
     	//Text Inputs
@@ -99,7 +99,8 @@ function enableAll(){
         	var elementCompleteOptions = eval("completeNameOptions");
         	
         	$(elementCompleteOptions).prop("disabled", false);
-        	$(elementComplete).removeAttr("readonly");  
+        	$(elementComplete).removeAttr("readonly");
+        	
     	}
     	
     	//Text Inputs

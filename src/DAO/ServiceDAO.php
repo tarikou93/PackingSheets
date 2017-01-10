@@ -13,7 +13,7 @@ class ServiceDAO extends DAO
      * @return array A list of all Services.
      */
     public function findAll() {
-        $sql = "select * from t_service order by serv_id desc";
+        $sql = "select * from t_service order by serv_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

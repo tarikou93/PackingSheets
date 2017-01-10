@@ -267,7 +267,7 @@ class PackingSheetDAO extends DAO
         
         if ($by_sn != "") {
         	$flag_emptyForm = false;
-            $conditions[] = "part_serial LIKE '%$by_sn%'";
+            $conditions[] = "pkp_serial LIKE '%$by_sn%'";
         }
         
         if ($by_desc != "") {
@@ -291,12 +291,12 @@ class PackingSheetDAO extends DAO
         }
         
         if ($signed) {
-        	//$flag_emptyForm = false;
+        	$flag_emptyForm = false;
             $conditions[] = "ps_signed = 1";
         }
         
         if ($printed) {
-        	//$flag_emptyForm = false;
+        	$flag_emptyForm = false;
             $conditions[] = "ps_printed = 1";
         }
         
@@ -396,6 +396,8 @@ class PackingSheetDAO extends DAO
         	$packingSheetId = $row['ps_id'];
         	$packingSheets[$packingSheetId] = $this->buildDomainObject($row);
         }
+        
+        //var_dump($packingSheets);exit;
               
         //Outputs
         if($flag_emptyForm && $flag_emptySearch){

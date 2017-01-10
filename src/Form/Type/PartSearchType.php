@@ -19,9 +19,6 @@ class PartSearchType extends AbstractType
 						'pattern' => '/^[ A-Za-z0-9-]*$/'))),
 				'required' => false))
 				
-		->add('serial', TextType::class, array(
-				'required' => false))
-				
 		->add('desc', TextareaType::class, array(
 				'required' => false))
 				

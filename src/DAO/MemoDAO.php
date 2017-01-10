@@ -13,7 +13,7 @@ class MemoDAO extends DAO
 	 * @return array A list of all Memos.
 	 */
 	public function findAll() {
-		$sql = "select * from t_memo order by memo_id desc";
+		$sql = "select * from t_memo order by memo_label";
 		$result = $this->getDb()->fetchAll($sql);
 
 		// Convert query result to an array of domain objects

@@ -13,7 +13,7 @@ class ShipperDAO extends DAO
      * @return array A list of all Shippers.
      */
     public function findAll() {
-        $sql = "select * from t_shipper order by ship_id desc";
+        $sql = "select * from t_shipper order by ship_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

@@ -27,6 +27,13 @@ class PackingAssignation
     private $origin;
     
     /**
+     * Packing Assignation serial.
+     *
+     * @var string
+     */
+    private $serial;
+    
+    /**
      * Packing Assignation price.
      *
      * @var float
@@ -55,6 +62,14 @@ class PackingAssignation
     
     public function setOrigin($origin) {
     	$this->origin = $origin;
+    }
+    
+    public function getSerial() {
+    	return $this->serial;
+    }
+    
+    public function setSerial($serial) {
+    	$this->serial = $serial;
     }
     
     public function getPrice() {

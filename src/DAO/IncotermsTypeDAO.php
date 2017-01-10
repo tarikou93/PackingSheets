@@ -13,7 +13,7 @@ class IncotermsTypeDAO extends DAO
      * @return array A list of all IncotermsTypes.
      */
     public function findAll() {
-        $sql = "select * from t_incotermsType order by incType_id desc";
+        $sql = "select * from t_incotermsType order by incType_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

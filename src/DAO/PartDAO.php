@@ -67,7 +67,6 @@ class PartDAO extends DAO
     public function findBySearch(Part $searchPart) {
         
         $by_pn = $searchPart->getPN();
-        $by_sn = $searchPart->getSerial();
         $by_desc = $searchPart->getDesc();
         $by_hscode = $searchPart->getHSCode();
         
@@ -79,9 +78,6 @@ class PartDAO extends DAO
 
         if ($by_pn != "") {
             $conditions[] = "part_pn LIKE '%$by_pn%'";
-        }
-        if ($by_sn != "") {
-            $conditions[] = "part_serial LIKE '%$by_sn%'";
         }
         if ($by_desc != "") {
             $conditions[] = "part_desc LIKE '%$by_desc%'";
@@ -116,7 +112,6 @@ class PartDAO extends DAO
     public function save(Part $part) {
         $partData = array(
             'part_pn' => $part->getPN(),
-            'part_serial' => $part->getSerial(),
             'part_desc' => $part->getDesc(),
             'part_HSCode' => $part->getHSCode(),
             );
@@ -153,7 +148,6 @@ class PartDAO extends DAO
         $part = new Part();
         $part->setId($row['part_id']);
         $part->setPN($row['part_pn']);
-        $part->setSerial($row['part_serial']);
         $part->setDesc($row['part_desc']);
         $part->setHSCode($row['part_HSCode']);
         return $part;

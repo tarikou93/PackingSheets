@@ -35,7 +35,7 @@
         {{ form_start(tableForm, { 'attr': {'class': 'form-horizontal'} }) }}
         	{% if labelField is not empty %}
                 <div class="form-group">
-                    {{ form_label(tableForm.label, null, { 'label_attr':  {
+                    {{ form_label(tableForm.label, null, { 'label': 'Label *','label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
@@ -63,7 +63,7 @@
             {% endif %}
             {% if textField is not empty %}
                 <div class="form-group">
-                    {{ form_label(tableForm.text, null, { 'label_attr':  {
+                    {{ form_label(tableForm.text, null, { 'label':'Explicative Text', 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
@@ -74,6 +74,9 @@
                         }}) }}
                     </div>
                 </div>
+                {% if selectedTable is not same as ('footer') and selectedTable is not same as ('header') %}
+                	<div class="col-md-6 col-md-offset-4"><h3><small>Explicative text will not be displayed on the printed Packing Sheet</small></h3></div>
+                {% endif %}      
         	{% else %}
         		<div class="form-group">
                     {{ form_label(tableForm.text, null, { 'label_attr':  {

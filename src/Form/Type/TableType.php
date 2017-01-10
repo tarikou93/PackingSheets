@@ -21,7 +21,7 @@ class TableType extends AbstractType
 		
 		->add('text', TextareaType::class, array(
 				'mapped' => $options['textField'],
-				'required' => $options['textField']
+				'required' => false
 		))
 			
 		->add('save', SubmitType::class, array(

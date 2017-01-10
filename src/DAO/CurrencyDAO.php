@@ -13,7 +13,7 @@ class CurrencyDAO extends DAO
      * @return array A list of all Currencys.
      */
     public function findAll() {
-        $sql = "select * from t_currency order by curr_id desc";
+        $sql = "select * from t_currency order by curr_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

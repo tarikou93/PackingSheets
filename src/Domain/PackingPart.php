@@ -40,6 +40,13 @@ class PackingPart
     private $origin;
     
     /**
+     * PackingPart serial.
+     *
+     * @var string
+     */
+    private $serial;
+    
+    /**
      * PackingPart price.
      *
      * @var float
@@ -84,6 +91,14 @@ class PackingPart
 
     public function setOrigin($origin) {
         $this->origin = $origin;
+    }
+    
+    public function getSerial() {
+    	return $this->serial;
+    }
+    
+    public function setSerial($serial) {
+    	$this->serial = $serial;
     }
     
     public function getPrice() {

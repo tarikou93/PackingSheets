@@ -13,7 +13,7 @@ class CustomStatusDAO extends DAO
      * @return array A list of all CustomStatuss.
      */
     public function findAll() {
-        $sql = "select * from t_customStatus order by custStat_id desc";
+        $sql = "select * from t_customStatus order by custStat_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

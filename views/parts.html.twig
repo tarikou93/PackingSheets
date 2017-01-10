@@ -42,7 +42,6 @@
                                 <thead>
                                     <tr>
                                         <th>Part Number</th>
-                                        <th>Serial Number</th>
                                         <th>Description</th>
                                         <th>HSCode</th>
                                         <th>Edit</th>
@@ -53,13 +52,6 @@
                                     {% for part in parts %}
                                         <tr>
                                             <td>{{ part.pn }}</td>
-                                            <td>
-                                                {% if part.serial == "" %}
-                                                    N/A
-                                                {% else %}
-                                                    {{ part.serial }}
-                                                {% endif %}
-                                            </td>
                                             <td>{{ part.desc }}</td>
                                             <td>
                                                 {% if part.hscode == "" %}
@@ -119,17 +111,6 @@
                                                     <div class="col-sm-4">
                                                         {{ form_errors(partSearchForm.pn) }}
                                                         {{ form_widget(partSearchForm.pn, {'attr':  {
-                                                        'class': 'form-control'
-                                                        }}) }}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    {{ form_label(partSearchForm.serial, null, {  'label': 'Serial Number', 'label_attr':  {
-                                                        	'class': 'col-sm-4 control-label'
-                                                    }}) }}
-                                                    <div class="col-sm-4">
-                                                        {{ form_errors(partSearchForm.serial) }}
-                                                        {{ form_widget(partSearchForm.serial, {'attr':  {
                                                         'class': 'form-control'
                                                         }}) }}
                                                     </div>

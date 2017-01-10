@@ -40,6 +40,10 @@ class PackingAssignationType extends AbstractType
 				'constraints' => array(new Assert\NotBlank())
 		))
 		
+		->add('serial', TextType::class, array(
+				'required' => false
+		))
+		
 		->add('price', TextType::class, array(
 				'constraints' => array(new Assert\NotBlank())
 		))

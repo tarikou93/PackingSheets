@@ -32,9 +32,9 @@
                     	<div class="well">
                         	<div class="form-group">
                                 {{ form_label(packingAssignationForm.packingListPart, null, {  'label': 'List Parts', 'label_attr':  {
-                                'class': 'col-sm-4 control-label'
+                                'class': 'col-sm-3 control-label'
                                 }}) }}
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     {{ form_errors(packingAssignationForm.packingListPart) }}
                                     {{ form_widget(packingAssignationForm.packingListPart, {'attr':  {
                                     'class': 'form-control'
@@ -43,9 +43,9 @@
                             </div>
                             <div class="form-group">
                                 {{ form_label(packingAssignationForm.packing, null, {  'label': 'Packings', 'label_attr':  {
-                                'class': 'col-sm-4 control-label'
+                                'class': 'col-sm-3 control-label'
                                 }}) }}
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     {{ form_errors(packingAssignationForm.packing) }}
                                     {{ form_widget(packingAssignationForm.packing, {'attr':  {
                                     'class': 'form-control'
@@ -54,9 +54,9 @@
                             </div>
                             <div class="form-group">
                                 {{ form_label(packingAssignationForm.origin, null, {  'label': 'Origin', 'label_attr':  {
-                                'class': 'col-sm-4 control-label'
+                                'class': 'col-sm-3 control-label'
                                 }}) }}
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     {{ form_errors(packingAssignationForm.origin) }}
                                     {{ form_widget(packingAssignationForm.origin, {'attr':  {
                                     'class': 'form-control'
@@ -64,10 +64,21 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                {{ form_label(packingAssignationForm.price, null, {  'label': 'Price', 'label_attr':  {
-                                'class': 'col-sm-4 control-label'
+                                {{ form_label(packingAssignationForm.serial, null, {  'label': 'Part Serial', 'label_attr':  {
+                                'class': 'col-sm-3 control-label'
                                 }}) }}
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
+                                    {{ form_errors(packingAssignationForm.serial) }}
+                                    {{ form_widget(packingAssignationForm.serial, {'attr':  {
+                                    'class': 'form-control'
+                                    }}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(packingAssignationForm.price, null, {  'label': 'Price', 'label_attr':  {
+                                'class': 'col-sm-3 control-label'
+                                }}) }}
+                                <div class="col-sm-8">
                                     {{ form_errors(packingAssignationForm.price) }}
                                     {{ form_widget(packingAssignationForm.price, {'attr':  {
                                     'class': 'form-control'
@@ -88,7 +99,8 @@
                 </div>
             </div>
     	</div>
-    </div>  
+    </div> 
+    <script src="/scripts/add_select2.js"></script> 
 {% endblock %}
 
 

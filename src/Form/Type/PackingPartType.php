@@ -38,6 +38,11 @@ class PackingPartType extends AbstractType
 				'attr' => array('class' => 'form-control')
 		))
 		
+		->add('serial', TextType::class, array(
+				'required' => false,
+				'attr' => array('class' => 'form-control')
+		))
+		
 		->add('price', TextType::class, array(
 				'attr' => array('class' => 'form-control')
 		));

@@ -152,6 +152,17 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                {{ form_label(psPart.serial, null, { 'label': 'Part Serial', 'label_attr':  {
+                                                'class': 'col-sm-4 control-label'
+                                                }}) }}
+                                                <div class="col-sm-6">
+                                                    {{ form_errors(psPart.serial) }}
+                                                    {{ form_widget(psPart.serial, {'attr':  {
+                                                    'class': 'form-control'
+                                                    }}) }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 {{ form_label(psPart.price, null, { 'label_attr':  {
                                                 'class': 'col-sm-4 control-label'
                                                 }}) }}

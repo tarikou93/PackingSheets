@@ -26,7 +26,7 @@ $app->match('/tables/view/{selectedTable}', function(Request $request, $selected
 			'selectedTableDisplay' => ucfirst($selectedTable),
 			'selectedItems' => ($selectedTable === 'home') ? array() : $itemsList,
 			'labelField' => ($selectedTable !== 'header' && $selectedTable !== 'footer') ? true : false,
-			'textField' => ($selectedTable === 'customStatus' || $selectedTable === 'header' || $selectedTable === 'footer' || $selectedTable === 'imput') ? true : false
+			'textField' => ($selectedTable === 'customStatus' || $selectedTable === 'header' || $selectedTable === 'footer' || $selectedTable === 'imput' || $selectedTable === 'memo') ? true : false
 	));
 
 })->value('selectedTable', 'home')->bind('tables');

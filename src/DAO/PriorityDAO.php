@@ -13,7 +13,7 @@ class PriorityDAO extends DAO
      * @return array A list of all Prioritys.
      */
     public function findAll() {
-        $sql = "select * from t_priority order by prior_id desc";
+        $sql = "select * from t_priority order by prior_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

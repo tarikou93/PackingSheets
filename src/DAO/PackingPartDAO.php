@@ -113,6 +113,7 @@ class PackingPartDAO extends DAO
      			'part_id' => $pkPart->getPartid()->getId(),
      			'pkp_quantity' => $pkPart->getQuantity(),
      			'pkp_origin' => $pkPart->getOrigin(),
+     			'pkp_serial' => $pkPart->getSerial(),
      			'pkp_price' => $pkPart->getPrice() 
      	);
      
@@ -155,6 +156,7 @@ class PackingPartDAO extends DAO
         $packingPart->setOrigin($row['pkp_origin']);
         $packingPart->setPackid($row['pack_id']);
         $packingPart->setPrice($row['pkp_price']);
+        $packingPart->setSerial($row['pkp_serial']);
 
         if (array_key_exists('part_id', $row)) {
             // Find and set the associated packingSheet

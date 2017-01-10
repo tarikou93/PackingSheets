@@ -22,7 +22,7 @@ class AddressDAO extends DAO
      * @return array A list of all Addresses.
      */
     public function findAll() {
-        $sql = "select * from t_address order by address_id desc";
+        $sql = "select * from t_address order by address_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

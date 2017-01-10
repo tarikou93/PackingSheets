@@ -13,7 +13,7 @@ class ContactDAO extends DAO
      * @return array A list of all Contacts.
      */
     public function findAll() {
-        $sql = "select * from t_contact order by contact_id desc";
+        $sql = "select * from t_contact order by contact_name";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

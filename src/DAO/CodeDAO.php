@@ -23,7 +23,7 @@ class CodeDAO extends DAO
      * @return array A list of all Codes.
      */
     public function findAll() {
-        $sql = "select * from t_code order by code_id desc";
+        $sql = "select * from t_code order by code_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

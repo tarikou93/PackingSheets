@@ -35,6 +35,7 @@ class PackingAssignationDAO extends DAO
 		$packingPart->setPartid($pa->getPackingListPart()->getPartid());
 		$packingPart->setQuantity($pa->getPackingListPart()->getQuantity());
 		$packingPart->setPrice($pa->getPrice());
+		$packingPart->setSerial($pa->getSerial());
 		
 		$this->packingPartDAO->save($packingPart);
 

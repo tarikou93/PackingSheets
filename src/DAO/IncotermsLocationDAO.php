@@ -13,7 +13,7 @@ class IncotermsLocationDAO extends DAO
      * @return array A list of all IncotermsLocations.
      */
     public function findAll() {
-        $sql = "select * from t_incotermsLocation order by incLoc_id desc";
+        $sql = "select * from t_incotermsLocation order by incLoc_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

@@ -19,13 +19,6 @@ class Part
     private $pn;
 
     /**
-     * Part serial.
-     *
-     * @var string
-     */
-    private $serial;
-
-    /**
      * Part description.
      *
      * @var string
@@ -55,14 +48,6 @@ class Part
         $this->pn = $pn;
     }
 
-    public function getSerial() {
-        return $this->serial;
-    }
-
-    public function setSerial($serial) {
-        $this->serial = $serial;
-    }
-
     public function getDesc() {
         return $this->desc;
     }
@@ -80,6 +65,6 @@ class Part
     }
     
     public function getCompleteInfos(){
-    	return sprintf('Pn : %s | Sn : %s | Desc : %s | HScode : %s', $this->pn, $this->serial, $this->desc, $this->hscode);
+    	return sprintf('Pn : %s | Desc : %s | HScode : %s', $this->pn, $this->desc, $this->hscode);
     }
 }

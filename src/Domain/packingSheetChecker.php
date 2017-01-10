@@ -29,10 +29,6 @@ class PackingSheetChecker
 			$isValid = false;
 		}
 		
-		if($packingSheet->getOrderNr() === null){
-			$isValid = false;
-		}
-		
 		if($packingSheet->getDateIssue() === null){
 			$isValid = false;
 		}

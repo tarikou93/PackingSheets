@@ -13,7 +13,7 @@ class ContentDAO extends DAO
      * @return array A list of all Contents.
      */
     public function findAll() {
-        $sql = "select * from t_content order by cont_id desc";
+        $sql = "select * from t_content order by cont_label";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

@@ -17,8 +17,6 @@ class PartType extends AbstractType
                 ->add('pn', TextType::class, array(
         'constraints' => array(new Assert\NotBlank(), new Assert\Regex(array (
             'pattern' => '/^[ A-Za-z0-9-]*$/')))))
-                ->add('serial', TextType::class, array(
-                    'required' => false))
                 ->add('desc', TextareaType::class, array(
         'constraints' => array(new Assert\NotBlank())))
                 ->add('hscode', TextType::class, array(
