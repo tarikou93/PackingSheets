@@ -40,6 +40,9 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 		$app['dao.packingSheet']->save($packingSheet, $userName);
 		
 		$pdf = new PackingSheetPDF();
+		$pdf->AliasNbPages();
+		$pdf->SetAutoPageBreak(true, 20);
+		
 		$pdf->setPs($packingSheet);
 		$pdf->setHeader($printOptions->getHeader());
 		$pdf->setFooter($printOptions->getFooter());

@@ -175,7 +175,7 @@ class PackingSheetType extends AbstractType
 				'attr' => array('readonly' => $options['read_only'])))
 				
 		->add('imputId', ChoiceType::class, array(
-				'choice_label' => 'label',
+				'choice_label' => 'completeInfos',
 				'choices' => $options['imputs'],
 				'choice_value' => 'id',
 				'multiple' => false,
@@ -207,7 +207,7 @@ class PackingSheetType extends AbstractType
 		->add('usualMemos', ChoiceType::class, array(
 				'choice_label' => 'label',
 				'choices' => $options['memos'],
-				'choice_value' => 'id',
+				'choice_value' => 'label',
 				'multiple' => false,
 				'mapped' => false,
 				'required' => false,

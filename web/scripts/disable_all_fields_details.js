@@ -50,6 +50,11 @@ function disableAll(){
     	}
     })
     
+    //Companies
+    
+    $("#packing_sheet_consignedCode").attr("readonly", 'readonly');
+    $("#packing_sheet_deliveryCode").attr("readonly", 'readonly');
+    
     //Packings
     
     var packingFields = $('*[id^="packing_sheet_packings_"]');

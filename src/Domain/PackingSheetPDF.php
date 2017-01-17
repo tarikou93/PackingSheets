@@ -20,69 +20,71 @@ class PackingSheetPDF extends \FPDF
 	// En-tête
 	function Header()
 	{
+		if ($this->PageNo() == 1){
+			
+			$this->SetFont('Arial','B',9);
+						
+			$this->Cell(45,5,' ','LTR',0,'L',0);
+			$this->Image($this->logo,19,12,30);
+			$this->Cell(100,5,$this->header->getText(),'LTR',0,'C',0);
+			$this->Cell(45,5,'AWB','LTR',0,'C',0);
+			
+			$this->Ln();
+			$this->SetFont('Arial','',11);
+			
+			$this->Cell(45,5,' ','LR',0,'L',0);
+			$this->Cell(100,5,'','LR',0,'C',0);
+			$this->Cell(45,5,$this->ps->getAWB(),'LR',0,'C',0);
+			
+			$this->Ln();
+			
+			$this->SetFont('Arial','B',8);
+			
+			$this->Cell(45,5,' ','LR',0,'L',0);
+			$this->Cell(100,5,$this->ps->getRef(),'LR',0,'R',0);
+			$this->Cell(45,5,' ','LR',0,'L',0);
+			
+			$this->Ln();
+			
+			$this->Cell(45,5,' ','BL',0,'L',0);
+			$this->Cell(100,5,'PRIORITY : '.$this->ps->getPriorityId()->getLabel(),'BTR',0,'R',0);
+			$this->Cell(45,5,'VAT BE : 465 150 137','LTRB',0,'C',0);
+			
+			$this->Ln();
+		}
 		
-		$this->SetFont('Arial','B',9);
-		
-		$this->Cell(45,5,' ','LTR',0,'L',0);
-		$this->Image($this->logo,19,12,30);
-		$this->Cell(100,5,$this->header->getText(),'LTR',0,'C',0);
-		$this->Cell(45,5,'AWB','LTR',0,'C',0);
-		
-		$this->Ln();
-		$this->SetFont('Arial','',11);
-		
-		$this->Cell(45,5,' ','LR',0,'L',0);
-		$this->Cell(100,5,'','LR',0,'C',0);
-		$this->Cell(45,5,$this->ps->getAWB(),'LR',0,'C',0);
-		
-		$this->Ln();
-		
-		$this->SetFont('Arial','B',8);
-		
-		$this->Cell(45,5,' ','LR',0,'L',0);
-		$this->Cell(100,5,$this->ps->getRef(),'LR',0,'R',0);
-		$this->Cell(45,5,' ','LR',0,'L',0);
-		
-		$this->Ln();
-		
-		$this->Cell(45,5,' ','BL',0,'L',0);
-		$this->Cell(100,5,'PRIORITY : '.$this->ps->getPriorityId()->getLabel(),'BTR',0,'R',0);
-		$this->Cell(45,5,'VAT BE : 465 150 137','LTRB',0,'C',0);
-		
-		$this->Ln();
 	}
 
 	// Pied de page
 	function Footer()
-	{	
-		$this->SetY(-50);
+	{					
+		$secondaryFooter = 'Page '.$this->PageNo()." / {nb} - ".'Printed on : '.date('Y-m-d');
 		
-		$secondaryFooter = 'Page '.$this->PageNo()." - ".'Printed on : '.date('Y-m-d');
-		$footerParts = explode("\n", $this->footer->getText(), 2);
-		
-		$this->SetFont('Arial','B',8);
-		$this->Cell(140, 5, $footerParts[0], '', 0, 'L', 0);
-		$this->Ln();
-		
-		$this->SetFont('Arial','',8);
-		
-		$x=$this->GetX();
-		
-		if(count($footerParts) > 1){
-			$this->MultiCell(140,5,$footerParts[1],'','L',0);
-		}
-		
-		$y=$this->GetY();
-		
-		$this->SetXY($x+140, $y);
+		$this->SetX(140);
+		$y = $this->GetY();
 		
 		$this->SetFont('Arial','B',8);
 		$this->Cell(50, 5, $this->ps->getRef(), '', 0, 'R', 0);
-		
-		$this->SetXY($x+140, $y+5);
-		
+			
+		$this->SetXY(144, $y+5);
+			
 		$this->SetFont('Arial','',8);
 		$this->Cell(50, 5, $secondaryFooter, '', 0, 'R', 0);
+	}
+	
+	function addCustomFooter(){
+		
+		$footerParts = explode("\n", $this->footer->getText(), 2);
+			
+		$this->SetFont('Arial','B',8);
+		$this->Cell(140, 5, $footerParts[0], '', 0, 'L', 0);
+		$this->Ln();
+			
+		$this->SetFont('Arial','',8);
+						
+		if(count($footerParts) > 1){
+			$this->MultiCell(140,5,$footerParts[1],'','L',0);
+		}
 	}
 	
 	function AddressesContacts(){
@@ -171,7 +173,11 @@ class PackingSheetPDF extends \FPDF
 		$this->Cell(45,5,'','LRB',0,'C',0);
 		$this->Cell(80,5,'','RLB',0,'C',0);
 		$this->SetFont('Arial','',8);
-		$this->Cell(65,5,($this->ps->getIncTypeId() !== null && $this->ps->getIncLocId() !== null) ? $this->ps->getIncTypeId()->getLabel().' - '.$this->ps->getIncLocId()->getLabel() : '','TBLR',0,'C',0);
+		
+		$incotermsTypeLabel = ($this->ps->getIncTypeId() !== null) ? $this->ps->getIncTypeId()->getLabel() : "";
+		$incotermsLocLabel = ($this->ps->getIncLocId() !== null) ? " - ".$this->ps->getIncLocId()->getLabel() : "";
+		
+		$this->Cell(65,5,$incotermsTypeLabel.$incotermsLocLabel,'TBLR',0,'C',0);
 		
 		$this->Ln();
 		$this->SetFont('Arial','B',8);
@@ -333,7 +339,7 @@ class PackingSheetPDF extends \FPDF
 						$this->Ln();
 						
 						$this->Cell(45);
-						$this->Cell(145,5,$part->getPartid()->getDesc(),'LRTB',0,'C',0);
+						$this->MultiCell(145,5,$part->getPartid()->getDesc(),'LRTB','C',0);
 						$this->Ln();
 					}
 				}
@@ -382,6 +388,10 @@ class PackingSheetPDF extends \FPDF
 		
 		//Memo
 		$this->Memo();
+		
+		//CustomFooter
+		$this->addCustomFooter();
+
 	}
 	
 	function setPs($ps){
@@ -411,4 +421,5 @@ class PackingSheetPDF extends \FPDF
 	function setDeliveryCode($code){
 		$this->deliveryCode = $code;
 	}
+	
 }

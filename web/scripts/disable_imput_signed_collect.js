@@ -144,8 +144,8 @@ function enableAll(){
 };
 
 function copyMemo(){
-	
+		
 	var elt = document.getElementById("packing_sheet_usualMemos");
-	$("#packing_sheet_memo").val(elt.options[elt.selectedIndex].text);
-
+	$("#packing_sheet_memo").append("\n".concat(elt.options[elt.selectedIndex].value.replace(/\s*<br\s*\/?>\s*/g,"\n")));
+	
 }

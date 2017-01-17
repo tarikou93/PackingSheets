@@ -23,7 +23,8 @@ class PackingPartType extends AbstractType
 				'choice_value' => 'id',
 				'multiple' => false,
 				'label' => 'Part',
-				'attr' => array('class' => 'form-control .col-md-6')
+				'attr' => array('class' => 'form-control .col-md-6'),
+				'required' => false
 		))
 
 		->add('quantity', TextType::class, array(

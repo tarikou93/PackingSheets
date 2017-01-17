@@ -175,6 +175,7 @@ $app->match('/sheet/{id}/{status}', function(Request $request, $id, $status) use
 			'deliveryOldCode' => isset($deliveryOldCode) ? $deliveryOldCode : null,
 			'packingSheet' => $packingSheet,
 			'status' => $status,
+			'signed' => $packingSheet->getSigned(),
 			'packingSheetForm' => $packingSheetForm->createView()));
 
 })->value('id', 0)->bind('sheet');

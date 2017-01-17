@@ -48,5 +48,9 @@ class Imput
     public function setText($text) {
         $this->text = $text;
     }
+    
+    public function getCompleteInfos(){
+    	return sprintf('%s | %s', $this->label, $this->text);
+    }
 
 }
