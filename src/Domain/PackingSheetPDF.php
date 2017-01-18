@@ -190,7 +190,7 @@ class PackingSheetPDF extends \FPDF
 		$this->SetFont('Arial','',8);
 		
 		$this->Cell(23,5,$this->ps->getNbrPieces(),'LRTB',0,'C',0);
-		$this->Cell(22,5,$this->ps->getWeight(),'LRTB',0,'C',0);
+		$this->Cell(22,5,number_format($this->ps->getWeight(), 2),'LRTB',0,'C',0);
 		$this->Cell(145,5,$this->ps->getContentId()->getLabel(),'RLTB',0,'C',0);
 		
 		$this->Ln();

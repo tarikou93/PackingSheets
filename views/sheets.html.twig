@@ -74,7 +74,8 @@
                                             </td>
                                             <td>
                                             	{% if packingSheet.consignedAddressId is not null  %}
-                                                    {{ packingSheet.consignedAddressId.label}}
+                                                    {{ [companyNameArray[packingSheet.id], "\n"]|join(" ")|nl2br}}
+                                                    {{ packingSheet.consignedAddressId.label }}
                                                 {% else %}
                                                 	N/A
                                                 {% endif %}

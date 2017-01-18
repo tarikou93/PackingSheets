@@ -15,6 +15,13 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	$codes = $app['dao.code']->findAll();
 	$services = $app['dao.service']->findAll();
 	$imputs = $app['dao.imput']->findAll();
+	
+	$companyNameArray = array();
+	foreach($app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']) as $ps){
+		if($ps->getConsignedAddressId() !== null){
+			$companyNameArray[$ps->getId()] = $app['dao.code']->find($ps->getConsignedAddressId()->getCodeId())->getLabel();
+		}
+	}
 		
 	$psSearch = new PackingSheetSearch();
 	$psSearchForm = $app['form.factory']->create(PackingSheetSearchType::class, $psSearch, array('codes' => $codes, 'services' => $services, 'imputs' => $imputs,'availableGroups' => $groups));
@@ -42,6 +49,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 				'sheets' => $searchedSheets,
 				'searchTag' => 1,
 				'codes' => $codes,
+				'companyNameArray' => $companyNameArray,
 				'psSearchForm' => $psSearchForm->createView()));
 	}			
 	
@@ -50,6 +58,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 			'sheets' => $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']),
 			'searchTag' => 0,
 			'codes' => $codes,
+			'companyNameArray' => $companyNameArray,
 			'psSearchForm' => $psSearchForm->createView()));
 
 })->bind('sheets');

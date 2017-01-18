@@ -9,7 +9,7 @@ function selectDefaultValue(){
 	$.each(options, function(index, element){
 	    
 		if(element.text === "PACKING SHEET AND PRO FORMA INVOICE"){
-			$("#print_options_header").value = element;
+			element.selected = true;
 		}
     })  
 }

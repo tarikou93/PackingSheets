@@ -193,7 +193,7 @@ DROP TABLE IF EXISTS `packingsheets_dev`.`t_memo` ;
 
 CREATE TABLE IF NOT EXISTS `packingsheets_dev`.`t_memo` (
   `memo_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `memo_label` VARCHAR(200) CHARACTER SET 'utf8' NOT NULL,
+  `memo_label` VARCHAR(250) CHARACTER SET 'utf8' NOT NULL,
   `memo_text` VARCHAR(100) CHARACTER SET 'utf8',
   PRIMARY KEY (`memo_id`))
 ENGINE = InnoDB
