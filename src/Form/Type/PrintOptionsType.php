@@ -38,6 +38,10 @@ class PrintOptionsType extends AbstractType
 
 		->add('hscodesStatus', CheckboxType::class, array(
 				'required' => false))
+				
+		->add('archive', CheckboxType::class, array(
+				'required' => false
+		))
 
 		->add('print', SubmitType::class, array(
 				'label' => false

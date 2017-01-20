@@ -182,9 +182,16 @@ class PackingSheet
     /**
      * PackingSheet printed.
      *
-     * @var integer
+     * @var bit
      */
     private $printed;
+    
+    /**
+     * PackingSheet archived.
+     *
+     * @var bit
+     */
+    private $archived;
 
     /**
      * PackingSheet memo.
@@ -405,6 +412,14 @@ class PackingSheet
 
     public function setPrinted($printed) {
         $this->printed = $printed;
+    }
+    
+    public function getArchived() {
+    	return $this->archived;
+    }
+    
+    public function setArchived($archived) {
+    	$this->archived = $archived;
     }
 
     public function getMemo() {

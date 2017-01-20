@@ -38,25 +38,24 @@ class PackingListPDF extends \FPDF
 			$this->SetFont('Arial','B',8);
 			$this->Cell(190, 5, 'PART '.$cptParts,'TBLR',0,'L', 1);
 			$this->Ln();
-			$this->Cell(15);
-			$this->Cell(25,5,'QUANTITY','LRTB',0,'C',1);
-			$this->Cell(40,5,'PART NUMBER','LRTB',0,'C',1);
-			$this->Cell(40,5,'PART SERIAL NUMBER','LRTB',0,'C',1);
-			$this->Cell(40,5,'HS TARIF CODE','LRTB',0,'C',1);
-			$this->Cell(30,5,'PRICE','LRTB',0,'C',1);
+			$this->Cell(25);
+			$this->Cell(45,5,'QUANTITY','LRTB',0,'C',1);
+			$this->Cell(60,5,'PART NUMBER','LRTB',0,'C',1);
+			$this->Cell(60,5,'HS TARIF CODE','LRTB',0,'C',1);
 			
 			$this->Ln();
 			$cptParts++;
 			$this->SetFont('Arial','',8);
 			
-			$this->Cell(15);
-			$this->Cell(25,5,$part->getQuantity(),'LRTB',0,'C',0);
-			$this->Cell(40,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
-			$this->Cell(40,5,$part->getPartid()->getSerial(),'LRTB',0,'C',0);
-			$this->Cell(40,5,($part->getPartid()->getHSCode() === null) ? "" : $part->getPartid()->getHSCode(),'LRTB',0,'C',0);
-			$this->Cell(30,5,$part->getPartid()->getPrice(),'LRTB',0,'C',0);
+			$this->Cell(25);
+			$this->Cell(45,5,$part->getQuantity(),'LRTB',0,'C',0);
+			$this->Cell(60,5,$part->getPartid()->getPn(),'LRTB',0,'C',0);
+			$this->Cell(60,5,($part->getPartid()->getHSCode() === null) ? "" : $part->getPartid()->getHSCode(),'LRTB',0,'C',0);
 			
 			$this->Ln();
+			
+			$this->Cell(45);
+			$this->MultiCell(145,5,$part->getPartid()->getDesc(),'LRTB','C',0);
 			$this->Ln();
 		}
 

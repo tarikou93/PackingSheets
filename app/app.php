@@ -119,6 +119,10 @@ $app['dao.shipper'] = function($app) {
   return new PackingSheets\DAO\ShipperDAO($app['db']);
 };
 
+$app['dao.archive'] = function($app) {
+	return new PackingSheets\DAO\ArchiveDAO($app['db']);
+};
+
 $app['dao.code'] = function ($app) {
     $codeDAO = new PackingSheets\DAO\CodeDAO($app['db']);
     $codeDAO->setAddressDAO($app['dao.address']);

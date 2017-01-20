@@ -34,6 +34,9 @@ require 'controllers/tableController.php';
 // Images
 require 'controllers/imageController.php';
 
+// Archives
+require 'controllers/archiveController.php';
+
 
 
  

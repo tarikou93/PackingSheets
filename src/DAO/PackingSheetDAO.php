@@ -174,7 +174,7 @@ class PackingSheetDAO extends DAO
      */
     public function findAllByUserSeries($series) {
 		
-    	$sql = "select * from t_packingsheet where group_id in (".implode(',',$series).") order by ps_id desc";
+    	$sql = "select * from t_packingsheet where group_id in (".implode(',',$series).") and ps_archived = 0 order by ps_id desc";
     	$result = $this->getDb()->fetchAll($sql);
     
     	// Convert query result to an array of domain objects
@@ -432,7 +432,7 @@ class PackingSheetDAO extends DAO
    }
    
    /**
-    * Returns the last inserted Id in the PS table for the supplied group id.
+    * Returns the last inserted Id in the PS table for the supplied group id by day.
     *
     * @param integer $id
     *
@@ -480,6 +480,7 @@ class PackingSheetDAO extends DAO
    			'imput_id' => ($packingSheet->getImputId() === null) ? null : $packingSheet->getImputId()->getId(),
    			'ps_signed' => ($packingSheet->getSigned() === true) ? 1 : 0,
    			'ps_printed' => ($packingSheet->getPrinted() === true) ? 1 : 0,
+   			'ps_archived' => ($packingSheet->getArchived() === true) ? 1 : 0,
    			'ps_memo' => $packingSheet->getMemo(),
    			'ps_Weight' => ($packingSheet->getWeight() === null) ? 0 : $packingSheet->getWeight(),
    			'ps_totalPrice' => ($packingSheet->getTotalPrice() === null) ? 0 : $packingSheet->getTotalPrice(),
@@ -577,6 +578,7 @@ class PackingSheetDAO extends DAO
     	
     	$signed = ($row['ps_signed'] === '1') ? true : false;
     	$printed = ($row['ps_printed'] === '1') ? true : false;
+    	$archived = ($row['ps_archived'] === '1') ? true : false;
     	$collect = ($row['ps_collect'] === '1') ? true : false;
     	
         $packingSheet = new PackingSheet();
@@ -591,6 +593,7 @@ class PackingSheetDAO extends DAO
         $packingSheet->setWeight($row['ps_weight']);
         $packingSheet->setSigned($signed);
         $packingSheet->setPrinted($printed);
+        $packingSheet->setArchived($archived);
         $packingSheet->setMemo($row['ps_memo']);
         $packingSheet->setCollect($collect);
         $packingSheet->setAutority($row['ps_autority']);

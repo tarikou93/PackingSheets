@@ -193,7 +193,7 @@ DROP TABLE IF EXISTS `packingsheets_dev`.`t_memo` ;
 
 CREATE TABLE IF NOT EXISTS `packingsheets_dev`.`t_memo` (
   `memo_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `memo_label` VARCHAR(250) CHARACTER SET 'utf8' NOT NULL,
+  `memo_label` VARCHAR(200) CHARACTER SET 'utf8' NOT NULL,
   `memo_text` VARCHAR(100) CHARACTER SET 'utf8',
   PRIMARY KEY (`memo_id`))
 ENGINE = InnoDB
@@ -256,6 +256,21 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+-- -----------------------------------------------------
+-- Table `packingsheets_dev`.`t_archive`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `packingsheets_dev`.`t_archive` ;
+
+CREATE TABLE IF NOT EXISTS `packingsheets_dev`.`t_archive` (
+  `archive_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `archive_ref` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
+  `archive_user` VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
+  `archive_serializationdate` DATE NOT NULL,
+  `archive_serializedpdf` MEDIUMBLOB NOT NULL,
+  PRIMARY KEY (`archive_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `packingsheets_dev`.`t_packingsheet`
@@ -289,6 +304,7 @@ CREATE TABLE IF NOT EXISTS `packingsheets_dev`.`t_packingsheet` (
   `ps_totalPrice` FLOAT NOT NULL,
   `ps_signed` TINYINT(1) NULL DEFAULT NULL,
   `ps_printed` TINYINT(1) NULL DEFAULT NULL,
+  `ps_archived` TINYINT(1) NULL DEFAULT NULL,
   `ps_memo` VARCHAR(500) CHARACTER SET 'utf8' NULL DEFAULT NULL,
   PRIMARY KEY (`ps_id`),
   INDEX `fk_ps_service` (`service_id` ASC),

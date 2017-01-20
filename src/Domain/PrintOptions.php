@@ -24,6 +24,13 @@ class PrintOptions
 	 * @var boolean
 	 */
 	private $hscodesStatus;
+	
+	/**
+	 * PrintOptions archive.
+	 *
+	 * @var boolean
+	 */
+	private $archive;
 
 	public function getHeader() {
 		return $this->header;
@@ -48,6 +55,13 @@ class PrintOptions
 	public function setHscodesStatus($hscodesStatus) {
 		$this->hscodesStatus = $hscodesStatus;
 	}
-
+	
+	public function getArchive() {
+		return $this->archive;
+	}
+	
+	public function setArchive($archive) {
+		$this->archive = $archive;
+	}
 }
 

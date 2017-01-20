@@ -262,7 +262,7 @@ class PackingSheetPDF extends \FPDF
 				$this->Cell(50,5,$pack->getPackTypeid()->getLabel(),'LRTB',0,'C',0);
 				$this->Cell(25,5,number_format($pack->getNetWeight(), 2),'LRTB',0,'C',0);
 				$this->Cell(25,5,number_format($pack->getGrossWeight(), 2),'LRTB',0,'C',0);
-				$this->Cell(45,5,number_format($pack->getM1(), 2).' / '.number_format($pack->getM2(), 2).' / '.number_format($pack->getM3(), 2),'LRTB',0,'C',0);
+				$this->Cell(45,5,$pack->getM1().' / '.$pack->getM2().' / '.$pack->getM3(),'LRTB',0,'C',0);
 				$cptPackings++;
 				$this->Ln();
 			}

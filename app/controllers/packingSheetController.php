@@ -15,6 +15,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	$codes = $app['dao.code']->findAll();
 	$services = $app['dao.service']->findAll();
 	$imputs = $app['dao.imput']->findAll();
+	$sheets = $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']);
 	
 	$companyNameArray = array();
 	foreach($app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']) as $ps){
@@ -42,7 +43,12 @@ $app->match('/sheets', function(Request $request) use ($app) {
 		
 		//var_dump($psSearchForm->getData());exit;
 	
-		$searchedSheets = $app['dao.packingSheet']->findBySearch($psSearch);
+		if(!empty($sheets)){
+			$searchedSheets = $app['dao.packingSheet']->findBySearch($psSearch);
+		}
+		else{
+			$searchedSheets = array();
+		}
 		
 		return $app['twig']->render('sheets.html.twig', array(
 				'title' => 'Sheets',
@@ -55,7 +61,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 	
 	return $app['twig']->render('sheets.html.twig', array(
 			'title' => 'Sheets',
-			'sheets' => $app['dao.packingSheet']->findAllByUserSeries($app['session']->get('auth')['packingSheetsSeries']),
+			'sheets' => $sheets,
 			'searchTag' => 0,
 			'codes' => $codes,
 			'companyNameArray' => $companyNameArray,

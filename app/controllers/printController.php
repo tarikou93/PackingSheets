@@ -6,6 +6,7 @@ use PackingSheets\Domain\PrintOptions;
 use PackingSheets\Domain\PackingSheetPDF;
 use PackingSheets\Domain\PackingListPDF;
 use PackingSheets\Domain\PackingSheetChecker;
+use PackingSheets\Domain\Archive;
 
 
 // Print Options page
@@ -34,10 +35,10 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 
 	if ($printOptionsForm->isSubmitted() && $printOptionsForm->isValid()) {
 		
-		//var_dump($printOptionsForm->getdata());exit;
 		$packingSheet->setPrinted(true);
 		$userName = $app['session']->get('user')['name'][0]." ".$app['session']->get('user')['firstName'][0];
-		$app['dao.packingSheet']->save($packingSheet, $userName);
+		
+		//Build pdf
 		
 		$pdf = new PackingSheetPDF();
 		$pdf->AliasNbPages();
@@ -54,8 +55,40 @@ $app->match('/sheets/print/{psId}', function(Request $request, $psId) use ($app)
 		
 		$pdf->AddPage();
 		$pdf->build();
-		$pdf->Output();
+			
+		//Archiving pdf
+		
+		if($printOptions->getArchive()){
+			
+			$pdf->Output("F", "temp/pdf.pdf");
+			$serializedPdf = serialize(file_get_contents('temp/pdf.pdf'));
+			
+			$archive = new Archive();
+			$archive->setRef($packingSheet->getRef());
+			$archive->setUser($userName);
+			$archive->setSerializationDate(date('Y-m-d'));
+			$archive->setSerializedPdf($serializedPdf);
+					
+			$app['dao.archive']->save($archive);
+			
+			$packingSheet->setArchived(true);
+			
+			$file = 'temp/pdf.pdf';
+			$filename = 'pdf.pdf';
+			header('Content-type: application/pdf');
+			header('Content-Disposition: inline; filename="' . $filename . '"');
+			header('Content-Transfer-Encoding: binary');
+			header('Accept-Ranges: bytes');
+			@readfile($file);
+		}
+		
+		// Pdf non archived	
+		else{
+			$pdf->Output();
+		}
 	
+		$app['dao.packingSheet']->save($packingSheet, $userName);
+		
 		exit;
 			
 	}

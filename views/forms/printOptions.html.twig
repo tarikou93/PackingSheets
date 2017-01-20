@@ -65,14 +65,50 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group">
-                        <div class="col-sm-4">
-                            {{ form_widget(printOptionsForm.print, {'attr':  {
-                            'class': 'btn btn-primary outline',
-                            'onclick': "$('form').attr('target', '_blank');"
-                            }}) }}
+                    <button type="button" class="btn btn-primary outline" data-toggle="modal" data-target="#printOptions"><span class="glyphicon glyphicon-print"></span> Print</button>
+                    <div class="modal fade" id="printOptions" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading panel-height"><h4>Packing Sheet : Archive</small></h4></div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to archive this Packing Sheet ? <br/>
+                                    It will protect it from further modifications or data edition but the packing sheet printing will be disabled.<br/><br/>
+                                    <b>Any edition or deletion of archived Packing Sheet will require IT Support intervention !</b>
+                                    <hr/>
+                                    <div class="form-group">
+                                        {{ form_label(printOptionsForm.archive, null, { 'label': 'Archive Packing Sheet', 'label_attr':  {
+                                        'class': 'col-sm-5 control-label'
+                                        }}) }}
+                                        <div class="col-sm-6">
+                                            {{ form_errors(printOptionsForm.archive) }}
+                                            {{ form_widget(printOptionsForm.archive, { 'attr':  {
+                                            'class': 'col-sm-1 form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                	
+                                    <div class="form-group">
+                                    	<div class="col-sm-3">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                        <div class="col-sm-3 col-sm-offset-5">
+                                            {{ form_widget(printOptionsForm.print, {'attr':  {
+                                            'class': 'btn btn-primary outline',
+                                            'onclick': "$('form').attr('target', '_blank');"
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </div>  
                     {{ form_end(printOptionsForm) }}
                 </div>
            	</div>
