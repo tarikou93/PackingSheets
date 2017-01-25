@@ -22,6 +22,9 @@ $app->match('/sheets', function(Request $request) use ($app) {
 		if($ps->getConsignedAddressId() !== null){
 			$companyNameArray[$ps->getId()] = $app['dao.code']->find($ps->getConsignedAddressId()->getCodeId())->getLabel();
 		}
+		else{
+			$companyNameArray[$ps->getId()] = "N/A";
+		}
 	}
 		
 	$psSearch = new PackingSheetSearch();
@@ -43,8 +46,21 @@ $app->match('/sheets', function(Request $request) use ($app) {
 		
 		//var_dump($psSearchForm->getData());exit;
 	
+		$companyNameArraySearch = array();
+			
 		if(!empty($sheets)){
 			$searchedSheets = $app['dao.packingSheet']->findBySearch($psSearch);
+			
+			if(!empty($searchedSheets)){
+				foreach($searchedSheets as $ps){
+					if($ps->getConsignedAddressId() !== null){
+						$companyNameArraySearch[$ps->getId()] = $app['dao.code']->find($ps->getConsignedAddressId()->getCodeId())->getLabel();
+					}
+					else{
+						$companyNameArraySearch[$ps->getId()] = "N/A";
+					}
+				}
+			}
 		}
 		else{
 			$searchedSheets = array();
@@ -55,7 +71,7 @@ $app->match('/sheets', function(Request $request) use ($app) {
 				'sheets' => $searchedSheets,
 				'searchTag' => 1,
 				'codes' => $codes,
-				'companyNameArray' => $companyNameArray,
+				'companyNameArray' => $companyNameArraySearch,
 				'psSearchForm' => $psSearchForm->createView()));
 	}			
 	
