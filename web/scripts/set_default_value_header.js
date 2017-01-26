@@ -1,5 +1,9 @@
 $( document ).ready(
-    selectDefaultValue
+    selectDefaultHeader
+);
+
+$( document ).ready(
+	selectDefaultFooter
 );
 
 //Archive Status Confirmation
@@ -16,7 +20,7 @@ $("#print_options_archive").change(function() {
 
 // Setting default Header
 
-function selectDefaultValue(){
+function selectDefaultHeader(){
 	
 	var options = document.getElementById('print_options_header').options;
 		
@@ -27,3 +31,19 @@ function selectDefaultValue(){
 		}
     })  
 }
+
+//Setting default Footer
+
+function selectDefaultFooter(){
+	
+	var options = document.getElementById('print_options_footer').options;
+		
+	$.each(options, function(index, element){
+	    
+		if(element.text === "Sabena Aerospace Engineering N.V. / S.A. Brussels Airport building 31 / Gate A www.sabena-aerospace.com - Sabena Aerospace Engineering N.V. / S.A. - BTW / TVA BE 465 150 137 - HRB / RCB 631 415"){
+			element.selected = true;
+		}
+    })  
+}
+
+
